@@ -1013,13 +1013,13 @@ export const MOCK_CALENDAR: Race[] = [
       weather: '18°C, Scattered Clouds',
       historicalWinners: ['Lando Norris (2025)', 'Lewis Hamilton (2024)', 'Max Verstappen (2023)']
     },
-    date: '2026-07-05T14:00:00Z',
+    date: '2026-07-06T02:30:00Z',
     sessions: [
       { name: 'Practice 1', date: '2026-07-03T11:30:00Z', duration: '1 hour' },
       { name: 'Sprint Qualifying', date: '2026-07-03T15:30:00Z', duration: '1 hour' },
       { name: 'Sprint', date: '2026-07-04T12:00:00Z', duration: '1 hour' },
       { name: 'Qualifying', date: '2026-07-04T15:00:00Z', duration: '1 hour' },
-      { name: 'Race', date: '2026-07-05T14:00:00Z', duration: '2 hours' }
+      { name: 'Race', date: '2026-07-06T02:30:00Z', duration: '2 hours' }
     ] 
   },
   { 
