@@ -80,12 +80,15 @@ export default function NewsPage() {
           {filteredArticles.map((art) => (
             <article 
               key={art.id} 
-              className="card highlight" 
+              className="card highlight news-card-hover" 
+              onClick={() => art.link && window.open(art.link, '_blank', 'noopener,noreferrer')}
               style={{ 
                 display: 'flex', 
                 flexDirection: 'column', 
                 justifyContent: 'space-between',
                 gap: '1.2rem',
+                cursor: art.link ? 'pointer' : 'default',
+                transition: 'all 0.2s',
                 borderTopColor: art.category === 'Racing' 
                   ? 'var(--f1-red)' 
                   : art.category === 'Tech' 
@@ -135,9 +138,15 @@ export default function NewsPage() {
                 }}
               >
                 <span>{art.source}</span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Clock size={12} /> {art.readTime}
-                </span>
+                {art.link ? (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--f1-red)', fontWeight: 600 }}>
+                    Read Full Story <ExternalLink size={12} />
+                  </span>
+                ) : (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Clock size={12} /> {art.readTime}
+                  </span>
+                )}
               </div>
             </article>
           ))}

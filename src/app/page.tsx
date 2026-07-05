@@ -501,8 +501,11 @@ export default function HomePage() {
                   : 'var(--yellow-accent)';
 
               return (
-                <div 
+                <a 
                   key={art.id} 
+                  href={art.link || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{ 
                     background: 'var(--bg-secondary)', 
                     borderRadius: '8px', 
@@ -511,8 +514,12 @@ export default function HomePage() {
                     padding: '0.85rem 1rem',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '0.5rem'
+                    gap: '0.5rem',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s',
+                    cursor: 'pointer'
                   }}
+                  className="news-card-hover"
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span 
@@ -548,7 +555,7 @@ export default function HomePage() {
                       <Clock size={11} /> {art.readTime}
                     </span>
                   </div>
-                </div>
+                </a>
               );
             })}
           </div>

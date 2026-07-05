@@ -1511,6 +1511,17 @@ export const f1ApiService = {
   },
 
   getNews: async (): Promise<NewsArticle[]> => {
+    try {
+      const res = await fetch('/api/news');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          return data;
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch live RSS news, falling back to mock news', err);
+    }
     return MOCK_NEWS;
   },
 
