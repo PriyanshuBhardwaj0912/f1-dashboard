@@ -118,13 +118,22 @@ export default function HomePage() {
               {nextGP.circuit.name}
             </span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', borderTop: '1px solid var(--border-color)', paddingTop: '10px' }}>
-              <Clock size={15} style={{ color: 'var(--f1-red)' }} />
-              <div style={{ display: 'flex', alignItems: 'baseline' }}>
-                {renderTimeSegment(timeLeft.d, 'd')}
-                {renderTimeSegment(timeLeft.h, 'h')}
-                {renderTimeSegment(timeLeft.m, 'm')}
-                {renderTimeSegment(timeLeft.s, 's')}
-              </div>
+              {nextGP.status === 'live' && timeLeft.d === 0 && timeLeft.h === 0 && timeLeft.m === 0 && timeLeft.s === 0 ? (
+                <span className="badge badge-live" style={{ backgroundColor: 'var(--f1-red)', color: '#fff', fontSize: '0.75rem', fontWeight: 800, padding: '4px 8px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '5px', animation: 'flash 1.5s infinite' }}>
+                  <span style={{ width: '6px', height: '6px', backgroundColor: '#fff', borderRadius: '50%' }}></span>
+                  SESSION LIVE NOW
+                </span>
+              ) : (
+                <>
+                  <Clock size={15} style={{ color: 'var(--f1-red)' }} />
+                  <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                    {renderTimeSegment(timeLeft.d, 'd')}
+                    {renderTimeSegment(timeLeft.h, 'h')}
+                    {renderTimeSegment(timeLeft.m, 'm')}
+                    {renderTimeSegment(timeLeft.s, 's')}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
