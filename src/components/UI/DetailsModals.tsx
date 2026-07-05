@@ -40,6 +40,9 @@ export const DetailsModals: React.FC = () => {
                   <img 
                     src={driver.photo} 
                     alt={driver.lastName} 
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="%232a2a35"/><path d="M16 8a4 4 0 100 8 4 4 0 000-8zM16 18c-4.4 0-8 2.6-8 5.8V25h16v-1.2c0-3.2-3.6-5.8-8-5.8z" fill="%23a0a0b0"/></svg>`;
+                    }}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                   <div style={{
