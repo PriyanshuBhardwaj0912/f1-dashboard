@@ -617,7 +617,24 @@ body {
 @media (max-width: 768px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .content-wrapper { padding: 1rem; }
-  .top-navbar { padding: 0 1rem; }
+
+  /* Topbar mobile cleanup */
+  .top-navbar { 
+    padding: 0 1rem; 
+    justify-content: space-between !important;
+  }
+
+  #nav-status-widget {
+    display: none !important;
+  }
+
+  .mobile-brand-name {
+    display: block !important;
+  }
+
+  .nav-search-container {
+    width: 140px !important;
+  }
 
   /* Show mobile hamburger toggle */
   .mobile-menu-toggle {
@@ -651,6 +668,23 @@ body {
   /* Hide the collapse chevron toggle on mobile sidebar since it's an overlay */
   .sidebar-brand button {
     display: none !important;
+  }
+
+  /* Home Page elements mobile stacking overrides */
+  .card-hero {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1.5rem !important;
+    padding: 1.5rem !important;
+    background: radial-gradient(ellipse at bottom, rgba(225, 6, 0, 0.1) 0%, rgba(10, 10, 13, 0.98) 90%) !important;
+  }
+
+  .hero-content h1 {
+    font-size: 1.8rem !important;
+  }
+
+  .home-split-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 

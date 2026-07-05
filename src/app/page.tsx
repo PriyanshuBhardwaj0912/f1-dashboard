@@ -339,7 +339,7 @@ export default function HomePage() {
       </div>
 
       {/* Bottom Grid: Live Event Timeline & Latest F1 News */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem', alignItems: 'start', marginTop: '0.5rem' }}>
+      <div className="home-split-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem', alignItems: 'start', marginTop: '0.5rem' }}>
         {/* Live Race Event Timeline */}
         <section className="card" style={{ margin: 0, height: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.8rem', marginBottom: '1.25rem' }}>
