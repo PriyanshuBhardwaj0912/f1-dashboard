@@ -232,36 +232,79 @@ export default function LiveTimingPage() {
               <span className="badge badge-green" style={{ fontSize: '0.65rem' }}>Silverstone</span>
             </div>
             
-            <div className="track-svg-canvas" style={{ position: 'relative', backgroundColor: '#0A0A0D' }}>
-              {/* Official F1 Circuit Map Background Watermark */}
-              <div 
-                style={{
-                  position: 'absolute',
-                  inset: '16px',
-                  backgroundImage: `url('https://media.formula1.com/image/upload/c_fit,h_220/q_auto/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Great_Britain_Circuit.png')`,
-                  backgroundSize: 'contain',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  opacity: 0.95,
-                  filter: 'invert(1) brightness(1.2) contrast(1.15)',
-                  zIndex: 0
-                }}
-              />
+            <div className="track-svg-canvas" style={{ position: 'relative', backgroundColor: '#09090C', minHeight: '380px' }}>
               <svg viewBox="0 0 600 360" width="100%" height="100%" style={{ padding: '20px', zIndex: 1, position: 'relative' }}>
-                {/* Silverstone Circuit Outline Path - Hidden to show only official map, active for coordinates */}
+                {/* Checkered Start/Finish Line */}
+                <line x1="380" y1="298" x2="380" y2="322" stroke="#ffffff" strokeWidth="4" strokeDasharray="3 3" />
+
+                {/* Silverstone Circuit Outline Path - Background Glow Track */}
+                <path 
+                  d="M 380,310 C 430,310 470,290 480,260 C 490,230 450,210 410,220 C 380,230 370,260 350,280 L 210,280 C 130,280 110,220 160,200 C 190,190 220,210 240,230 L 280,220 C 290,170 240,130 200,100 C 220,70 260,65 290,75 C 310,85 330,105 350,115 C 370,125 390,115 410,110 L 550,180 C 580,200 590,240 550,260 C 510,280 470,295 440,310 C 410,320 360,310 380,310 Z" 
+                  fill="none"
+                  stroke="rgba(255, 255, 255, 0.08)" 
+                  strokeWidth="12"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+
+                {/* Silverstone Circuit Outline Path - Core Track Line */}
                 <path 
                   ref={pathRef}
                   id="live-track-path" 
                   d="M 380,310 C 430,310 470,290 480,260 C 490,230 450,210 410,220 C 380,230 370,260 350,280 L 210,280 C 130,280 110,220 160,200 C 190,190 220,210 240,230 L 280,220 C 290,170 240,130 200,100 C 220,70 260,65 290,75 C 310,85 330,105 350,115 C 370,125 390,115 410,110 L 550,180 C 580,200 590,240 550,260 C 510,280 470,295 440,310 C 410,320 360,310 380,310 Z" 
-                  style={{ stroke: 'transparent', strokeWidth: '10px' }}
+                  fill="none"
+                  stroke="#ffffff" 
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
 
-                {/* DRS activation overlay straight zone - Hidden, using official map's green zones */}
+                {/* DRS Straight Zone 1 - Wellington Straight (Wellington straight overlay) */}
+                <path 
+                  d="M 210,280 L 140,280" 
+                  fill="none"
+                  stroke="var(--green-accent)"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                />
+
+                {/* DRS Straight Zone 2 - Hangar Straight (Hangar straight overlay) */}
                 <path 
                   d="M 410,110 L 550,180" 
                   fill="none"
-                  style={{ stroke: 'transparent', strokeWidth: '8px' }}
+                  stroke="var(--green-accent)"
+                  strokeWidth="5"
+                  strokeLinecap="round"
                 />
+
+                {/* DRS Zone Text Badges */}
+                <g transform="translate(148, 235)">
+                  <rect x="0" y="0" width="60" height="15" rx="3" fill="rgba(0, 210, 122, 0.12)" stroke="var(--green-accent)" strokeWidth="1" />
+                  <text x="30" y="10" fill="var(--green-accent)" fontSize="7.5px" fontWeight={800} textAnchor="middle">DRS ZONE 1</text>
+                </g>
+
+                <g transform="translate(460, 120)">
+                  <rect x="0" y="0" width="60" height="15" rx="3" fill="rgba(0, 210, 122, 0.12)" stroke="var(--green-accent)" strokeWidth="1" />
+                  <text x="30" y="10" fill="var(--green-accent)" fontSize="7.5px" fontWeight={800} textAnchor="middle">DRS ZONE 2</text>
+                </g>
+
+                {/* Key Corners Badges */}
+                {[
+                  { num: 1, x: 440, y: 290 },
+                  { num: 3, x: 460, y: 220 },
+                  { num: 6, x: 210, y: 280 },
+                  { num: 8, x: 170, y: 200 },
+                  { num: 9, x: 260, y: 225 },
+                  { num: 11, x: 220, y: 120 },
+                  { num: 14, x: 330, y: 110 },
+                  { num: 15, x: 550, y: 180 },
+                  { num: 18, x: 390, y: 310 }
+                ].map(c => (
+                  <g key={c.num}>
+                    <circle cx={c.x} cy={c.y} r="7.5" fill="#13131a" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="1" />
+                    <text x={c.x} y={c.y + 2.5} fill="#ffffff" fontSize="7.5px" fontWeight={800} textAnchor="middle">{c.num}</text>
+                  </g>
+                ))}
 
                 {/* Render coordinates of driver dots */}
                 {Object.keys(coords).map(driverId => {
