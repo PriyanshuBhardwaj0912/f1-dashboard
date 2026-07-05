@@ -2,6 +2,8 @@
 
 A responsive, high-performance, premium Formula 1 racing telemetry and statistics dashboard for the 2026 season. Built using Next.js 15 (App Router), TypeScript, and Vanilla CSS with custom interactive SVG charts and map tracking.
 
+⚡ **Live Demo**: [https://f1-dashboard-swart.vercel.app](https://f1-dashboard-swart.vercel.app)
+
 ---
 
 ## 🏎️ Key Features
