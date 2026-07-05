@@ -1013,7 +1013,14 @@ export const MOCK_CALENDAR: Race[] = [
       weather: '18°C, Scattered Clouds',
       historicalWinners: ['Lando Norris (2025)', 'Lewis Hamilton (2024)', 'Max Verstappen (2023)']
     },
-    date: '2026-07-05T14:00:00Z' 
+    date: '2026-07-05T14:00:00Z',
+    sessions: [
+      { name: 'Practice 1', date: '2026-07-03T11:30:00Z', duration: '1 hour' },
+      { name: 'Sprint Qualifying', date: '2026-07-03T15:30:00Z', duration: '1 hour' },
+      { name: 'Sprint', date: '2026-07-04T12:00:00Z', duration: '1 hour' },
+      { name: 'Qualifying', date: '2026-07-04T15:00:00Z', duration: '1 hour' },
+      { name: 'Race', date: '2026-07-05T14:00:00Z', duration: '2 hours' }
+    ] 
   },
   { 
     round: 10, 
@@ -1416,12 +1423,39 @@ export const f1ApiService = {
   },
 
   getCalendar: async (): Promise<Race[]> => {
+    const ensureSessions = (race: Race): Race => {
+      if (race.sessions && race.sessions.length > 0) return race;
+      
+      const raceDate = new Date(race.date);
+      if (isNaN(raceDate.getTime())) return race;
+      
+      const friday = new Date(raceDate);
+      friday.setDate(raceDate.getDate() - 2);
+      
+      const saturday = new Date(raceDate);
+      saturday.setDate(raceDate.getDate() - 1);
+      
+      const fStr = friday.toISOString().split('T')[0];
+      const sStr = saturday.toISOString().split('T')[0];
+      
+      return {
+        ...race,
+        sessions: [
+          { name: 'Practice 1', date: `${fStr}T11:30:00Z`, duration: '1 hour' },
+          { name: 'Practice 2', date: `${fStr}T15:00:00Z`, duration: '1 hour' },
+          { name: 'Practice 3', date: `${sStr}T11:30:00Z`, duration: '1 hour' },
+          { name: 'Qualifying', date: `${sStr}T15:00:00Z`, duration: '1 hour' },
+          { name: 'Race', date: race.date, duration: '2 hours' }
+        ]
+      };
+    };
+
     if (typeof window !== 'undefined') {
       const dynamic = localStorage.getItem('f1_calendar_dynamic');
-      if (dynamic) return JSON.parse(dynamic);
+      if (dynamic) return JSON.parse(dynamic).map(ensureSessions);
     }
     const cached = getCached<Race[]>('calendar');
-    if (cached) return cached;
+    if (cached) return cached.map(ensureSessions);
 
     try {
       const url = `${API_BASE}/current.json`;
@@ -1432,6 +1466,11 @@ export const f1ApiService = {
         const round = parseInt(r.round);
         const match = MOCK_CALENDAR.find(m => m.round === round);
         
+        let dateVal = r.date + 'T' + (r.time || '13:00:00');
+        if (match) {
+          dateVal = match.date; // Use mock precise ISO date if matched
+        }
+
         return {
           round,
           gpName: r.raceName,
@@ -1457,15 +1496,17 @@ export const f1ApiService = {
             weather: match?.circuit.weather || '22°C',
             historicalWinners: match?.circuit.historicalWinners || ['Lewis Hamilton']
           },
-          date: r.date + 'T' + (r.time || '13:00:00')
+          date: dateVal,
+          sessions: match?.sessions
         };
       });
 
-      setCache('calendar', enriched);
-      return enriched.length ? enriched : MOCK_CALENDAR;
+      const finalRaces = enriched.length ? enriched.map(ensureSessions) : MOCK_CALENDAR.map(ensureSessions);
+      setCache('calendar', finalRaces);
+      return finalRaces;
     } catch (err) {
       console.error('Failed to fetch calendar, using mock fallback', err);
-      return MOCK_CALENDAR;
+      return MOCK_CALENDAR.map(ensureSessions);
     }
   },
 

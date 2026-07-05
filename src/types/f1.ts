@@ -64,6 +64,12 @@ export interface Circuit {
   historicalWinners?: string[];
 }
 
+export interface RaceSession {
+  name: string;
+  date: string; // ISO string e.g. "2026-07-05T14:00:00Z"
+  duration?: string; // e.g. "1.5 hours"
+}
+
 export interface Race {
   round: number;
   gpName: string;
@@ -80,6 +86,7 @@ export interface Race {
   fastestLapId?: string;
   circuit: Circuit;
   date: string;
+  sessions?: RaceSession[];
 }
 
 export interface WeatherInfo {

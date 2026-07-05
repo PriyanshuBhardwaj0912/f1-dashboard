@@ -10,12 +10,33 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+const formatSessionDay = (dateStr: string): string => {
+  try {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }).toUpperCase();
+  } catch {
+    return '';
+  }
+};
+
+const formatSessionTimeRange = (dateStr: string, durationHours: number = 1): string => {
+  try {
+    const start = new Date(dateStr);
+    const end = new Date(start.getTime() + durationHours * 60 * 60 * 1000);
+    const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+    return `${start.toLocaleTimeString(undefined, options)} - ${end.toLocaleTimeString(undefined, options)}`;
+  } catch {
+    return '';
+  }
+};
+
 export default function HomePage() {
   const { timelineEvents, showToast, isSimulating } = useF1Store();
   const [nextGP, setNextGP] = useState<Race | null>(null);
   const [lastRaces, setLastRaces] = useState<Race[]>([]);
   const [news, setNews] = useState<any[]>([]);
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [activeSession, setActiveSession] = useState<{ name: string; date: string } | null>(null);
 
   useEffect(() => {
     const loadHomeData = async () => {
@@ -42,17 +63,22 @@ export default function HomePage() {
   useEffect(() => {
     if (!nextGP) return;
     
-    // Parse target date (July 5, 2026 15:00:00 for British GP)
-    let targetDate = new Date(nextGP.date);
-    if (isNaN(targetDate.getTime())) {
-      targetDate = new Date();
-      targetDate.setDate(targetDate.getDate() + 5);
-      targetDate.setHours(15, 0, 0, 0);
-    } else {
-      if (!nextGP.date.includes('T')) {
-        targetDate.setHours(15, 0, 0, 0);
+    const getActiveTarget = () => {
+      if (!nextGP.sessions || nextGP.sessions.length === 0) {
+        return { name: 'Race', date: nextGP.date };
       }
-    }
+      const now = Date.now();
+      // Find the first session that has not completed yet
+      const upcoming = nextGP.sessions.find(s => {
+        const duration = (s.name.toLowerCase().includes('race') ? 2 : 1) * 60 * 60 * 1000;
+        return new Date(s.date).getTime() + duration > now;
+      });
+      return upcoming || nextGP.sessions[nextGP.sessions.length - 1];
+    };
+
+    const target = getActiveTarget();
+    setActiveSession(target);
+    const targetDate = new Date(target.date);
 
     const updateTimer = () => {
       const diff = targetDate.getTime() - Date.now();
@@ -100,40 +126,106 @@ export default function HomePage() {
         {nextGP && (
           <div 
             style={{ 
-              background: 'rgba(20, 20, 27, 0.75)', 
+              background: 'rgba(20, 20, 27, 0.85)', 
               padding: '1.2rem 1.5rem', 
-              borderRadius: '8px', 
+              borderRadius: '10px', 
               border: '1px solid var(--border-color)',
-              minWidth: '290px',
-              backdropFilter: 'blur(8px)'
+              minWidth: '320px',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
             }}
           >
-            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.8px', display: 'block', fontWeight: 600 }}>
-              NEXT EVENT
-            </span>
-            <strong style={{ fontSize: '1.15rem', color: 'var(--f1-red)', display: 'block', margin: '4px 0 2px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              {nextGP.gpName}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '4px' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src={nextGP.flag} 
+                alt={nextGP.country} 
+                style={{ width: '18px', height: '11px', border: '1px solid var(--border-color)', borderRadius: '1px' }}
+              />
+              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.8px', fontWeight: 700 }}>
+                {nextGP.country.toUpperCase()}
+              </span>
+            </div>
+            
+            <strong style={{ fontSize: '1.15rem', color: 'var(--text-primary)', display: 'block', margin: '2px 0 2px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              {nextGP.gpName.replace(' Grand Prix', ' GP')}
             </strong>
-            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '12px' }}>
-              {nextGP.circuit.name}
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', borderTop: '1px solid var(--border-color)', paddingTop: '10px' }}>
+            
+            {/* Session countdown matching official app */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', margin: '8px 0 12px 0' }}>
+              <Clock size={14} style={{ color: 'var(--f1-red)' }} />
               {nextGP.status === 'live' && timeLeft.d === 0 && timeLeft.h === 0 && timeLeft.m === 0 && timeLeft.s === 0 ? (
-                <span className="badge badge-live" style={{ backgroundColor: 'var(--f1-red)', color: '#fff', fontSize: '0.75rem', fontWeight: 800, padding: '4px 8px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '5px', animation: 'flash 1.5s infinite' }}>
-                  <span style={{ width: '6px', height: '6px', backgroundColor: '#fff', borderRadius: '50%' }}></span>
-                  SESSION LIVE NOW
+                <span className="badge badge-live" style={{ backgroundColor: 'var(--f1-red)', color: '#fff', fontSize: '0.7rem', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px', animation: 'flash 1.5s infinite' }}>
+                  <span style={{ width: '5px', height: '5px', backgroundColor: '#fff', borderRadius: '50%' }}></span>
+                  {activeSession ? activeSession.name.toUpperCase() : 'SESSION'} LIVE NOW
                 </span>
               ) : (
-                <>
-                  <Clock size={15} style={{ color: 'var(--f1-red)' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--text-secondary)' }}>
+                    {activeSession ? activeSession.name : 'Race'} |
+                  </span>
                   <div style={{ display: 'flex', alignItems: 'baseline' }}>
-                    {renderTimeSegment(timeLeft.d, 'd')}
-                    {renderTimeSegment(timeLeft.h, 'h')}
-                    {renderTimeSegment(timeLeft.m, 'm')}
-                    {renderTimeSegment(timeLeft.s, 's')}
+                    {timeLeft.d > 0 && renderTimeSegment(timeLeft.d, 'D')}
+                    {renderTimeSegment(timeLeft.h, 'H')}
+                    {renderTimeSegment(timeLeft.m, 'M')}
+                    {renderTimeSegment(timeLeft.s, 'S')}
                   </div>
-                </>
+                </div>
               )}
+            </div>
+
+            {/* Weekend Schedule Table matching official F1 app screenshot */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.8rem' }}>
+              {nextGP.sessions?.map((session, index) => {
+                const sTime = new Date(session.date).getTime();
+                const now = Date.now();
+                const durationMs = (session.name.toLowerCase().includes('race') ? 2 : 1) * 60 * 60 * 1000;
+                
+                let statusText = '';
+                let statusColor = 'var(--text-muted)';
+                let isBold = false;
+                
+                if (now > sTime + durationMs) {
+                  statusText = 'Finished';
+                } else if (now >= sTime && now <= sTime + durationMs) {
+                  statusText = 'Live Now';
+                  statusColor = 'var(--f1-red)';
+                  isBold = true;
+                } else {
+                  statusText = formatSessionTimeRange(session.date, session.name.toLowerCase().includes('race') ? 2 : 1);
+                  statusColor = 'var(--text-secondary)';
+                }
+
+                const isActive = activeSession && activeSession.name === session.name;
+
+                return (
+                  <div 
+                    key={index} 
+                    style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center', 
+                      fontSize: '0.78rem',
+                      opacity: now > sTime + durationMs ? 0.5 : 1,
+                      background: isActive && now < sTime ? 'rgba(255, 255, 255, 0.03)' : 'transparent',
+                      padding: isActive && now < sTime ? '2px 4px' : '0',
+                      borderRadius: '4px'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                      <span style={{ color: 'var(--text-muted)', fontWeight: 700, minWidth: '40px', fontSize: '0.68rem', fontFamily: 'var(--font-mono)' }}>
+                        {formatSessionDay(session.date)}
+                      </span>
+                      <span style={{ color: isBold ? '#fff' : 'var(--text-primary)', fontWeight: isBold ? 800 : 500, letterSpacing: '0.3px' }}>
+                        {session.name.toUpperCase()}
+                      </span>
+                    </div>
+                    <span style={{ color: statusColor, fontSize: '0.74rem', fontWeight: isBold ? 700 : 400 }}>
+                      {statusText}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
