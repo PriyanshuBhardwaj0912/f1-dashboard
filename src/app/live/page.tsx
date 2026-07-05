@@ -317,9 +317,7 @@ export default function LiveTimingPage() {
                     style={{ filter: 'drop-shadow(0 0 3px #FF8C00)' }}
                   />
 
-                  {/* Purple DRS Zone lines representing Wellington (Zone 1) and Hangar (Zone 2) */}
-                  <path d="M 919,156 L 1145,190" stroke="#FF00A8" strokeWidth="3" fill="none" strokeDasharray="6 4" style={{ filter: 'drop-shadow(0 0 2px #FF00A8)' }} />
-                  <path d="M 677,728 L 50,414" stroke="#FF00A8" strokeWidth="3" fill="none" strokeDasharray="6 4" style={{ filter: 'drop-shadow(0 0 2px #FF00A8)' }} />
+
 
                   {/* Sector label text overlays */}
                   <text x="800" y="180" fill="#00D2FF" fontSize="13px" fontWeight={900} letterSpacing="0.1em" textAnchor="middle" style={{ filter: 'drop-shadow(0 1px 2px black)' }}>SECTOR 1</text>
