@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useF1Store } from '../../store/f1Store';
-import { Search, RefreshCw, Sun, Moon, Bell, X, Clock } from 'lucide-react';
+import { Search, RefreshCw, Sun, Moon, Bell, X, Clock, Menu } from 'lucide-react';
 import { f1ApiService } from '../../services/f1Api';
 import { Race } from '../../types/f1';
 
@@ -22,7 +22,8 @@ export const Header: React.FC = () => {
     theme, toggleTheme, 
     drivers, constructors, 
     raceState, isSimulating, lapCount, maxLaps,
-    setActiveModalDriverId, setActiveModalTeamId
+    setActiveModalDriverId, setActiveModalTeamId,
+    isMobileSidebarOpen, setIsMobileSidebarOpen
   } = useF1Store();
 
   const [inputVal, setInputVal] = useState('');
@@ -106,11 +107,28 @@ export const Header: React.FC = () => {
         c.engine.toLowerCase().includes(valClean)
       )
     : [];
-
   const hasResults = matchedDrivers.length > 0 || matchedConstructors.length > 0;
 
   return (
     <header className="top-navbar">
+      <button
+        className="mobile-menu-toggle"
+        onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+        aria-label="Toggle Navigation Menu"
+        style={{
+          background: 'transparent',
+          border: 'none',
+          color: 'var(--text-primary)',
+          cursor: 'pointer',
+          padding: '0.4rem',
+          display: 'none',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: '0.75rem'
+        }}
+      >
+        <Menu size={24} />
+      </button>
       {/* Session status widgets */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} id="nav-status-widget">
         {isSimulating || liveGP ? (
@@ -331,13 +349,6 @@ export const Header: React.FC = () => {
           {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
         </button>
       </div>
-
-      <style jsx global>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </header>
   );
 };

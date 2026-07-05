@@ -61,6 +61,10 @@ interface F1ContextType {
   constructors: Constructor[];
   loading: boolean;
   refreshStandings: () => Promise<void>;
+  
+  // Mobile sidebar states
+  isMobileSidebarOpen: boolean;
+  setIsMobileSidebarOpen: (open: boolean) => void;
 }
 
 const F1Context = createContext<F1ContextType | undefined>(undefined);
@@ -69,6 +73,7 @@ export const F1Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Theme & Favorites State
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [favorites, setFavorites] = useState<FavoritesState>({ drivers: [], teams: [] });
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   
   // Modal states
   const [activeModalDriverId, setActiveModalDriverId] = useState<string | null>(null);
@@ -486,7 +491,11 @@ export const F1Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       drivers,
       constructors,
       loading,
-      refreshStandings
+      refreshStandings,
+      
+      // Mobile sidebar states
+      isMobileSidebarOpen,
+      setIsMobileSidebarOpen
     }}>
       {children}
     </F1Context.Provider>

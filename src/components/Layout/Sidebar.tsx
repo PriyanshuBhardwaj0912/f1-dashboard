@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useF1Store } from '../../store/f1Store';
 import { 
   Home, Trophy, Calendar, Clock, UserCheck, Users, 
   BarChart2, Newspaper, ChevronLeft, ChevronRight, Sparkles, ChevronDown
@@ -12,13 +13,15 @@ export const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [compareExpanded, setCompareExpanded] = useState(false);
+  const { isMobileSidebarOpen, setIsMobileSidebarOpen } = useF1Store();
 
-  // Sync sub-menu expansion state with path changes
+  // Sync sub-menu expansion state and auto-close on path changes (mobile)
   useEffect(() => {
     if (pathname.startsWith('/compare')) {
       setCompareExpanded(true);
     }
-  }, [pathname]);
+    setIsMobileSidebarOpen(false);
+  }, [pathname, setIsMobileSidebarOpen]);
 
   const menuItems = [
     { name: 'Home', path: '/', icon: Home },
@@ -40,7 +43,25 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`} aria-label="Main Navigation">
+    <>
+      {isMobileSidebarOpen && (
+        <div 
+          className="sidebar-backdrop" 
+          onClick={() => setIsMobileSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 98,
+            transition: 'opacity 0.3s ease'
+          }}
+        />
+      )}
+      <aside className={`sidebar ${collapsed ? 'collapsed' : ''} ${isMobileSidebarOpen ? 'mobile-open' : ''}`} aria-label="Main Navigation">
       <div 
         className="sidebar-brand" 
         style={{ 
@@ -228,5 +249,6 @@ export const Sidebar: React.FC = () => {
         )}
       </div>
     </aside>
+    </>
   );
 };
