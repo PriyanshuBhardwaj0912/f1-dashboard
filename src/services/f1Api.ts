@@ -338,7 +338,7 @@ export const MOCK_DRIVERS: Driver[] = [
     code: 'LIN',
     number: 17,
     flag: flagUrl('gb'),
-    photo: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Arvid_Lindblad_at_the_Red_Bull_Fan_Zone_%E2%80%93_Crown_Riverwalk%2C_Melbourne_%28028A7869%29.jpg',
+    photo: '/images/drivers/arvid_lindblad.jpg',
     nationality: 'British',
     teamId: 'racing_bulls',
     teamName: 'Racing Bulls',
