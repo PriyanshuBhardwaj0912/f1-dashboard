@@ -86,19 +86,7 @@ export default function HomePage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       {/* Hero Banner */}
-      <section 
-        className="dashboard-hero card" 
-        style={{ 
-          borderLeft: '4px solid var(--f1-red)', 
-          borderTop: 'none',
-          background: 'linear-gradient(135deg, rgba(22, 22, 29, 0.95) 0%, rgba(10, 10, 14, 0.98) 100%)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '2rem 2.5rem',
-          borderRadius: '12px'
-        }}
-      >
+      <section className="card card-hero">
         <div className="hero-content" style={{ flex: 1 }}>
           <h1 style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-0.5px', textTransform: 'uppercase', marginBottom: '0.6rem' }}>
             FORMULA 1 <span className="highlight-text" style={{ fontStyle: 'normal', color: 'var(--f1-red)', fontWeight: 900 }}>2026 HUB</span>
