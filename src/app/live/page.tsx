@@ -227,9 +227,9 @@ export default function LiveTimingPage() {
 
           {/* British GP Layout SVG visualizer */}
           <div className="card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ fontSize: '1.05rem', textTransform: 'uppercase' }}>Silverstone Circuit Tracker</h3>
-              <span className="badge badge-green" style={{ fontSize: '0.65rem' }}>Silverstone</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1.2rem', paddingLeft: '4px' }}>
+              <span>📍</span>
+              <span style={{ fontWeight: 500, letterSpacing: '0.02em' }}>Silverstone Circuit, UK</span>
             </div>
             
             <div className="track-svg-canvas" style={{ position: 'relative', backgroundColor: '#09090C', minHeight: '380px' }}>
