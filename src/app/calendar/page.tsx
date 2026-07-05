@@ -34,6 +34,17 @@ const getOfficialCircuitImage = (round: number): string => {
   return `https://media.formula1.com/image/upload/c_fit,h_220/q_auto/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/${filename}`;
 };
 
+const formatGPDate = (dateStr: string): string => {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  } catch {
+    return dateStr;
+  }
+};
+
 export default function CalendarPage() {
   const { showToast } = useF1Store();
   const [races, setRaces] = useState<Race[]>([]);
@@ -149,7 +160,7 @@ const CalendarRaceCard: React.FC<{ race: Race }> = ({ race }) => {
           {race.circuit.name}
         </span>
         <span style={{ fontSize: '0.75rem', color: 'var(--f1-red)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
-          {race.date.split('T')[0]}
+          {formatGPDate(race.date)}
         </span>
       </div>
 

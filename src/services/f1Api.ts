@@ -796,8 +796,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '235 km/h',
       weather: '24°C, Sunny',
       historicalWinners: ['Charles Leclerc (2022)', 'Max Verstappen (2023)', 'George Russell (2026)']
-    }, 
-    date: '08 Mar 2026' 
+    },
+    date: '2026-03-08T05:00:00Z' 
   },
   { 
     round: 2, 
@@ -823,8 +823,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '205 km/h',
       weather: '18°C, Clear',
       historicalWinners: ['Lewis Hamilton (2019)', 'Max Verstappen (2024)', 'Kimi Antonelli (2026)']
-    }, 
-    date: '15 Mar 2026' 
+    },
+    date: '2026-03-15T07:00:00Z' 
   },
   { 
     round: 3, 
@@ -850,8 +850,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '230 km/h',
       weather: '16°C, Cloudy',
       historicalWinners: ['Max Verstappen (2023)', 'Max Verstappen (2024)', 'Kimi Antonelli (2026)']
-    }, 
-    date: '29 Mar 2026' 
+    },
+    date: '2026-03-29T05:00:00Z' 
   },
   { 
     round: 4, 
@@ -877,8 +877,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '218 km/h',
       weather: '30°C, Hot',
       historicalWinners: ['Max Verstappen (2023)', 'Lando Norris (2024)', 'Kimi Antonelli (2026)']
-    }, 
-    date: '03 May 2026' 
+    },
+    date: '2026-05-03T20:00:00Z' 
   },
   { 
     round: 5, 
@@ -904,8 +904,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '215 km/h',
       weather: '20°C, Rain Showers',
       historicalWinners: ['Max Verstappen (2023)', 'Max Verstappen (2024)', 'Kimi Antonelli (2026)']
-    }, 
-    date: '24 May 2026' 
+    },
+    date: '2026-05-24T13:00:00Z' 
   },
   { 
     round: 6, 
@@ -931,8 +931,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '160 km/h',
       weather: '22°C, Warm',
       historicalWinners: ['Max Verstappen (2023)', 'Charles Leclerc (2024)', 'Kimi Antonelli (2026)']
-    }, 
-    date: '07 Jun 2026' 
+    },
+    date: '2026-06-07T13:00:00Z' 
   },
   { 
     round: 7, 
@@ -958,8 +958,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '210 km/h',
       weather: '27°C, Sunny',
       historicalWinners: ['Max Verstappen (2023)', 'Max Verstappen (2024)', 'Lewis Hamilton (2026)']
-    }, 
-    date: '14 Jun 2026' 
+    },
+    date: '2026-06-14T13:00:00Z' 
   },
   { 
     round: 8, 
@@ -985,8 +985,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '240 km/h',
       weather: '25°C, Warm',
       historicalWinners: ['Max Verstappen (2023)', 'George Russell (2024)', 'George Russell (2026)']
-    }, 
-    date: '28 Jun 2026' 
+    },
+    date: '2026-06-28T13:00:00Z' 
   },
   { 
     round: 9, 
@@ -1012,8 +1012,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '242 km/h',
       weather: '18°C, Scattered Clouds',
       historicalWinners: ['Lando Norris (2025)', 'Lewis Hamilton (2024)', 'Max Verstappen (2023)']
-    }, 
-    date: '05 Jul 2026' 
+    },
+    date: '2026-07-05T14:00:00Z' 
   },
   { 
     round: 10, 
@@ -1033,8 +1033,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '230 km/h',
       weather: '16°C, Rainy Risk',
       historicalWinners: ['Max Verstappen (2023)', 'Lewis Hamilton (2024)']
-    }, 
-    date: '19 Jul 2026' 
+    },
+    date: '2026-07-19T13:00:00Z' 
   },
   { 
     round: 11, 
@@ -1054,8 +1054,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '190 km/h',
       weather: '29°C, Sunny',
       historicalWinners: ['Max Verstappen (2023)', 'Oscar Piastri (2024)']
-    }, 
-    date: '26 Jul 2026' 
+    },
+    date: '2026-07-26T13:00:00Z' 
   },
   { 
     round: 12, 
@@ -1075,8 +1075,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '204 km/h',
       weather: '21°C, Windy',
       historicalWinners: ['Max Verstappen (2023)', 'Lando Norris (2024)']
-    }, 
-    date: '23 Aug 2026' 
+    },
+    date: '2026-08-23T13:00:00Z' 
   },
   { 
     round: 13, 
@@ -1096,8 +1096,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '255 km/h',
       weather: '26°C, Sunny',
       historicalWinners: ['Max Verstappen (2023)', 'Charles Leclerc (2024)']
-    }, 
-    date: '06 Sep 2026' 
+    },
+    date: '2026-09-06T13:00:00Z' 
   },
   { 
     round: 14, 
@@ -1117,8 +1117,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '215 km/h',
       weather: '24°C, Clear',
       historicalWinners: ['Inaugural Race (2026)']
-    }, 
-    date: '13 Sep 2026' 
+    },
+    date: '2026-09-13T13:00:00Z' 
   },
   { 
     round: 15, 
@@ -1138,8 +1138,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '205 km/h',
       weather: '23°C, Sunny',
       historicalWinners: ['Sergio Perez (2023)', 'Oscar Piastri (2024)']
-    }, 
-    date: '26 Sep 2026' 
+    },
+    date: '2026-09-26T11:00:00Z' 
   },
   { 
     round: 16, 
@@ -1159,8 +1159,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '185 km/h',
       weather: '29°C, Night Race Humid',
       historicalWinners: ['Carlos Sainz (2023)', 'Lando Norris (2024)']
-    }, 
-    date: '11 Oct 2026' 
+    },
+    date: '2026-10-11T12:00:00Z' 
   },
   { 
     round: 17, 
@@ -1180,8 +1180,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '220 km/h',
       weather: '24°C, Sunny',
       historicalWinners: ['Max Verstappen (2023)', 'Charles Leclerc (2024)']
-    }, 
-    date: '25 Oct 2026' 
+    },
+    date: '2026-10-25T19:00:00Z' 
   },
   { 
     round: 18, 
@@ -1201,8 +1201,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '237 km/h',
       weather: '14°C, Cold Night Race',
       historicalWinners: ['Max Verstappen (2023)', 'George Russell (2024)']
-    }, 
-    date: '21 Nov 2026' 
+    },
+    date: '2026-11-21T06:00:00Z' 
   },
   { 
     round: 19, 
@@ -1222,8 +1222,8 @@ export const MOCK_CALENDAR: Race[] = [
       avgSpeed: '230 km/h',
       weather: '28°C, Dry Desert',
       historicalWinners: ['Max Verstappen (2023)', 'Max Verstappen (2024)']
-    }, 
-    date: '29 Nov 2026' 
+    },
+    date: '2026-11-29T17:00:00Z' 
   },
   { 
     round: 20, 
@@ -1244,7 +1244,7 @@ export const MOCK_CALENDAR: Race[] = [
       weather: '25°C, Clear Night',
       historicalWinners: ['Max Verstappen (2023)', 'Max Verstappen (2024)']
     }, 
-    date: '06 Dec 2026' 
+    date: '2026-12-06T13:00:00Z' 
   }
 ];
 

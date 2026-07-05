@@ -8,13 +8,19 @@ import { Race } from '../../types/f1';
 
 function formatGPDate(dateStr: string): string {
   if (!dateStr) return '';
-  const parts = dateStr.split(' ');
-  if (parts.length >= 2) {
-    const day = parseInt(parts[0]);
-    const month = parts[1];
-    return `${month} ${day}`;
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) {
+      const parts = dateStr.split(' ');
+      if (parts.length >= 2) {
+        return `${parts[1]} ${parseInt(parts[0])}`;
+      }
+      return dateStr;
+    }
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  } catch {
+    return dateStr;
   }
-  return dateStr.split('T')[0];
 }
 
 export const Header: React.FC = () => {
