@@ -1,18 +1,27 @@
 import { LiveDriverState, TimelineEvent } from '../types/f1';
 import { MOCK_DRIVERS } from './f1Api';
 
-// Track zones on the Austrian Red Bull Ring
-// 0.0 is the start-finish line
+// Track zones on the Silverstone Circuit, UK
+// 0.0 is the start-finish line (which starts at Stowe in the SVG path definition)
 export const TRACK_ZONES = [
-  { start: 0.0, end: 0.15, type: 'straight', name: 'Start-Finish Straight' },
-  { start: 0.15, end: 0.22, type: 'slow-corner', name: 'Turn 1 (Niki Lauda)' },
-  { start: 0.22, end: 0.40, type: 'straight', name: 'Remus Straight' },
-  { start: 0.40, end: 0.48, type: 'slow-corner', name: 'Turn 3 (Remus)' },
-  { start: 0.48, end: 0.58, type: 'straight', name: 'Straight' },
-  { start: 0.58, end: 0.68, type: 'medium-corner', name: 'Turn 4' },
-  { start: 0.68, end: 0.78, type: 'fast-corner', name: 'Turn 5 & 6 (Infield)' },
-  { start: 0.78, end: 0.88, type: 'medium-corner', name: 'Turn 7 & 8' },
-  { start: 0.88, end: 1.0, type: 'slow-corner', name: 'Turn 9 & 10 (Jochen Rindt)' },
+  { start: 0.0, end: 0.05, type: 'medium-corner', name: 'Turn 15 (Stowe)' },
+  { start: 0.05, end: 0.12, type: 'straight', name: 'Vale Straight' },
+  { start: 0.12, end: 0.22, type: 'slow-corner', name: 'Turn 16 & 17 (Vale)' },
+  { start: 0.22, end: 0.27, type: 'medium-corner', name: 'Turn 18 (Club)' },
+  { start: 0.27, end: 0.33, type: 'straight', name: 'Hamilton Straight' },
+  { start: 0.33, end: 0.36, type: 'fast-corner', name: 'Turn 1 (Abbey)' },
+  { start: 0.36, end: 0.39, type: 'medium-corner', name: 'Turn 2 (Arena)' },
+  { start: 0.39, end: 0.43, type: 'slow-corner', name: 'Turn 3 & 4 (The Loop)' },
+  { start: 0.43, end: 0.45, type: 'medium-corner', name: 'Turn 5' },
+  { start: 0.45, end: 0.53, type: 'straight', name: 'Wellington Straight' },
+  { start: 0.53, end: 0.56, type: 'medium-corner', name: 'Turn 6 (Brooklands)' },
+  { start: 0.56, end: 0.63, type: 'slow-corner', name: 'Turn 7 & 8 (Luffield)' },
+  { start: 0.63, end: 0.67, type: 'straight', name: 'Woodcote Straight' },
+  { start: 0.67, end: 0.70, type: 'fast-corner', name: 'Turn 9 (Copse)' },
+  { start: 0.70, end: 0.74, type: 'straight', name: 'Maggotts Straight' },
+  { start: 0.74, end: 0.85, type: 'fast-corner', name: 'Turn 10-14 (Maggotts-Becketts-Chapel)' },
+  { start: 0.85, end: 0.98, type: 'straight', name: 'Hangar Straight' },
+  { start: 0.98, end: 1.0, type: 'medium-corner', name: 'Turn 15 (Stowe Entry)' }
 ];
 
 export const INITIAL_LIVE_DRIVERS: LiveDriverState[] = MOCK_DRIVERS.map((d, index) => {
