@@ -233,117 +233,142 @@ export default function LiveTimingPage() {
             </div>
             
             <div className="track-svg-canvas" style={{ position: 'relative', backgroundColor: '#09090C', minHeight: '380px' }}>
-              <svg viewBox="0 0 1375 790" width="100%" height="100%" style={{ padding: '20px', zIndex: 1, position: 'relative' }}>
-                <g transform="translate(100, 45) scale(0.85) rotate(42, 687.5, 395)">
-                  {/* Checkered Start/Finish Line */}
-                  <line x1="860" y1="648" x2="872" y2="668" stroke="#ffffff" strokeWidth="8" strokeDasharray="5 5" />
+              <svg viewBox="0 0 600 360" width="100%" height="100%" style={{ padding: '15px', zIndex: 1, position: 'relative' }}>
+                {/* Checker flag finish line overlay next to Turn 18 */}
+                <line x1="335" y1="280" x2="335" y2="300" stroke="#ffffff" strokeWidth="4" strokeDasharray="2 2" />
 
-                  {/* Silverstone Circuit Outline Path - Background Glow Track */}
-                  <path 
-                    d="M 44.377608,426.59702 C 31.926099,377.38391 25.797514,341.68586 16.164586,291.58484 C 13.172032,276.02052 19.779905,256.96925 24.453415,249.2717 C 32.046886,236.76481 50.675422,218.51344 63.43371,210.93243 C 100.46493,188.92837 130.41403,177.7052 171.42922,163.2083 C 206.77018,150.71697 245.93948,141.37409 284.66612,135.43661 C 316.99257,130.48039 353.06215,128.63231 384.24514,118.37475 C 407.90278,110.59263 425.69923,96.346518 443.80435,80.420305 C 451.03642,74.058607 465.93338,67.407442 481.65941,71.576152 C 498.29193,75.985155 516.11779,80.62975 533.61368,83.48234 C 549.3108,86.041653 566.14976,87.907428 580.93934,84.521862 C 596.09563,81.05235 607.08187,70.717915 619.86219,60.823471 C 629.45107,53.399824 633.12805,41.7834 648.64512,36.156681 C 662.53402,31.12036 673.31932,30.763378 684.84788,32.653305 C 695.32773,34.371313 705.65943,39.344804 713.47398,47.279578 C 729.11101,63.157179 739.86594,84.462803 756.39899,99.304975 C 771.61577,112.9655 791.245,123.01503 810.81711,130.09583 C 922.42003,170.47153 1036.1536,210.32387 1148.4059,253.18814 C 1207.1698,275.62751 1263.9496,299.66463 1319.0801,328.10037 C 1332.5004,335.0224 1346.4676,348.4318 1352.2637,361.65418 C 1358.013,374.76974 1358.3369,393.05708 1354.9127,407.11417 C 1351.4818,421.19898 1341.8263,434.29792 1330.8012,444.28532 C 1311.1588,462.07903 1276.1861,473.0003 1259.0221,493.74748 C 1220.1059,540.7877 1183.6819,582.09333 1139.5335,630.48307 C 1128.2868,642.81021 1133.4563,652.86926 1138.4794,657.03012 C 1146.9442,664.0419 1158.9751,669.78527 1162.8471,678.7206 C 1168.3558,691.43288 1169.7221,708.15573 1163.0322,723.16933 C 1156.6138,737.57355 1144.3966,752.33051 1130.0054,759.97027 C 1115.1723,767.84463 1094.7279,772.22894 1078.0512,769.7117 C 1056.4838,766.45624 1035.3294,753.43317 1015.2731,742.65218 C 915.18509,688.85112 817.8516,628.57965 717.6184,575.96555 C 709.25274,571.57427 689.09034,568.97525 680.80286,582.40331 C 673.47501,594.2765 663.75982,618.60446 635.39941,626.39611 C 607.67132,634.01403 523.82594,652.18305 519.54273,652.81458 C 505.34321,654.90822 468.90351,659.02862 456.76465,653.89696 C 444.87904,648.87237 416.03312,615.1875 398.58692,595.59066 C 381.00784,575.84457 368.87565,558.47763 349.39559,545.88686 C 339.29058,539.35557 312.72331,538.57995 303.2517,546.29993 C 279.01339,566.05572 254.03454,589.1784 231.37323,612.65252 C 224.02964,620.2595 223.4027,635.48718 228.4963,643.21541 C 233.86571,651.3621 246.93284,657.15244 258.575,656.68818 C 275.06771,656.03048 294.19679,654.95447 310.64326,654.97934 C 320.17213,654.99402 331.02344,662.67007 336.62039,670.13267 C 342.92963,678.54499 347.58932,692.25798 346.36182,702.60409 C 345.06377,713.5448 336.79768,725.6865 327.54828,730.70313 C 315.51086,737.2319 297.06604,735.12889 282.50136,730.66027 C 242.42489,718.36434 201.72613,707.40745 165.60425,686.9237 C 142.55599,673.85365 106.79887,651.01498 98.41093,626.40978 C 76.061592,560.85015 62.232759,497.16738 44.377608,426.59702 z" 
-                    fill="none"
-                    stroke="rgba(255, 255, 255, 0.08)" 
-                    strokeWidth="24"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                {/* Main invisible tracker path (for high resolution math alignment) */}
+                <path 
+                  ref={pathRef}
+                  id="live-track-path" 
+                  d="M 380,310 C 430,310 470,290 480,260 C 490,230 450,210 410,220 C 380,230 370,260 350,280 L 210,280 C 130,280 110,220 160,200 C 190,190 220,210 240,230 L 280,220 C 290,170 240,130 200,100 C 220,70 260,65 290,75 C 310,85 330,105 350,115 C 370,125 390,115 410,110 L 550,180 C 580,200 590,240 550,260 C 510,280 470,295 440,310 C 410,320 360,310 380,310 Z" 
+                  fill="none"
+                  stroke="transparent" 
+                  strokeWidth="10"
+                />
 
-                  {/* Silverstone Circuit Outline Path - Core Track Line */}
-                  <path 
-                    ref={pathRef}
-                    id="live-track-path" 
-                    d="M 44.377608,426.59702 C 31.926099,377.38391 25.797514,341.68586 16.164586,291.58484 C 13.172032,276.02052 19.779905,256.96925 24.453415,249.2717 C 32.046886,236.76481 50.675422,218.51344 63.43371,210.93243 C 100.46493,188.92837 130.41403,177.7052 171.42922,163.2083 C 206.77018,150.71697 245.93948,141.37409 284.66612,135.43661 C 316.99257,130.48039 353.06215,128.63231 384.24514,118.37475 C 407.90278,110.59263 425.69923,96.346518 443.80435,80.420305 C 451.03642,74.058607 465.93338,67.407442 481.65941,71.576152 C 498.29193,75.985155 516.11779,80.62975 533.61368,83.48234 C 549.3108,86.041653 566.14976,87.907428 580.93934,84.521862 C 596.09563,81.05235 607.08187,70.717915 619.86219,60.823471 C 629.45107,53.399824 633.12805,41.7834 648.64512,36.156681 C 662.53402,31.12036 673.31932,30.763378 684.84788,32.653305 C 695.32773,34.371313 705.65943,39.344804 713.47398,47.279578 C 729.11101,63.157179 739.86594,84.462803 756.39899,99.304975 C 771.61577,112.9655 791.245,123.01503 810.81711,130.09583 C 922.42003,170.47153 1036.1536,210.32387 1148.4059,253.18814 C 1207.1698,275.62751 1263.9496,299.66463 1319.0801,328.10037 C 1332.5004,335.0224 1346.4676,348.4318 1352.2637,361.65418 C 1358.013,374.76974 1358.3369,393.05708 1354.9127,407.11417 C 1351.4818,421.19898 1341.8263,434.29792 1330.8012,444.28532 C 1311.1588,462.07903 1276.1861,473.0003 1259.0221,493.74748 C 1220.1059,540.7877 1183.6819,582.09333 1139.5335,630.48307 C 1128.2868,642.81021 1133.4563,652.86926 1138.4794,657.03012 C 1146.9442,664.0419 1158.9751,669.78527 1162.8471,678.7206 C 1168.3558,691.43288 1169.7221,708.15573 1163.0322,723.16933 C 1156.6138,737.57355 1144.3966,752.33051 1130.0054,759.97027 C 1115.1723,767.84463 1094.7279,772.22894 1078.0512,769.7117 C 1056.4838,766.45624 1035.3294,753.43317 1015.2731,742.65218 C 915.18509,688.85112 817.8516,628.57965 717.6184,575.96555 C 709.25274,571.57427 689.09034,568.97525 680.80286,582.40331 C 673.47501,594.2765 663.75982,618.60446 635.39941,626.39611 C 607.67132,634.01403 523.82594,652.18305 519.54273,652.81458 C 505.34321,654.90822 468.90351,659.02862 456.76465,653.89696 C 444.87904,648.87237 416.03312,615.1875 398.58692,595.59066 C 381.00784,575.84457 368.87565,558.47763 349.39559,545.88686 C 339.29058,539.35557 312.72331,538.57995 303.2517,546.29993 C 279.01339,566.05572 254.03454,589.1784 231.37323,612.65252 C 224.02964,620.2595 223.4027,635.48718 228.4963,643.21541 C 233.86571,651.3621 246.93284,657.15244 258.575,656.68818 C 275.06771,656.03048 294.19679,654.95447 310.64326,654.97934 C 320.17213,654.99402 331.02344,662.67007 336.62039,670.13267 C 342.92963,678.54499 347.58932,692.25798 346.36182,702.60409 C 345.06377,713.5448 336.79768,725.6865 327.54828,730.70313 C 315.51086,737.2319 297.06604,735.12889 282.50136,730.66027 C 242.42489,718.36434 201.72613,707.40745 165.60425,686.9237 C 142.55599,673.85365 106.79887,651.01498 98.41093,626.40978 C 76.061592,560.85015 62.232759,497.16738 44.377608,426.59702 z" 
-                    fill="none"
-                    stroke="#ffffff" 
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                {/* Sector 1: Abbey, Farm, Arena, Wellington Straight (Light Blue) */}
+                <path 
+                  d="M 380,310 C 430,310 470,290 480,260 C 490,230 450,210 410,220 C 380,230 370,260 350,280 L 210,280" 
+                  fill="none"
+                  stroke="#00D2FF" 
+                  strokeWidth="4.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
 
-                  {/* DRS Straight Zone 1 - Wellington Straight (Wellington straight overlay) */}
-                  <path 
-                    d="M 258,656 L 310,654" 
-                    fill="none"
-                    stroke="var(--green-accent)"
-                    strokeWidth="10"
-                    strokeLinecap="round"
-                  />
+                {/* Sector 2: Brooklands, Luffield, Woodcote, Copse (Orange) */}
+                <path 
+                  d="M 210,280 C 130,280 110,220 160,200 C 190,190 220,210 240,230 L 280,220 C 290,170 240,130 200,100" 
+                  fill="none"
+                  stroke="#FF8C00" 
+                  strokeWidth="4.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
 
-                  {/* DRS Straight Zone 2 - Hangar Straight (Hangar straight overlay) */}
-                  <path 
-                    d="M 810,130 L 1319,328" 
-                    fill="none"
-                    stroke="var(--green-accent)"
-                    strokeWidth="10"
-                    strokeLinecap="round"
-                  />
+                {/* Sector 3: Maggotts, Becketts, Hangar Straight, Stowe, Club (Dark Blue/Purple) */}
+                <path 
+                  d="M 200,100 C 220,70 260,65 290,75 C 310,85 330,105 350,115 C 370,125 390,115 410,110 L 550,180 C 580,200 590,240 550,260 C 510,280 470,295 440,310 C 410,320 360,310 380,310 Z" 
+                  fill="none"
+                  stroke="#0055FF" 
+                  strokeWidth="4.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
 
-                  {/* DRS Zone Text Badges */}
-                  <g transform="translate(250, 580)">
-                    <rect x="0" y="0" width="120" height="30" rx="6" fill="rgba(0, 210, 122, 0.12)" stroke="var(--green-accent)" strokeWidth="2" />
-                    <text x="60" y="20" fill="var(--green-accent)" fontSize="13px" fontWeight={800} textAnchor="middle">DRS ZONE 1</text>
-                  </g>
+                {/* Sector label text overlays */}
+                <text x="310" y="295" fill="#00D2FF" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 1</text>
+                <text x="430" y="270" fill="#FF8C00" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 2</text>
+                <text x="175" y="170" fill="#0055FF" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 3</text>
 
-                  <g transform="translate(1010, 150)">
-                    <rect x="0" y="0" width="120" height="30" rx="6" fill="rgba(0, 210, 122, 0.12)" stroke="var(--green-accent)" strokeWidth="2" />
-                    <text x="60" y="20" fill="var(--green-accent)" fontSize="13px" fontWeight={800} textAnchor="middle">DRS ZONE 2</text>
-                  </g>
-
-                  {/* Key Corners Badges */}
-                  {[
-                    { num: 1, x: 717, y: 575 },
-                    { num: 3, x: 230, y: 620 },
-                    { num: 6, x: 340, y: 690 },
-                    { num: 9, x: 70, y: 520 },
-                    { num: 11, x: 170, y: 160 },
-                    { num: 13, x: 480, y: 71 },
-                    { num: 14, x: 713, y: 47 },
-                    { num: 15, x: 1340, y: 361 },
-                    { num: 16, x: 1259, y: 493 },
-                    { num: 18, x: 1078, y: 750 }
-                  ].map(c => (
-                    <g key={c.num}>
-                      <circle cx={c.x} cy={c.y} r="16" fill="#13131a" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="2" />
-                      <text x={c.x} y={c.y + 5} fill="#ffffff" fontSize="16px" fontWeight={800} textAnchor="middle">{c.num}</text>
-                    </g>
-                  ))}
-
-                  {/* Render coordinates of driver dots */}
-                  {Object.keys(coords).map(driverId => {
-                    const driverState = liveDrivers.find(d => d.id === driverId);
-                    if (!driverState) return null;
-                    const coord = coords[driverId];
-                    const isSelected = driverId === selectedLiveDriverId;
-
-                    return (
-                      <g key={driverId} style={{ transition: 'transform 0.15s linear' }}>
-                        <circle 
-                          cx={coord.x} 
-                          cy={coord.y} 
-                          r={isSelected ? 18 : 12}
-                          fill={driverState.color}
-                          stroke={isSelected ? 'white' : 'none'}
-                          strokeWidth={3}
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => setSelectedLiveDriverId(driverId)}
-                        />
-                        {isSelected && (
-                          <text 
-                            x={coord.x} 
-                            y={coord.y - 25}
-                            fill="white"
-                            fontSize="20px"
-                            fontWeight={700}
-                            textAnchor="middle"
-                            style={{ filter: 'drop-shadow(0px 1px 3px black)' }}
-                          >
-                            {driverState.code}
-                          </text>
-                        )}
-                      </g>
-                    );
-                  })}
+                {/* Pink DRS Detection Zone 1 Overlay and Line */}
+                <g transform="translate(290, 160)">
+                  <rect x="0" y="0" width="70" height="22" rx="3" fill="#FF00A8" />
+                  <text x="35" y="9" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">DRS DETECTION</text>
+                  <text x="35" y="17" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">ZONE 1</text>
+                  <path d="M 35,22 L 35,53" stroke="#FF00A8" strokeWidth="1" fill="none" />
+                  <circle cx="35" cy="53" r="2.5" fill="#FF00A8" />
                 </g>
+
+                {/* Pink DRS Detection Zone 2 Overlay and Line */}
+                <g transform="translate(355, 305)">
+                  <rect x="0" y="0" width="70" height="22" rx="3" fill="#FF00A8" />
+                  <text x="35" y="9" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">DRS DETECTION</text>
+                  <text x="35" y="17" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">ZONE 2</text>
+                  <path d="M 0,11 L -25,11 L -25,-15" stroke="#FF00A8" strokeWidth="1" fill="none" />
+                  <circle cx="-25" cy="-15" r="2.5" fill="#FF00A8" />
+                </g>
+
+                {/* Speed Trap Overlay and Line */}
+                <g transform="translate(100, 255)">
+                  <rect x="0" y="0" width="45" height="18" rx="3" fill="#00D200" />
+                  <text x="22.5" y="8" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">SPEED</text>
+                  <text x="22.5" y="15" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">TRAP</text>
+                  <path d="M 22.5,18 L 22.5,35" stroke="#00D200" strokeWidth="1" fill="none" />
+                  <circle cx="22.5" cy="35" r="2.5" fill="#00D200" />
+                </g>
+
+                {/* Turn Numbers Circular Badges */}
+                {[
+                  { num: '01', x: 440, y: 285 },
+                  { num: '02', x: 440, y: 235 },
+                  { num: '03', x: 380, y: 220 },
+                  { num: '04', x: 345, y: 260 },
+                  { num: '05', x: 280, y: 265 },
+                  { num: '06', x: 210, y: 300 },
+                  { num: '07', x: 130, y: 265 },
+                  { num: '08', x: 175, y: 195 },
+                  { num: '09', x: 290, y: 55 },
+                  { num: '10', x: 350, y: 95 },
+                  { num: '11', x: 385, y: 125 },
+                  { num: '12', x: 420, y: 125 },
+                  { num: '13', x: 450, y: 135 },
+                  { num: '14', x: 550, y: 160 },
+                  { num: '15', x: 565, y: 270 },
+                  { num: '18', x: 380, y: 330 }
+                ].map(c => (
+                  <g key={c.num}>
+                    <circle cx={c.x} cy={c.y} r="7.5" fill="#13131a" stroke="rgba(255, 255, 255, 0.45)" strokeWidth="1" />
+                    <text x={c.x} y={c.y + 2.5} fill="#ffffff" fontSize="7.5px" fontWeight={800} textAnchor="middle">{c.num}</text>
+                  </g>
+                ))}
+
+                {/* Render coordinates of driver dots */}
+                {Object.keys(coords).map(driverId => {
+                  const driverState = liveDrivers.find(d => d.id === driverId);
+                  if (!driverState) return null;
+                  const coord = coords[driverId];
+                  const isSelected = driverId === selectedLiveDriverId;
+
+                  return (
+                    <g key={driverId} style={{ transition: 'transform 0.15s linear' }}>
+                      <circle 
+                        cx={coord.x} 
+                        cy={coord.y} 
+                        r={isSelected ? 7 : 4.5}
+                        fill={driverState.color}
+                        stroke={isSelected ? 'white' : 'none'}
+                        strokeWidth={2}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => setSelectedLiveDriverId(driverId)}
+                      />
+                      {isSelected && (
+                        <text 
+                          x={coord.x} 
+                          y={coord.y - 12}
+                          fill="white"
+                          fontSize="10px"
+                          fontWeight={700}
+                          textAnchor="middle"
+                          style={{ filter: 'drop-shadow(0px 1px 2px black)' }}
+                        >
+                          {driverState.code}
+                        </text>
+                      )}
+                    </g>
+                  );
+                })}
               </svg>
             </div>
           </div>
