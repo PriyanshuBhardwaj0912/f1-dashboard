@@ -113,6 +113,8 @@ export interface NewsArticle {
   readTime: string;
   source: string;
   date: string;
+  link?: string;
+  image?: string;
 }
 
 export interface LiveDriverTelemetry {
