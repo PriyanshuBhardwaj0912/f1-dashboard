@@ -235,13 +235,13 @@ export default function LiveTimingPage() {
             <div className="track-svg-canvas" style={{ position: 'relative', backgroundColor: '#09090C', minHeight: '380px' }}>
               <svg viewBox="0 0 600 360" width="100%" height="100%" style={{ padding: '15px', zIndex: 1, position: 'relative' }}>
                 {/* Checker flag finish line overlay next to Turn 18 */}
-                <line x1="335" y1="280" x2="335" y2="300" stroke="#ffffff" strokeWidth="4" strokeDasharray="2 2" />
+                <line x1="220" y1="15" x2="220" y2="45" stroke="#ffffff" strokeWidth="4" strokeDasharray="2 2" />
 
                 {/* Main invisible tracker path (for high resolution math alignment) */}
                 <path 
                   ref={pathRef}
                   id="live-track-path" 
-                  d="M 380,310 C 430,310 470,290 480,260 C 490,230 450,210 410,220 C 380,230 370,260 350,280 L 210,280 C 130,280 110,220 160,200 C 190,190 220,210 240,230 L 280,220 C 290,170 240,130 200,100 C 220,70 260,65 290,75 C 310,85 330,105 350,115 C 370,125 390,115 410,110 L 550,180 C 580,200 590,240 550,260 C 510,280 470,295 440,310 C 410,320 360,310 380,310 Z" 
+                  d="M 220,50 C 170,50 130,70 120,100 C 110,130 150,150 190,140 C 220,130 230,100 250,80 L 390,80 C 470,80 490,140 440,160 C 410,170 380,150 360,130 L 320,140 C 310,190 360,230 400,260 C 380,290 340,295 310,285 C 290,275 270,255 250,245 C 230,235 210,245 190,250 L 50,180 C 20,160 10,120 50,100 C 90,80 130,65 160,50 C 190,40 240,50 220,50 Z" 
                   fill="none"
                   stroke="transparent" 
                   strokeWidth="10"
@@ -249,7 +249,7 @@ export default function LiveTimingPage() {
 
                 {/* Sector 1: Abbey, Farm, Arena, Wellington Straight (Light Blue) */}
                 <path 
-                  d="M 380,310 C 430,310 470,290 480,260 C 490,230 450,210 410,220 C 380,230 370,260 350,280 L 210,280" 
+                  d="M 220,50 C 170,50 130,70 120,100 C 110,130 150,150 190,140 C 220,130 230,100 250,80 L 390,80" 
                   fill="none"
                   stroke="#00D2FF" 
                   strokeWidth="4.5"
@@ -259,7 +259,7 @@ export default function LiveTimingPage() {
 
                 {/* Sector 2: Brooklands, Luffield, Woodcote, Copse (Orange) */}
                 <path 
-                  d="M 210,280 C 130,280 110,220 160,200 C 190,190 220,210 240,230 L 280,220 C 290,170 240,130 200,100" 
+                  d="M 390,80 C 470,80 490,140 440,160 C 410,170 380,150 360,130 L 320,140 C 310,190 360,230 400,260" 
                   fill="none"
                   stroke="#FF8C00" 
                   strokeWidth="4.5"
@@ -269,7 +269,7 @@ export default function LiveTimingPage() {
 
                 {/* Sector 3: Maggotts, Becketts, Hangar Straight, Stowe, Club (Dark Blue/Purple) */}
                 <path 
-                  d="M 200,100 C 220,70 260,65 290,75 C 310,85 330,105 350,115 C 370,125 390,115 410,110 L 550,180 C 580,200 590,240 550,260 C 510,280 470,295 440,310 C 410,320 360,310 380,310 Z" 
+                  d="M 400,260 C 380,290 340,295 310,285 C 290,275 270,255 250,245 C 230,235 210,245 190,250 L 50,180 C 20,160 10,120 50,100 C 90,80 130,65 160,50 C 190,40 240,50 220,50 Z" 
                   fill="none"
                   stroke="#0055FF" 
                   strokeWidth="4.5"
@@ -278,55 +278,61 @@ export default function LiveTimingPage() {
                 />
 
                 {/* Sector label text overlays */}
-                <text x="310" y="295" fill="#00D2FF" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 1</text>
-                <text x="430" y="270" fill="#FF8C00" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 2</text>
-                <text x="175" y="170" fill="#0055FF" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 3</text>
+                <text x="280" y="70" fill="#00D2FF" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 1</text>
+                <text x="430" y="195" fill="#FF8C00" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 2</text>
+                <text x="150" y="165" fill="#0055FF" fontSize="7px" fontWeight={800} textAnchor="middle">SECTOR 3</text>
 
                 {/* Pink DRS Detection Zone 1 Overlay and Line */}
-                <g transform="translate(290, 160)">
-                  <rect x="0" y="0" width="70" height="22" rx="3" fill="#FF00A8" />
-                  <text x="35" y="9" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">DRS DETECTION</text>
-                  <text x="35" y="17" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">ZONE 1</text>
-                  <path d="M 35,22 L 35,53" stroke="#FF00A8" strokeWidth="1" fill="none" />
-                  <circle cx="35" cy="53" r="2.5" fill="#FF00A8" />
+                <g>
+                  <path d="M 300,160 C 300,180 220,180 220,140" stroke="#FF00A8" strokeWidth="1" fill="none" />
+                  <circle cx="220" cy="140" r="2.5" fill="#FF00A8" />
+                  <g transform="translate(280, 148)">
+                    <rect x="0" y="0" width="75" height="24" rx="4" fill="#FF00A8" />
+                    <text x="37.5" y="10" fill="white" fontSize="7px" fontWeight={800} textAnchor="middle">DRS DETECTION</text>
+                    <text x="37.5" y="18" fill="white" fontSize="7px" fontWeight={800} textAnchor="middle">ZONE 1</text>
+                  </g>
                 </g>
 
                 {/* Pink DRS Detection Zone 2 Overlay and Line */}
-                <g transform="translate(355, 305)">
-                  <rect x="0" y="0" width="70" height="22" rx="3" fill="#FF00A8" />
-                  <text x="35" y="9" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">DRS DETECTION</text>
-                  <text x="35" y="17" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">ZONE 2</text>
-                  <path d="M 0,11 L -25,11 L -25,-15" stroke="#FF00A8" strokeWidth="1" fill="none" />
-                  <circle cx="-25" cy="-15" r="2.5" fill="#FF00A8" />
+                <g>
+                  <path d="M 330,322 C 280,322 215,280 215,235" stroke="#FF00A8" strokeWidth="1" fill="none" />
+                  <circle cx="215" cy="235" r="2.5" fill="#FF00A8" />
+                  <g transform="translate(330, 310)">
+                    <rect x="0" y="0" width="75" height="24" rx="4" fill="#FF00A8" />
+                    <text x="37.5" y="10" fill="white" fontSize="7px" fontWeight={800} textAnchor="middle">DRS DETECTION</text>
+                    <text x="37.5" y="18" fill="white" fontSize="7px" fontWeight={800} textAnchor="middle">ZONE 2</text>
+                  </g>
                 </g>
 
                 {/* Speed Trap Overlay and Line */}
-                <g transform="translate(100, 255)">
-                  <rect x="0" y="0" width="45" height="18" rx="3" fill="#00D200" />
-                  <text x="22.5" y="8" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">SPEED</text>
-                  <text x="22.5" y="15" fill="white" fontSize="6.5px" fontWeight={800} textAnchor="middle">TRAP</text>
-                  <path d="M 22.5,18 L 22.5,35" stroke="#00D200" strokeWidth="1" fill="none" />
-                  <circle cx="22.5" cy="35" r="2.5" fill="#00D200" />
+                <g>
+                  <path d="M 62.5,180 L 62.5,130" stroke="#00D200" strokeWidth="1" fill="none" />
+                  <circle cx="62.5" cy="130" r="2.5" fill="#00D200" />
+                  <g transform="translate(40, 180)">
+                    <rect x="0" y="0" width="45" height="20" rx="3" fill="#00D200" />
+                    <text x="22.5" y="8" fill="white" fontSize="7px" fontWeight={800} textAnchor="middle">SPEED</text>
+                    <text x="22.5" y="16" fill="white" fontSize="7px" fontWeight={800} textAnchor="middle">TRAP</text>
+                  </g>
                 </g>
 
                 {/* Turn Numbers Circular Badges */}
                 {[
-                  { num: '01', x: 440, y: 285 },
-                  { num: '02', x: 440, y: 235 },
-                  { num: '03', x: 380, y: 220 },
-                  { num: '04', x: 345, y: 260 },
-                  { num: '05', x: 280, y: 265 },
-                  { num: '06', x: 210, y: 300 },
-                  { num: '07', x: 130, y: 265 },
-                  { num: '08', x: 175, y: 195 },
-                  { num: '09', x: 290, y: 55 },
-                  { num: '10', x: 350, y: 95 },
-                  { num: '11', x: 385, y: 125 },
-                  { num: '12', x: 420, y: 125 },
-                  { num: '13', x: 450, y: 135 },
-                  { num: '14', x: 550, y: 160 },
-                  { num: '15', x: 565, y: 270 },
-                  { num: '18', x: 380, y: 330 }
+                  { num: '01', x: 160, y: 75 },
+                  { num: '02', x: 160, y: 125 },
+                  { num: '03', x: 220, y: 140 },
+                  { num: '04', x: 255, y: 100 },
+                  { num: '05', x: 320, y: 95 },
+                  { num: '06', x: 390, y: 60 },
+                  { num: '07', x: 470, y: 95 },
+                  { num: '08', x: 425, y: 165 },
+                  { num: '09', x: 310, y: 305 },
+                  { num: '10', x: 250, y: 265 },
+                  { num: '11', x: 215, y: 235 },
+                  { num: '12', x: 180, y: 235 },
+                  { num: '13', x: 150, y: 225 },
+                  { num: '14', x: 50, y: 200 },
+                  { num: '15', x: 35, y: 90 },
+                  { num: '18', x: 220, y: 30 }
                 ].map(c => (
                   <g key={c.num}>
                     <circle cx={c.x} cy={c.y} r="7.5" fill="#13131a" stroke="rgba(255, 255, 255, 0.45)" strokeWidth="1" />
