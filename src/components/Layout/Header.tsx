@@ -6,23 +6,6 @@ import { Search, RefreshCw, Sun, Moon, Bell, X, Clock, Menu } from 'lucide-react
 import { f1ApiService } from '../../services/f1Api';
 import { Race } from '../../types/f1';
 
-function formatGPDate(dateStr: string): string {
-  if (!dateStr) return '';
-  try {
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) {
-      const parts = dateStr.split(' ');
-      if (parts.length >= 2) {
-        return `${parts[1]} ${parseInt(parts[0])}`;
-      }
-      return dateStr;
-    }
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  } catch {
-    return dateStr;
-  }
-}
-
 export const Header: React.FC = () => {
   const { 
     theme, toggleTheme, 
@@ -40,6 +23,31 @@ export const Header: React.FC = () => {
   const [liveGP, setLiveGP] = useState<Race | null>(null);
   const [nextGP, setNextGP] = useState<Race | null>(null);
   const [lastGP, setLastGP] = useState<Race | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  function formatGPDate(dateStr: string): string {
+    if (!dateStr) return '';
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) {
+        const parts = dateStr.split(' ');
+        if (parts.length >= 2) {
+          return `${parts[1]} ${parseInt(parts[0])}`;
+        }
+        return dateStr;
+      }
+      if (!mounted) {
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+      }
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    } catch {
+      return dateStr;
+    }
+  }
 
   useEffect(() => {
     const loadGPData = async () => {

@@ -10,26 +10,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-const formatSessionDay = (dateStr: string): string => {
-  try {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }).toUpperCase();
-  } catch {
-    return '';
-  }
-};
-
-const formatSessionTimeRange = (dateStr: string, durationHours: number = 1): string => {
-  try {
-    const start = new Date(dateStr);
-    const end = new Date(start.getTime() + durationHours * 60 * 60 * 1000);
-    const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
-    return `${start.toLocaleTimeString(undefined, options)} - ${end.toLocaleTimeString(undefined, options)}`;
-  } catch {
-    return '';
-  }
-};
-
 export default function HomePage() {
   const { timelineEvents, showToast, isSimulating } = useF1Store();
   const [nextGP, setNextGP] = useState<Race | null>(null);
@@ -37,6 +17,39 @@ export default function HomePage() {
   const [news, setNews] = useState<any[]>([]);
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [activeSession, setActiveSession] = useState<{ name: string; date: string } | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const formatSessionDay = (dateStr: string): string => {
+    try {
+      const d = new Date(dateStr);
+      if (!mounted) {
+        // Fallback to UTC date string on server side to prevent hydration mismatches
+        return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', timeZone: 'UTC' }).toUpperCase();
+      }
+      return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }).toUpperCase();
+    } catch {
+      return '';
+    }
+  };
+
+  const formatSessionTimeRange = (dateStr: string, durationHours: number = 1): string => {
+    try {
+      const start = new Date(dateStr);
+      const end = new Date(start.getTime() + durationHours * 60 * 60 * 1000);
+      const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+      if (!mounted) {
+        options.timeZone = 'UTC';
+        return `${start.toLocaleTimeString('en-US', options)} - ${end.toLocaleTimeString('en-US', options)}`;
+      }
+      return `${start.toLocaleTimeString(undefined, options)} - ${end.toLocaleTimeString(undefined, options)}`;
+    } catch {
+      return '';
+    }
+  };
 
   useEffect(() => {
     const loadHomeData = async () => {
