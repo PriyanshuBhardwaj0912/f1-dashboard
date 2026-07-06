@@ -5,6 +5,107 @@ import { useF1Store, RaceFlagState } from '../../store/f1Store';
 import { Play, Pause, RotateCcw, AlertTriangle, Shield, CheckCircle } from 'lucide-react';
 import { f1ApiService } from '../../services/f1Api';
 
+interface TrackConfig {
+  name: string;
+  location: string;
+  pathD: string;
+  checkeredLine: { x1: number; y1: number; x2: number; y2: number };
+  customSectors?: { stroke: string; width: number; pathD: string; glow?: string }[];
+  sectorLabels: { text: string; x: number; y: number; color: string }[];
+  drsZones: {
+    pointerD: string;
+    circle: { cx: number; cy: number };
+    transform: string;
+    num: string;
+  }[];
+  speedTrap: {
+    pointerD: string;
+    circle: { cx: number; cy: number };
+    transform: string;
+  };
+  turns: { num: string; x: number; y: number; sector: number }[];
+}
+
+const SILVERSTONE_CONFIG: TrackConfig = {
+  name: 'Silverstone Circuit',
+  location: 'SILVERSTONE, UK',
+  pathD: "M 1330.62239,363.40298 C 1343.0739,412.61609 1349.20249,448.31414 1358.83541,498.41516 C 1361.82797,513.97948 1355.22009,533.03075 1350.54659,540.7283 C 1342.95311,553.23519 1324.32458,571.48656 1311.56629,579.06757 C 1274.53507,601.07163 1244.58597,612.2948 1203.57078,626.7917 C 1168.22982,639.28303 1129.06052,648.62591 1090.33388,654.56339 C 1058.00743,659.51961 1021.93785,661.36769 990.75486,671.62525 C 967.09722,679.40737 949.30077,693.65348 931.19565,709.5797 C 923.96358,715.94139 909.06662,722.59256 893.34059,718.42385 C 876.70807,714.01485 858.88221,709.37025 841.38632,706.51766 C 825.6892,703.95835 808.85024,702.09257 794.06066,705.47814 C 778.90437,708.94765 767.91813,719.28209 755.13781,729.17653 C 745.54893,736.60018 741.87195,748.2166 726.35488,753.84332 C 712.46598,758.87964 701.68068,759.23662 690.15212,757.34669 C 679.67227,755.62869 669.34057,750.6552 661.52602,742.72042 C 645.88899,726.84282 635.13406,705.5372 618.60101,690.69502 C 603.38423,677.0345 583.755,666.98497 564.18289,659.90417 C 452.57997,619.52847 338.8464,579.67613 226.5941,536.81186 C 167.8302,514.37249 111.0504,490.33537 55.9199,461.89963 C 42.4996,454.9776 28.5324,441.5682 22.7363,428.34582 C 16.987,415.23026 16.6631,396.94292 20.0873,382.88583 C 23.5182,368.80102 33.1737,355.70208 44.1988,345.71468 C 63.8412,327.92097 98.8139,316.9997 115.9779,296.25252 C 154.8941,249.2123 191.3181,207.90667 235.4665,159.51693 C 246.7132,147.18979 241.5437,137.13074 236.5206,132.96988 C 228.0558,125.9581 216.0249,120.21473 212.1529,111.2794 C 206.6442,98.56712 205.2779,81.84427 211.9678,66.83067 C 218.3862,52.42645 230.6034,37.66949 244.9946,30.02973 C 259.8277,22.15537 280.2721,17.77106 296.9488,20.2883 C 318.5162,23.54376 339.6706,36.56683 359.7269,47.34782 C 459.81491,101.14888 557.1484,161.42035 657.3816,214.03445 C 665.74726,218.42573 685.90966,221.02475 694.19714,207.59669 C 701.52499,195.7235 711.24018,171.39554 739.60059,163.60389 C 767.32868,155.98597 851.17406,137.81695 855.45727,137.18542 C 869.65679,135.09178 906.09649,130.97138 918.23535,136.10304 C 930.12096,141.12763 958.96688,174.8125 976.41308,194.40934 C 993.99216,214.15543 1006.12435,231.52237 1025.60441,244.11314 C 1035.70942,250.64443 1062.27669,251.42005 1071.7483,243.70007 C 1095.98661,223.94428 1120.96546,200.8216 1143.62677,177.34748 C 1150.97036,169.7405 1151.5973,154.51282 1146.5037,146.78459 C 1141.13429,138.6379 1128.06716,132.84756 1116.425,133.31182 C 1099.93229,133.96952 1080.80321,135.04553 1064.35674,135.02066 C 1054.82787,135.00598 1043.97656,127.32993 1038.37961,119.86733 C 1032.07037,111.45501 1027.41068,97.74202 1028.63818,87.39591 C 1029.93623,76.4552 1038.20232,64.3135 1047.45172,59.29687 C 1059.48914,52.7681 1077.93396,54.87111 1092.49864,59.33973 C 1132.57511,71.63566 1173.27387,82.59255 1209.39575,103.0763 C 1232.44401,116.14635 1268.20113,138.98502 1276.58907,163.59022 C 1298.93841,229.14985 1312.76724,292.83262 1330.62239,363.40298 z",
+  checkeredLine: { x1: 490, y1: 102, x2: 465, y2: 152 },
+  sectorLabels: [
+    { text: 'SECTOR 1', x: 800, y: 180, color: '#00D2FF' },
+    { text: 'SECTOR 2', x: 1150, y: 240, color: '#FF8C00' },
+    { text: 'SECTOR 3', x: 280, y: 480, color: '#0055FF' }
+  ],
+  drsZones: [
+    { pointerD: 'M 740,164 L 740,240', circle: { cx: 740, cy: 164 }, transform: 'translate(675, 240)', num: '1' },
+    { pointerD: 'M 1091,655 L 1091,720', circle: { cx: 1091, cy: 655 }, transform: 'translate(1026, 720)', num: '2' }
+  ],
+  speedTrap: { pointerD: 'M 227,537 L 227,610', circle: { cx: 227, cy: 537 }, transform: 'translate(182, 610)' },
+  turns: [
+    { num: '01', x: 658, y: 215, sector: 1 },
+    { num: '02', x: 695, y: 208, sector: 1 },
+    { num: '03', x: 740, y: 164, sector: 1 },
+    { num: '04', x: 855, y: 137, sector: 1 },
+    { num: '05', x: 919, y: 136, sector: 1 },
+    { num: '06', x: 1145, y: 170, sector: 2 },
+    { num: '07', x: 1035, y: 100, sector: 2 },
+    { num: '08', x: 1048, y: 60, sector: 2 },
+    { num: '09', x: 1305, y: 270, sector: 2 },
+    { num: '10', x: 1205, y: 630, sector: 3 },
+    { num: '11', x: 1091, y: 655, sector: 3 },
+    { num: '12', x: 991, y: 672, sector: 3 },
+    { num: '13', x: 895, y: 719, sector: 3 },
+    { num: '14', x: 662, y: 743, sector: 3 },
+    { num: '15', x: 35, y: 429, sector: 3 },
+    { num: '16', x: 116, y: 297, sector: 3 },
+    { num: '17', x: 236, y: 160, sector: 3 },
+    { num: '18', x: 297, y: 40, sector: 3 }
+  ]
+};
+
+const SPA_CONFIG: TrackConfig = {
+  name: 'Spa-Francorchamps',
+  location: 'SPA-FRANCORCHAMPS, BELGIUM',
+  pathD: "M 350,550 L 250,520 C 230,510 220,490 230,470 C 240,450 260,440 280,450 L 380,360 C 400,340 420,330 450,320 L 850,100 C 870,90 890,95 905,105 L 920,110 C 940,115 955,130 965,145 L 980,150 C 995,160 1010,180 1025,200 C 1045,220 1060,240 1050,260 C 1040,280 1010,290 980,280 C 950,270 910,290 880,305 L 780,350 C 740,370 730,410 750,440 C 770,470 820,460 850,470 L 900,480 C 930,490 950,510 965,530 L 980,550 C 995,570 990,590 970,610 C 950,630 900,640 850,620 C 780,590 680,530 520,420 C 470,390 420,480 370,570 Z",
+  checkeredLine: { x1: 330, y1: 550, x2: 340, y2: 525 },
+  customSectors: [
+    { stroke: '#FF1801', width: 8, pathD: "M 350,550 L 250,520 C 230,510 220,490 230,470 C 240,450 260,440 280,450 L 380,360 C 400,340 420,330 450,320 L 500,280", glow: '#FF1801' },
+    { stroke: '#00D2FF', width: 8, pathD: "M 500,280 L 850,100 C 870,90 890,95 905,105 L 920,110 C 940,115 955,130 965,145 L 980,150 C 995,160 1010,180 1025,200 C 1045,220 1060,240 1050,260 C 1040,280 1010,290 980,280 C 950,270 910,290 880,305 L 780,350 C 740,370 730,410 750,440 C 770,470 820,460 850,470 L 900,480 C 930,490 950,510 965,530 L 980,550 C 995,570 990,590 970,610 C 950,630 900,640 850,620", glow: '#00D2FF' },
+    { stroke: '#FFCC00', width: 8, pathD: "M 850,620 C 780,590 680,530 520,420 C 470,390 420,480 370,570 Z", glow: '#FFCC00' }
+  ],
+  sectorLabels: [
+    { text: 'SECTOR 1', x: 310, y: 340, color: '#FF1801' },
+    { text: 'SECTOR 2', x: 920, y: 350, color: '#00D2FF' },
+    { text: 'SECTOR 3', x: 650, y: 650, color: '#FFCC00' }
+  ],
+  drsZones: [
+    { pointerD: 'M 380,360 L 300,320', circle: { cx: 380, cy: 360 }, transform: 'translate(170, 300)', num: '1' },
+    { pointerD: 'M 370,570 L 450,620', circle: { cx: 370, cy: 570 }, transform: 'translate(385, 620)', num: '2' }
+  ],
+  speedTrap: { pointerD: 'M 580,240 L 580,180', circle: { cx: 580, cy: 240 }, transform: 'translate(535, 120)' },
+  turns: [
+    { num: '01', x: 230, y: 470, sector: 1 },
+    { num: '02', x: 380, y: 360, sector: 1 },
+    { num: '03', x: 420, y: 340, sector: 1 },
+    { num: '04', x: 450, y: 320, sector: 1 },
+    { num: '05', x: 905, y: 105, sector: 2 },
+    { num: '06', x: 920, y: 110, sector: 2 },
+    { num: '07', x: 965, y: 145, sector: 2 },
+    { num: '08', x: 1050, y: 220, sector: 2 },
+    { num: '09', x: 980, y: 280, sector: 2 },
+    { num: '10', x: 760, y: 360, sector: 2 },
+    { num: '11', x: 800, y: 450, sector: 2 },
+    { num: '12', x: 915, y: 485, sector: 2 },
+    { num: '13', x: 950, y: 515, sector: 2 },
+    { num: '14', x: 980, y: 575, sector: 2 },
+    { num: '15', x: 850, y: 620, sector: 3 },
+    { num: '16', x: 680, y: 530, sector: 3 },
+    { num: '17', x: 520, y: 420, sector: 3 },
+    { num: '18', x: 370, y: 570, sector: 3 },
+    { num: '19', x: 350, y: 550, sector: 3 }
+  ]
+};
+
 export default function LiveTimingPage() {
   const {
     liveDrivers,
@@ -36,6 +137,9 @@ export default function LiveTimingPage() {
     };
     loadLiveGPName();
   }, []);
+
+  const isSpa = liveGPName.toLowerCase().includes('belgian') || liveGPName.toLowerCase().includes('spa');
+  const track = isSpa ? SPA_CONFIG : SILVERSTONE_CONFIG;
 
   // Compute coordinates for driver dots along the SVG path
   useEffect(() => {
@@ -225,14 +329,14 @@ export default function LiveTimingPage() {
             </div>
           </div>
 
-          {/* British GP Layout SVG visualizer */}
+          {/* Dynamic GP Layout SVG visualizer */}
           <div className="card" style={{ border: '1px solid var(--border-color)', background: 'linear-gradient(145deg, #0e0e12 0%, #08080a 100%)', boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.02)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', fontSize: '0.85rem', paddingLeft: '4px' }}>
                 <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--f1-red)', animation: 'ledFlashAnim 1s infinite' }} />
                 <span style={{ fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>LIVE TRACK RADAR</span>
               </div>
-              <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>SILVERSTONE, UK</span>
+              <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>{track.location}</span>
             </div>
             
             <div className="track-svg-canvas" style={{ position: 'relative', backgroundColor: '#070709', minHeight: '390px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
@@ -273,84 +377,87 @@ export default function LiveTimingPage() {
 
                 <g transform="translate(100, 45) scale(0.85)">
                   {/* Checkered Start/Finish Line */}
-                  <line x1="490" y1="102" x2="465" y2="152" stroke="#ffffff" strokeWidth="8" strokeDasharray="5 5" style={{ filter: 'drop-shadow(0 2px 4px black)' }} />
+                  <line x1={track.checkeredLine.x1} y1={track.checkeredLine.y1} x2={track.checkeredLine.x2} y2={track.checkeredLine.y2} stroke="#ffffff" strokeWidth="8" strokeDasharray="5 5" style={{ filter: 'drop-shadow(0 2px 4px black)' }} />
 
                   {/* Main invisible tracker path (for high resolution math alignment & SVG reuse) */}
                   <path 
                     ref={pathRef}
                     id="live-track-path" 
-                    d="M 1330.62239,363.40298 C 1343.0739,412.61609 1349.20249,448.31414 1358.83541,498.41516 C 1361.82797,513.97948 1355.22009,533.03075 1350.54659,540.7283 C 1342.95311,553.23519 1324.32458,571.48656 1311.56629,579.06757 C 1274.53507,601.07163 1244.58597,612.2948 1203.57078,626.7917 C 1168.22982,639.28303 1129.06052,648.62591 1090.33388,654.56339 C 1058.00743,659.51961 1021.93785,661.36769 990.75486,671.62525 C 967.09722,679.40737 949.30077,693.65348 931.19565,709.5797 C 923.96358,715.94139 909.06662,722.59256 893.34059,718.42385 C 876.70807,714.01485 858.88221,709.37025 841.38632,706.51766 C 825.6892,703.95835 808.85024,702.09257 794.06066,705.47814 C 778.90437,708.94765 767.91813,719.28209 755.13781,729.17653 C 745.54893,736.60018 741.87195,748.2166 726.35488,753.84332 C 712.46598,758.87964 701.68068,759.23662 690.15212,757.34669 C 679.67227,755.62869 669.34057,750.6552 661.52602,742.72042 C 645.88899,726.84282 635.13406,705.5372 618.60101,690.69502 C 603.38423,677.0345 583.755,666.98497 564.18289,659.90417 C 452.57997,619.52847 338.8464,579.67613 226.5941,536.81186 C 167.8302,514.37249 111.0504,490.33537 55.9199,461.89963 C 42.4996,454.9776 28.5324,441.5682 22.7363,428.34582 C 16.987,415.23026 16.6631,396.94292 20.0873,382.88583 C 23.5182,368.80102 33.1737,355.70208 44.1988,345.71468 C 63.8412,327.92097 98.8139,316.9997 115.9779,296.25252 C 154.8941,249.2123 191.3181,207.90667 235.4665,159.51693 C 246.7132,147.18979 241.5437,137.13074 236.5206,132.96988 C 228.0558,125.9581 216.0249,120.21473 212.1529,111.2794 C 206.6442,98.56712 205.2779,81.84427 211.9678,66.83067 C 218.3862,52.42645 230.6034,37.66949 244.9946,30.02973 C 259.8277,22.15537 280.2721,17.77106 296.9488,20.2883 C 318.5162,23.54376 339.6706,36.56683 359.7269,47.34782 C 459.81491,101.14888 557.1484,161.42035 657.3816,214.03445 C 665.74726,218.42573 685.90966,221.02475 694.19714,207.59669 C 701.52499,195.7235 711.24018,171.39554 739.60059,163.60389 C 767.32868,155.98597 851.17406,137.81695 855.45727,137.18542 C 869.65679,135.09178 906.09649,130.97138 918.23535,136.10304 C 930.12096,141.12763 958.96688,174.8125 976.41308,194.40934 C 993.99216,214.15543 1006.12435,231.52237 1025.60441,244.11314 C 1035.70942,250.64443 1062.27669,251.42005 1071.7483,243.70007 C 1095.98661,223.94428 1120.96546,200.8216 1143.62677,177.34748 C 1150.97036,169.7405 1151.5973,154.51282 1146.5037,146.78459 C 1141.13429,138.6379 1128.06716,132.84756 1116.425,133.31182 C 1099.93229,133.96952 1080.80321,135.04553 1064.35674,135.02066 C 1054.82787,135.00598 1043.97656,127.32993 1038.37961,119.86733 C 1032.07037,111.45501 1027.41068,97.74202 1028.63818,87.39591 C 1029.93623,76.4552 1038.20232,64.3135 1047.45172,59.29687 C 1059.48914,52.7681 1077.93396,54.87111 1092.49864,59.33973 C 1132.57511,71.63566 1173.27387,82.59255 1209.39575,103.0763 C 1232.44401,116.14635 1268.20113,138.98502 1276.58907,163.59022 C 1298.93841,229.14985 1312.76724,292.83262 1330.62239,363.40298 z" 
+                    d={track.pathD} 
                     fill="none"
                     stroke="transparent" 
                     strokeWidth="10"
                   />
 
-                  {/* Dynamic Glowing neon track backing path */}
-                  <use href="#live-track-path" fill="none" stroke="#0055FF" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" opacity="0.12" style={{ filter: 'blur(3px)' }} />
+                  {/* Sector paths and glowing overlays */}
+                  {track.customSectors ? (
+                    track.customSectors.map((sec, idx) => (
+                      <g key={idx}>
+                        <path d={sec.pathD} fill="none" stroke={sec.stroke} strokeWidth={sec.width * 2} strokeLinecap="round" strokeLinejoin="round" opacity="0.12" style={{ filter: 'blur(3px)' }} />
+                        <path d={sec.pathD} fill="none" stroke={sec.stroke} strokeWidth={sec.width} strokeLinecap="round" strokeLinejoin="round" style={sec.glow ? { filter: `drop-shadow(0 0 3px ${sec.glow})` } : undefined} />
+                      </g>
+                    ))
+                  ) : (
+                    <>
+                      {/* Dynamic Glowing neon track backing path */}
+                      <use href="#live-track-path" fill="none" stroke="#0055FF" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" opacity="0.12" style={{ filter: 'blur(3px)' }} />
 
-                  {/* Core Track Line - Sector 3 Base (Dark Blue/Purple) */}
-                  <use href="#live-track-path" fill="none" stroke="#0055FF" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+                      {/* Core Track Line - Sector 3 Base (Dark Blue/Purple) */}
+                      <use href="#live-track-path" fill="none" stroke="#0055FF" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
 
-                  {/* Core Track Line - Sector 1 Overlay (Cyan) */}
-                  <use 
-                    href="#live-track-path" 
-                    fill="none" 
-                    stroke="#00D2FF" 
-                    strokeWidth="8" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeDasharray="371, 2589" 
-                    strokeDashoffset="-1844" 
-                    style={{ filter: 'drop-shadow(0 0 3px #00D2FF)' }}
-                  />
+                      {/* Core Track Line - Sector 1 Overlay (Cyan) */}
+                      <use 
+                        href="#live-track-path" 
+                        fill="none" 
+                        stroke="#00D2FF" 
+                        strokeWidth="8" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeDasharray="371, 2589" 
+                        strokeDashoffset="-1844" 
+                        style={{ filter: 'drop-shadow(0 0 3px #00D2FF)' }}
+                      />
 
-                  {/* Core Track Line - Sector 2 Overlay (Orange) */}
-                  <use 
-                    href="#live-track-path" 
-                    fill="none" 
-                    stroke="#FF8C00" 
-                    strokeWidth="8" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeDasharray="672, 2288" 
-                    strokeDashoffset="-2215" 
-                    style={{ filter: 'drop-shadow(0 0 3px #FF8C00)' }}
-                  />
-
-
+                      {/* Core Track Line - Sector 2 Overlay (Orange) */}
+                      <use 
+                        href="#live-track-path" 
+                        fill="none" 
+                        stroke="#FF8C00" 
+                        strokeWidth="8" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeDasharray="672, 2288" 
+                        strokeDashoffset="-2215" 
+                        style={{ filter: 'drop-shadow(0 0 3px #FF8C00)' }}
+                      />
+                    </>
+                  )}
 
                   {/* Sector label text overlays */}
-                  <text x="800" y="180" fill="#00D2FF" fontSize="13px" fontWeight={900} letterSpacing="0.1em" textAnchor="middle" style={{ filter: 'drop-shadow(0 1px 2px black)' }}>SECTOR 1</text>
-                  <text x="1150" y="240" fill="#FF8C00" fontSize="13px" fontWeight={900} letterSpacing="0.1em" textAnchor="middle" style={{ filter: 'drop-shadow(0 1px 2px black)' }}>SECTOR 2</text>
-                  <text x="280" y="480" fill="#0055FF" fontSize="13px" fontWeight={900} letterSpacing="0.1em" textAnchor="middle" style={{ filter: 'drop-shadow(0 1px 2px black)' }}>SECTOR 3</text>
+                  {track.sectorLabels.map((lbl, idx) => (
+                    <text key={idx} x={lbl.x} y={lbl.y} fill={lbl.color} fontSize="13px" fontWeight={900} letterSpacing="0.1em" textAnchor="middle" style={{ filter: 'drop-shadow(0 1px 2px black)' }}>
+                      {lbl.text}
+                    </text>
+                  ))}
 
-                  {/* Pink DRS Detection Zone 1 Overlay and Line */}
-                  <g>
-                    <path d="M 740,164 L 740,240" stroke="#FF00A8" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
-                    <circle cx="740" cy="164" r="5" fill="#FF00A8" />
-                    <g transform="translate(675, 240)">
-                      <rect x="0" y="0" width="130" height="38" rx="8" fill="rgba(8,8,12,0.9)" stroke="#FF00A8" strokeWidth="1.5" style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.5))' }} />
-                      <text x="65" y="15" fill="#FF00A8" fontSize="9px" fontWeight={900} letterSpacing="0.05em" textAnchor="middle">DRS DETECTION</text>
-                      <text x="65" y="28" fill="#ffffff" fontSize="11px" fontWeight={800} textAnchor="middle">ZONE 1</text>
+                  {/* Pink DRS Detection Zone Overlays and Lines */}
+                  {track.drsZones.map((z, idx) => (
+                    <g key={idx}>
+                      <path d={z.pointerD} stroke="#FF00A8" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
+                      <circle cx={z.circle.cx} cy={z.circle.cy} r="5" fill="#FF00A8" />
+                      <g transform={z.transform}>
+                        <rect x="0" y="0" width="130" height="38" rx="8" fill="rgba(8,8,12,0.9)" stroke="#FF00A8" strokeWidth="1.5" style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.5))' }} />
+                        <text x="65" y="15" fill="#FF00A8" fontSize="9px" fontWeight={900} letterSpacing="0.05em" textAnchor="middle">DRS DETECTION</text>
+                        <text x="65" y="28" fill="#ffffff" fontSize="11px" fontWeight={800} textAnchor="middle">ZONE {z.num}</text>
+                      </g>
                     </g>
-                  </g>
-
-                  {/* Pink DRS Detection Zone 2 Overlay and Line */}
-                  <g>
-                    <path d="M 1091,655 L 1091,720" stroke="#FF00A8" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
-                    <circle cx="1091" cy="655" r="5" fill="#FF00A8" />
-                    <g transform="translate(1026, 720)">
-                      <rect x="0" y="0" width="130" height="38" rx="8" fill="rgba(8,8,12,0.9)" stroke="#FF00A8" strokeWidth="1.5" style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.5))' }} />
-                      <text x="65" y="15" fill="#FF00A8" fontSize="9px" fontWeight={900} letterSpacing="0.05em" textAnchor="middle">DRS DETECTION</text>
-                      <text x="65" y="28" fill="#ffffff" fontSize="11px" fontWeight={800} textAnchor="middle">ZONE 2</text>
-                    </g>
-                  </g>
+                  ))}
 
                   {/* Speed Trap Overlay and Line */}
                   <g>
-                    <path d="M 227,537 L 227,610" stroke="#00D27A" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
-                    <circle cx="227" cy="537" r="5" fill="#00D27A" />
-                    <g transform="translate(182, 610)">
+                    <path d={track.speedTrap.pointerD} stroke="#00D27A" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
+                    <circle cx={track.speedTrap.circle.cx} cy={track.speedTrap.circle.cy} r="5" fill="#00D27A" />
+                    <g transform={track.speedTrap.transform}>
                       <rect x="0" y="0" width="90" height="42" rx="8" fill="rgba(8,8,12,0.9)" stroke="#00D27A" strokeWidth="1.5" style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.5))' }} />
                       <text x="45" y="17" fill="#00D27A" fontSize="9px" fontWeight={900} letterSpacing="0.05em" textAnchor="middle">SPEED</text>
                       <text x="45" y="31" fill="#ffffff" fontSize="11px" fontWeight={800} textAnchor="middle">TRAP</text>
@@ -358,27 +465,8 @@ export default function LiveTimingPage() {
                   </g>
 
                   {/* Turn Numbers Circular Badges */}
-                  {[
-                    { num: '01', x: 658, y: 215, sector: 1 },
-                    { num: '02', x: 695, y: 208, sector: 1 },
-                    { num: '03', x: 740, y: 164, sector: 1 },
-                    { num: '04', x: 855, y: 137, sector: 1 },
-                    { num: '05', x: 919, y: 136, sector: 1 },
-                    { num: '06', x: 1145, y: 170, sector: 2 },
-                    { num: '07', x: 1035, y: 100, sector: 2 },
-                    { num: '08', x: 1048, y: 60, sector: 2 },
-                    { num: '09', x: 1305, y: 270, sector: 2 },
-                    { num: '10', x: 1205, y: 630, sector: 3 },
-                    { num: '11', x: 1091, y: 655, sector: 3 },
-                    { num: '12', x: 991, y: 672, sector: 3 },
-                    { num: '13', x: 895, y: 719, sector: 3 },
-                    { num: '14', x: 662, y: 743, sector: 3 },
-                    { num: '15', x: 35, y: 429, sector: 3 },
-                    { num: '16', x: 116, y: 297, sector: 3 },
-                    { num: '17', x: 236, y: 160, sector: 3 },
-                    { num: '18', x: 297, y: 40, sector: 3 }
-                  ].map(c => {
-                    const sectorColor = c.sector === 1 ? '#00D2FF' : c.sector === 2 ? '#FF8C00' : '#0055FF';
+                  {track.turns.map(c => {
+                    const sectorColor = c.sector === 1 ? '#FF1801' : c.sector === 2 ? '#00D2FF' : '#FFCC00';
                     return (
                       <g key={c.num} style={{ cursor: 'pointer' }}>
                         <circle cx={c.x} cy={c.y} r="14" fill="rgba(8, 8, 12, 0.9)" stroke={sectorColor} strokeWidth="1.5" />
