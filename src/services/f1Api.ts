@@ -1443,8 +1443,8 @@ export const f1ApiService = {
         sessions: [
           { name: 'Practice 1', date: `${fStr}T11:30:00Z`, duration: '1 hour' },
           { name: 'Practice 2', date: `${fStr}T15:00:00Z`, duration: '1 hour' },
-          { name: 'Practice 3', date: `${sStr}T11:30:00Z`, duration: '1 hour' },
-          { name: 'Qualifying', date: `${sStr}T15:00:00Z`, duration: '1 hour' },
+          { name: 'Practice 3', date: `${sStr}T10:30:00Z`, duration: '1 hour' },
+          { name: 'Qualifying', date: `${sStr}T14:00:00Z`, duration: '1 hour' },
           { name: 'Race', date: race.date, duration: '2 hours' }
         ]
       };

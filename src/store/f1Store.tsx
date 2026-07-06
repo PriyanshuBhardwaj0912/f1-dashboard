@@ -118,9 +118,12 @@ export const F1Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
         } catch (e) {}
       }
 
-      // Evict old calendar cache containing the incorrect Monday date
+      // Evict old calendar cache containing the incorrect Monday date or incorrect Belgian GP times
       const storedCalendar = localStorage.getItem('f1_calendar_dynamic');
-      if (storedCalendar && storedCalendar.includes('2026-07-06T02:30:00Z')) {
+      if (storedCalendar && (
+        storedCalendar.includes('2026-07-06T02:30:00Z') || 
+        (storedCalendar.includes('Belgian Grand Prix') && storedCalendar.includes('T11:30:00Z'))
+      )) {
         localStorage.removeItem('f1_calendar_dynamic');
       }
     }
