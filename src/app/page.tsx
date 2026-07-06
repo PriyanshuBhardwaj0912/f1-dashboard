@@ -38,6 +38,32 @@ const getOfficialCircuitImage = (round: number): string => {
   return `https://media.formula1.com/image/upload/c_fit,h_220/q_auto/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/${filename}`;
 };
 
+const getTrackTimezone = (country: string): string => {
+  const map: { [key: string]: string } = {
+    'Australia': 'Australia/Melbourne',
+    'China': 'Asia/Shanghai',
+    'Japan': 'Asia/Tokyo',
+    'Bahrain': 'Asia/Bahrain',
+    'Saudi Arabia': 'Asia/Riyadh',
+    'United States': 'America/New_York',
+    'Canada': 'America/Toronto',
+    'Monaco': 'Europe/Monaco',
+    'Spain': 'Europe/Madrid',
+    'Austria': 'Europe/Vienna',
+    'United Kingdom': 'Europe/London',
+    'Belgium': 'Europe/Brussels',
+    'Hungary': 'Europe/Budapest',
+    'Netherlands': 'Europe/Amsterdam',
+    'Italy': 'Europe/Rome',
+    'Azerbaijan': 'Asia/Baku',
+    'Singapore': 'Asia/Singapore',
+    'Qatar': 'Asia/Qatar',
+    'Abu Dhabi': 'Asia/Dubai',
+    'Las Vegas': 'America/Los_Angeles'
+  };
+  return map[country] || 'UTC';
+};
+
 export default function HomePage() {
   const { timelineEvents, showToast, isSimulating } = useF1Store();
   const [nextGP, setNextGP] = useState<Race | null>(null);
@@ -46,19 +72,48 @@ export default function HomePage() {
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [activeSession, setActiveSession] = useState<{ name: string; date: string } | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [selectedTimezone, setSelectedTimezone] = useState<'browser' | 'track' | 'ist' | 'bst' | 'utc'>('browser');
 
   useEffect(() => {
     setMounted(true);
+    if (typeof window !== 'undefined') {
+      const storedTz = localStorage.getItem('f1_selected_timezone') as any;
+      if (storedTz) {
+        setSelectedTimezone(storedTz);
+      }
+    }
   }, []);
+
+  const handleTimezoneChange = (tz: 'browser' | 'track' | 'ist' | 'bst' | 'utc') => {
+    setSelectedTimezone(tz);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('f1_selected_timezone', tz);
+    }
+  };
 
   const formatSessionDay = (dateStr: string): string => {
     try {
       const d = new Date(dateStr);
-      if (!mounted) {
-        // Fallback to UTC date string on server side to prevent hydration mismatches
-        return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', timeZone: 'UTC' }).toUpperCase();
+      let tz: string | undefined;
+      if (selectedTimezone === 'track' && nextGP) {
+        tz = getTrackTimezone(nextGP.country);
+      } else if (selectedTimezone === 'ist') {
+        tz = 'Asia/Kolkata';
+      } else if (selectedTimezone === 'bst') {
+        tz = 'Europe/London';
+      } else if (selectedTimezone === 'utc') {
+        tz = 'UTC';
       }
-      return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }).toUpperCase();
+      
+      const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short' };
+      if (!mounted) {
+        options.timeZone = 'UTC';
+        return d.toLocaleDateString('en-US', options).toUpperCase();
+      }
+      if (tz) {
+        options.timeZone = tz;
+      }
+      return d.toLocaleDateString('en-US', options).toUpperCase();
     } catch {
       return '';
     }
@@ -68,12 +123,27 @@ export default function HomePage() {
     try {
       const start = new Date(dateStr);
       const end = new Date(start.getTime() + durationHours * 60 * 60 * 1000);
+      
+      let tz: string | undefined;
+      if (selectedTimezone === 'track' && nextGP) {
+        tz = getTrackTimezone(nextGP.country);
+      } else if (selectedTimezone === 'ist') {
+        tz = 'Asia/Kolkata';
+      } else if (selectedTimezone === 'bst') {
+        tz = 'Europe/London';
+      } else if (selectedTimezone === 'utc') {
+        tz = 'UTC';
+      }
+      
       const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
       if (!mounted) {
         options.timeZone = 'UTC';
         return `${start.toLocaleTimeString('en-US', options)} - ${end.toLocaleTimeString('en-US', options)}`;
       }
-      return `${start.toLocaleTimeString(undefined, options)} - ${end.toLocaleTimeString(undefined, options)}`;
+      if (tz) {
+        options.timeZone = tz;
+      }
+      return `${start.toLocaleTimeString('en-US', options)} - ${end.toLocaleTimeString('en-US', options)}`;
     } catch {
       return '';
     }
@@ -213,6 +283,77 @@ export default function HomePage() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Timezone Selector matching official F1 app */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.8rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
+                <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Select Timezone:</span>
+                <select 
+                  value={selectedTimezone} 
+                  onChange={(e) => handleTimezoneChange(e.target.value as any)}
+                  style={{ 
+                    background: 'var(--bg-tertiary)', 
+                    border: '1px solid var(--border-color)', 
+                    color: 'var(--text-primary)', 
+                    borderRadius: '4px', 
+                    padding: '2px 8px', 
+                    fontSize: '0.72rem',
+                    cursor: 'pointer',
+                    outline: 'none'
+                  }}
+                >
+                  <option value="browser">Browser ({mounted ? Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop()?.replace('_', ' ') : 'Local'})</option>
+                  <option value="track">Track ({nextGP ? getTrackTimezone(nextGP.country).split('/').pop()?.replace('_', ' ') : 'Local'})</option>
+                  <option value="ist">India (IST)</option>
+                  <option value="bst">United Kingdom (BST)</option>
+                  <option value="utc">UTC</option>
+                </select>
+              </div>
+
+              {/* Timezone Info Bar matching official F1 app styling */}
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                background: 'rgba(255, 255, 255, 0.03)', 
+                border: '1px solid var(--border-color)',
+                borderRadius: '6px',
+                padding: '6px 12px',
+                fontSize: '0.72rem',
+                fontFamily: 'var(--font-mono)'
+              }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.6rem', textTransform: 'uppercase' }}>Selected Time</span>
+                  <strong style={{ color: 'var(--text-primary)' }}>
+                    {mounted ? new Date().toLocaleTimeString('en-US', { 
+                      hour: 'numeric', 
+                      minute: '2-digit', 
+                      hour12: true,
+                      timeZone: selectedTimezone === 'track' && nextGP 
+                        ? getTrackTimezone(nextGP.country) 
+                        : selectedTimezone === 'ist' 
+                          ? 'Asia/Kolkata' 
+                          : selectedTimezone === 'bst' 
+                            ? 'Europe/London' 
+                            : selectedTimezone === 'utc' 
+                              ? 'UTC' 
+                              : undefined
+                    }) : '--:--'}
+                  </strong>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.6rem', textTransform: 'uppercase' }}>Track Time</span>
+                  <strong style={{ color: 'var(--f1-red)' }}>
+                    {mounted && nextGP ? new Date().toLocaleTimeString('en-US', { 
+                      hour: 'numeric', 
+                      minute: '2-digit', 
+                      hour12: true, 
+                      timeZone: getTrackTimezone(nextGP.country) 
+                    }) : '--:--'}
+                  </strong>
+                </div>
+              </div>
             </div>
 
             {/* Weekend Schedule Table matching official F1 app screenshot */}
