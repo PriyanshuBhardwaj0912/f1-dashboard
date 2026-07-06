@@ -10,6 +10,34 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+// Returns the official Formula1.com URL for each circuit map image
+const getOfficialCircuitImage = (round: number): string => {
+  const map: { [key: number]: string } = {
+    1: 'Australia_Circuit.png',
+    2: 'China_Circuit.png',
+    3: 'Japan_Circuit.png',
+    4: 'Miami_Circuit.png',
+    5: 'Canada_Circuit.png',
+    6: 'Monaco_Circuit.png',
+    7: 'Spain_Circuit.png',
+    8: 'Austria_Circuit.png',
+    9: 'Great_Britain_Circuit.png',
+    10: 'Belgium_Circuit.png',
+    11: 'Hungary_Circuit.png',
+    12: 'Netherlands_Circuit.png',
+    13: 'Italy_Circuit.png',
+    14: 'Spain_Circuit.png', // Fallback for Madrid
+    15: 'Baku_Circuit.png',
+    16: 'Singapore_Circuit.png',
+    17: 'USA_Circuit.png',
+    18: 'Las_Vegas_Circuit.png',
+    19: 'Qatar_Circuit.png',
+    20: 'Abu_Dhabi_Circuit.png'
+  };
+  const filename = map[round] || 'Great_Britain_Circuit.png';
+  return `https://media.formula1.com/image/upload/c_fit,h_220/q_auto/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/${filename}`;
+};
+
 export default function HomePage() {
   const { timelineEvents, showToast, isSimulating } = useF1Store();
   const [nextGP, setNextGP] = useState<Race | null>(null);
@@ -352,12 +380,12 @@ export default function HomePage() {
                     {nextGP.gpName.toUpperCase()}
                   </h4>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
-                    <MapPin size={11} /> {nextGP.circuit.name}, UK
+                    <MapPin size={11} /> {nextGP.circuit.name}, {nextGP.country}
                   </span>
                 </div>
               </div>
 
-              {/* Glowing Silverstone Track Path layout */}
+              {/* Glowing Circuit Track Path layout */}
               <div 
                 style={{ 
                   flex: 1,
@@ -374,8 +402,8 @@ export default function HomePage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
-                  src="https://media.formula1.com/image/upload/c_fit,h_220/q_auto/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Great_Britain_Circuit.png" 
-                  alt="Silverstone Circuit Map"
+                  src={getOfficialCircuitImage(nextGP.round)} 
+                  alt={`${nextGP.circuit.name} Map`}
                   style={{ 
                     maxHeight: '180px', 
                     maxWidth: '100%', 
