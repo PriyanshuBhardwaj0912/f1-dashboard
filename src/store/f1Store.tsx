@@ -117,6 +117,12 @@ export const F1Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
           setFavorites(JSON.parse(storedFavs));
         } catch (e) {}
       }
+
+      // Evict old calendar cache containing the incorrect Monday date
+      const storedCalendar = localStorage.getItem('f1_calendar_dynamic');
+      if (storedCalendar && storedCalendar.includes('2026-07-06T02:30:00Z')) {
+        localStorage.removeItem('f1_calendar_dynamic');
+      }
     }
 
     // Load initial static datasets
