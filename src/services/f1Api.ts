@@ -1459,21 +1459,31 @@ export const f1ApiService = {
         
         let status = r.status;
         let winnerName = r.winnerName;
+        let winnerId = r.winnerId;
         let secondPlaceName = r.secondPlaceName;
         let thirdPlaceName = r.thirdPlaceName;
         let poleName = r.poleName;
+        let poleId = r.poleId;
         let fastestLapName = r.fastestLapName;
+        let fastestLapId = r.fastestLapId;
 
         if (r.round < 9 || now > raceEndTime) {
           status = 'completed';
           if (r.round === 9) {
             if (!winnerName || winnerName === 'Session Live' || winnerName === 'TBD') {
-              winnerName = 'Andrea Kimi Antonelli';
+              winnerName = 'Charles Leclerc';
+              winnerId = 'leclerc';
             }
             if (!secondPlaceName) secondPlaceName = 'George Russell';
             if (!thirdPlaceName) thirdPlaceName = 'Lewis Hamilton';
-            if (poleName === 'Pending' || !poleName) poleName = 'Andrea Kimi Antonelli';
-            if (!fastestLapName) fastestLapName = 'Andrea Kimi Antonelli';
+            if (poleName === 'Pending' || !poleName) {
+              poleName = 'Andrea Kimi Antonelli';
+              poleId = 'antonelli';
+            }
+            if (!fastestLapName) {
+              fastestLapName = 'Andrea Kimi Antonelli';
+              fastestLapId = 'antonelli';
+            }
           }
         } else if (now >= raceStartTime && now <= raceEndTime) {
           status = 'live';
@@ -1485,10 +1495,13 @@ export const f1ApiService = {
           ...r,
           status,
           winnerName,
+          winnerId,
           secondPlaceName,
           thirdPlaceName,
           poleName,
-          fastestLapName
+          poleId,
+          fastestLapName,
+          fastestLapId
         };
       });
     };

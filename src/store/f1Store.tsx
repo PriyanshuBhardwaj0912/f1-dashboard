@@ -118,13 +118,28 @@ export const F1Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
         } catch (e) {}
       }
 
-      // Evict old calendar cache containing the incorrect Monday date or incorrect Belgian GP times
+      // Evict old calendar cache containing the incorrect Monday date, incorrect Belgian GP times, or incorrect British GP winner (Kimi Antonelli instead of Charles Leclerc)
       const storedCalendar = localStorage.getItem('f1_calendar_dynamic');
-      if (storedCalendar && (
-        storedCalendar.includes('2026-07-06T02:30:00Z') || 
-        (storedCalendar.includes('Belgian Grand Prix') && storedCalendar.includes('T11:30:00Z'))
-      )) {
-        localStorage.removeItem('f1_calendar_dynamic');
+      if (storedCalendar) {
+        let needsEviction = false;
+        try {
+          const parsed = JSON.parse(storedCalendar);
+          const round9 = parsed.find((r: any) => r.round === 9);
+          if (round9 && round9.status === 'completed' && round9.winnerName.includes('Antonelli')) {
+            needsEviction = true;
+          }
+        } catch (e) {
+          needsEviction = true;
+        }
+
+        if (storedCalendar.includes('2026-07-06T02:30:00Z') || 
+            (storedCalendar.includes('Belgian Grand Prix') && storedCalendar.includes('T11:30:00Z'))) {
+          needsEviction = true;
+        }
+
+        if (needsEviction) {
+          localStorage.removeItem('f1_calendar_dynamic');
+        }
       }
     }
 
