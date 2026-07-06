@@ -72,7 +72,7 @@ export default function HomePage() {
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [activeSession, setActiveSession] = useState<{ name: string; date: string } | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [selectedTimezone, setSelectedTimezone] = useState<'browser' | 'track' | 'ist' | 'bst' | 'utc'>('browser');
+  const [selectedTimezone, setSelectedTimezone] = useState<'browser' | 'track' | 'ist' | 'bst' | 'utc'>('ist');
 
   useEffect(() => {
     setMounted(true);
