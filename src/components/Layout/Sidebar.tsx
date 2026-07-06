@@ -96,10 +96,10 @@ export const Sidebar: React.FC = () => {
           </button>
         ) : (
           <>
-            <div className="brand-logo" style={{ display: 'flex' }}>
+            <Link href="/" className="brand-logo" style={{ display: 'flex', textDecoration: 'none' }}>
               <span className="logo-f1">F1</span>
-              <span className="logo-hub">HUB</span>
-            </div>
+              <span className="logo-hub" style={{ color: '#F5F5F7' }}>HUB</span>
+            </Link>
             <button 
               onClick={() => setCollapsed(true)}
               style={{
