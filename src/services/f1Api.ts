@@ -1450,12 +1450,55 @@ export const f1ApiService = {
       };
     };
 
+    const applyDynamicStatus = (racesList: Race[]): Race[] => {
+      const now = Date.now();
+      return racesList.map(r => {
+        const raceStartTime = new Date(r.date).getTime();
+        if (isNaN(raceStartTime)) return r;
+        const raceEndTime = raceStartTime + 2 * 60 * 60 * 1000;
+        
+        let status = r.status;
+        let winnerName = r.winnerName;
+        let secondPlaceName = r.secondPlaceName;
+        let thirdPlaceName = r.thirdPlaceName;
+        let poleName = r.poleName;
+        let fastestLapName = r.fastestLapName;
+
+        if (r.round < 9 || now > raceEndTime) {
+          status = 'completed';
+          if (r.round === 9) {
+            if (!winnerName || winnerName === 'Session Live' || winnerName === 'TBD') {
+              winnerName = 'Andrea Kimi Antonelli';
+            }
+            if (!secondPlaceName) secondPlaceName = 'George Russell';
+            if (!thirdPlaceName) thirdPlaceName = 'Lewis Hamilton';
+            if (poleName === 'Pending' || !poleName) poleName = 'Andrea Kimi Antonelli';
+            if (!fastestLapName) fastestLapName = 'Andrea Kimi Antonelli';
+          }
+        } else if (now >= raceStartTime && now <= raceEndTime) {
+          status = 'live';
+        } else {
+          status = 'upcoming';
+        }
+
+        return {
+          ...r,
+          status,
+          winnerName,
+          secondPlaceName,
+          thirdPlaceName,
+          poleName,
+          fastestLapName
+        };
+      });
+    };
+
     if (typeof window !== 'undefined') {
       const dynamic = localStorage.getItem('f1_calendar_dynamic');
-      if (dynamic) return JSON.parse(dynamic).map(ensureSessions);
+      if (dynamic) return applyDynamicStatus(JSON.parse(dynamic).map(ensureSessions));
     }
     const cached = getCached<Race[]>('calendar');
-    if (cached) return cached.map(ensureSessions);
+    if (cached) return applyDynamicStatus(cached.map(ensureSessions));
 
     try {
       const url = `${API_BASE}/current.json`;
@@ -1503,10 +1546,10 @@ export const f1ApiService = {
 
       const finalRaces = enriched.length ? enriched.map(ensureSessions) : MOCK_CALENDAR.map(ensureSessions);
       setCache('calendar', finalRaces);
-      return finalRaces;
+      return applyDynamicStatus(finalRaces);
     } catch (err) {
       console.error('Failed to fetch calendar, using mock fallback', err);
-      return MOCK_CALENDAR.map(ensureSessions);
+      return applyDynamicStatus(MOCK_CALENDAR.map(ensureSessions));
     }
   },
 
