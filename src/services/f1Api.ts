@@ -1043,8 +1043,8 @@ export const MOCK_CALENDAR: Race[] = [
     },
     date: '2026-07-19T13:00:00Z',
     sessions: [
-      { name: 'Practice 1', date: '2026-07-17T10:30:00Z', duration: '1 hour' },
-      { name: 'Practice 2', date: '2026-07-17T14:00:00Z', duration: '1 hour' },
+      { name: 'Practice 1', date: '2026-07-17T11:30:00Z', duration: '1 hour' },
+      { name: 'Practice 2', date: '2026-07-17T15:00:00Z', duration: '1 hour' },
       { name: 'Practice 3', date: '2026-07-18T10:30:00Z', duration: '1 hour' },
       { name: 'Qualifying', date: '2026-07-18T14:00:00Z', duration: '1 hour' },
       { name: 'Race', date: '2026-07-19T13:00:00Z', duration: '2 hours' }
@@ -1448,8 +1448,8 @@ export const f1ApiService = {
       return {
         ...race,
         sessions: [
-          { name: 'Practice 1', date: `${fStr}T10:30:00Z`, duration: '1 hour' },
-          { name: 'Practice 2', date: `${fStr}T14:00:00Z`, duration: '1 hour' },
+          { name: 'Practice 1', date: `${fStr}T11:30:00Z`, duration: '1 hour' },
+          { name: 'Practice 2', date: `${fStr}T15:00:00Z`, duration: '1 hour' },
           { name: 'Practice 3', date: `${sStr}T10:30:00Z`, duration: '1 hour' },
           { name: 'Qualifying', date: `${sStr}T14:00:00Z`, duration: '1 hour' },
           { name: 'Race', date: race.date, duration: '2 hours' }
