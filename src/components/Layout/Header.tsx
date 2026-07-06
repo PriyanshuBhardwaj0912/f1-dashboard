@@ -153,7 +153,7 @@ export const Header: React.FC = () => {
               </span>
             </div>
             {nextGP && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginLeft: '0.75rem' }}>
+              <div className="header-next-gp-widget" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginLeft: '0.75rem' }}>
                 <Clock size={14} style={{ color: 'var(--f1-red)' }} />
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <span style={{ fontSize: '0.62rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
@@ -178,7 +178,7 @@ export const Header: React.FC = () => {
               <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Session Ended</span>
             </div>
             {nextGP && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginLeft: '0.75rem' }}>
+              <div className="header-next-gp-widget" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginLeft: '0.75rem' }}>
                 <Clock size={14} style={{ color: 'var(--f1-red)' }} />
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <span style={{ fontSize: '0.62rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>

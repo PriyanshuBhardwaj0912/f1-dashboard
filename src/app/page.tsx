@@ -125,12 +125,12 @@ export default function HomePage() {
 
         {nextGP && (
           <div 
+            className="hero-countdown-card"
             style={{ 
               background: 'rgba(20, 20, 27, 0.85)', 
               padding: '1.2rem 1.5rem', 
               borderRadius: '10px', 
               border: '1px solid var(--border-color)',
-              minWidth: '320px',
               backdropFilter: 'blur(10px)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
             }}
@@ -160,11 +160,11 @@ export default function HomePage() {
                   {activeSession ? activeSession.name.toUpperCase() : 'SESSION'} LIVE NOW
                 </span>
               ) : (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--text-secondary)' }}>
                     {activeSession ? activeSession.name : 'Race'} |
                   </span>
-                  <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
                     {timeLeft.d > 0 && renderTimeSegment(timeLeft.d, 'D')}
                     {renderTimeSegment(timeLeft.h, 'H')}
                     {renderTimeSegment(timeLeft.m, 'M')}

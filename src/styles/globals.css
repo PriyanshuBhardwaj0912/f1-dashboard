@@ -735,3 +735,27 @@ nextjs-portal,
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45) !important;
   background-color: rgba(255, 255, 255, 0.02) !important;
 }
+
+.hero-countdown-card {
+  min-width: 320px;
+}
+
+@media (max-width: 768px) {
+  .hero-countdown-card {
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-countdown-card {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-next-gp-widget {
+    display: none !important;
+  }
+}
