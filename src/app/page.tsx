@@ -277,6 +277,16 @@ export default function HomePage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          if (typeof window !== 'undefined' && sessionStorage.getItem('f1_homepage_intro_seen') === 'true') {
+            var style = document.createElement('style');
+            style.id = 'gantry-intro-style';
+            style.innerHTML = '#gantry-intro-overlay { display: none !important; }';
+            document.head.appendChild(style);
+          }
+        `
+      }} />
       {/* Hero Banner */}
       <section className="card card-hero">
         <div className="hero-content" style={{ flex: 1 }}>
@@ -808,7 +818,7 @@ export default function HomePage() {
       `}</style>
       {/* Start Gantry Lights Animation Overlay */}
       {isIntroActive && (
-        <div style={{
+        <div id="gantry-intro-overlay" style={{
           position: 'fixed',
           top: 0,
           left: 0,
