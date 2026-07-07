@@ -921,16 +921,6 @@ export default function HomePage() {
           }}>
             IT'S LIGHTS OUT AND AWAY WE GO
           </div>
-
-          {/* Red and White Warning stripe tape */}
-          <div style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            height: '20px',
-            background: 'repeating-linear-gradient(-45deg, #ff1801, #ff1801 12px, #ffffff 12px, #ffffff 24px)'
-          }} />
         </div>
       )}
     </div>
