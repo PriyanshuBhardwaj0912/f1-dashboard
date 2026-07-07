@@ -73,6 +73,61 @@ export default function HomePage() {
   const [activeSession, setActiveSession] = useState<{ name: string; date: string } | null>(null);
   const [mounted, setMounted] = useState(false);
   const [selectedTimezone, setSelectedTimezone] = useState<'browser' | 'track' | 'ist' | 'bst' | 'utc'>('ist');
+  const [isIntroActive, setIsIntroActive] = useState(true);
+  const [gantryState, setGantryState] = useState(0);
+  const [introOpacity, setIntroOpacity] = useState(1);
+
+  useEffect(() => {
+    // Check if we already saw the intro during this browser session to avoid annoyance on internal navigation
+    if (typeof window !== 'undefined') {
+      const introSeen = sessionStorage.getItem('f1_homepage_intro_seen');
+      if (introSeen === 'true') {
+        setIsIntroActive(false);
+        return;
+      }
+    }
+
+    const timeouts: any[] = [];
+    
+    // Light up red lights column by column at 500ms intervals
+    for (let i = 1; i <= 5; i++) {
+      timeouts.push(
+        setTimeout(() => {
+          setGantryState(i);
+        }, i * 500)
+      );
+    }
+    
+    // Random delay (random 1.0s to 2.2s) between all red lights (2.5s) and green lights
+    const randomDelay = 2500 + 1000 + Math.random() * 1200;
+    
+    timeouts.push(
+      setTimeout(() => {
+        setGantryState(6); // Green lights go!
+        
+        // Hold green lights for 1.2s, then fade out
+        timeouts.push(
+          setTimeout(() => {
+            setIntroOpacity(0);
+            
+            // Turn off overlay after 500ms fade completes
+            timeouts.push(
+              setTimeout(() => {
+                setIsIntroActive(false);
+                if (typeof window !== 'undefined') {
+                  sessionStorage.setItem('f1_homepage_intro_seen', 'true');
+                }
+              }, 500)
+            );
+          }, 1200)
+        );
+      }, randomDelay)
+    );
+
+    return () => {
+      timeouts.forEach(t => clearTimeout(t));
+    };
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -751,6 +806,122 @@ export default function HomePage() {
           100% { filter: drop-shadow(0px 0px 4px rgba(225,6,0,0.6)); }
         }
       `}</style>
+      {/* Start Gantry Lights Animation Overlay */}
+      {isIntroActive && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#070709',
+          zIndex: 99999,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '2.5rem',
+          transition: 'opacity 0.5s ease',
+          opacity: introOpacity,
+          pointerEvents: introOpacity === 0 ? 'none' : 'auto',
+          userSelect: 'none'
+        }}>
+          {/* Skip Intro */}
+          <button 
+            onClick={() => {
+              setIntroOpacity(0);
+              setTimeout(() => {
+                setIsIntroActive(false);
+                if (typeof window !== 'undefined') {
+                  sessionStorage.setItem('f1_homepage_intro_seen', 'true');
+                }
+              }, 500);
+            }}
+            style={{
+              position: 'absolute',
+              top: '24px',
+              right: '24px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: 'var(--text-muted)',
+              borderRadius: '6px',
+              padding: '6px 14px',
+              fontSize: '0.7rem',
+              cursor: 'pointer',
+              fontWeight: 700,
+              letterSpacing: '1px',
+              fontFamily: 'var(--font-mono)',
+              zIndex: 100000
+            }}
+          >
+            SKIP INTRO ⏭️
+          </button>
+
+          {/* Lights Gantry Box */}
+          <div style={{
+            display: 'flex',
+            background: '#121216',
+            border: '3px solid #22222a',
+            borderRadius: '16px',
+            padding: '28px 42px',
+            gap: '24px',
+            boxShadow: '0 15px 40px rgba(0,0,0,0.8)'
+          }}>
+            {Array.from({ length: 5 }).map((_, colIdx) => {
+              const isRed = gantryState > colIdx && gantryState <= 5;
+              const isGreen = gantryState === 6;
+              
+              const ledStyle = (active: boolean, color: 'red' | 'green') => ({
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: active 
+                  ? (color === 'red' ? '#ff1801' : '#00ff66') 
+                  : '#2a2a35',
+                boxShadow: active 
+                  ? (color === 'red' 
+                    ? '0 0 30px #ff1801, inset 0 0 10px rgba(255,255,255,0.7)' 
+                    : '0 0 30px #00ff66, inset 0 0 10px rgba(255,255,255,0.7)') 
+                  : 'inset 0 2px 4px rgba(0,0,0,0.6)',
+                transition: 'all 0.05s ease',
+                border: '1px solid #1a1a24'
+              });
+
+              return (
+                <div key={colIdx} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={ledStyle(isRed || isGreen, isGreen ? 'green' : 'red')} />
+                  <div style={ledStyle(isRed || isGreen, isGreen ? 'green' : 'red')} />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Monospace Spaced Text */}
+          <div style={{
+            color: gantryState === 6 ? '#00ff66' : 'var(--text-secondary)',
+            fontSize: '0.9rem',
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            fontWeight: 700,
+            opacity: gantryState > 0 ? 1 : 0.3,
+            transition: 'all 0.3s ease',
+            textShadow: gantryState === 6 ? '0 0 12px rgba(0, 255, 102, 0.4)' : 'none'
+          }}>
+            IT'S LIGHTS OUT AND AWAY WE GO
+          </div>
+
+          {/* Red and White Warning stripe tape */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '20px',
+            background: 'repeating-linear-gradient(-45deg, #ff1801, #ff1801 12px, #ffffff 12px, #ffffff 24px)'
+          }} />
+        </div>
+      )}
     </div>
   );
 }

@@ -124,111 +124,6 @@ export default function LiveTimingPage() {
   const [coords, setCoords] = useState<{ [id: string]: { x: number; y: number } }>({});
   const [liveGPName, setLiveGPName] = useState('British Grand Prix');
   const [session, setSession] = useState<'practice' | 'qualifying' | 'race'>('race');
-  const [isStartingGantryActive, setIsStartingGantryActive] = useState(false);
-  const [gantryState, setGantryState] = useState(0); // 0: off, 1-5: red columns, 6: green
-  const [isReactionGameMode, setIsReactionGameMode] = useState(false);
-  const [reactionStartTime, setReactionStartTime] = useState<number | null>(null);
-  const [reactionTimeResult, setReactionTimeResult] = useState<number | null>(null);
-  const [reactionBestScore, setReactionBestScore] = useState<number | null>(null);
-  const [reactionStatus, setReactionStatus] = useState<'waiting' | 'ready' | 'clicked-early' | 'clicked-success'>('waiting');
-  
-  const gantryTimeoutsRef = useRef<any[]>([]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const best = localStorage.getItem('f1_best_reaction_time');
-      if (best) {
-        setReactionBestScore(parseInt(best));
-      }
-    }
-  }, []);
-
-  const clearGantryTimeouts = () => {
-    gantryTimeoutsRef.current.forEach(t => clearTimeout(t));
-    gantryTimeoutsRef.current = [];
-  };
-
-  const triggerStartSequence = (gameMode: boolean = false) => {
-    setIsSimulating(false);
-    clearGantryTimeouts();
-    
-    setIsStartingGantryActive(true);
-    setIsReactionGameMode(gameMode);
-    setGantryState(0);
-    setReactionStatus('waiting');
-    setReactionTimeResult(null);
-    setReactionStartTime(null);
-
-    const timeouts: any[] = [];
-
-    // Turn on red lights column by column at 800ms intervals
-    for (let i = 1; i <= 5; i++) {
-      timeouts.push(
-        setTimeout(() => {
-          setGantryState(i);
-        }, i * 800)
-      );
-    }
-
-    // Random delay between all red lights (4.0s) and green lights go (random 1.2s to 3.2s)
-    const randomDelay = 4000 + 1200 + Math.random() * 2000;
-
-    timeouts.push(
-      setTimeout(() => {
-        setGantryState(6);
-        setReactionStatus('ready');
-        setReactionStartTime(Date.now());
-
-        if (!gameMode) {
-          setIsSimulating(true);
-          timeouts.push(
-            setTimeout(() => {
-              setIsStartingGantryActive(false);
-              setGantryState(0);
-            }, 1500)
-          );
-        }
-      }, randomDelay)
-    );
-
-    gantryTimeoutsRef.current = timeouts;
-  };
-
-  const handleReactionClick = () => {
-    if (!isReactionGameMode) return;
-
-    if (reactionStatus === 'waiting') {
-      clearGantryTimeouts();
-      setReactionStatus('clicked-early');
-    } else if (reactionStatus === 'ready') {
-      const elapsed = Date.now() - (reactionStartTime || 0);
-      setReactionTimeResult(elapsed);
-      setReactionStatus('clicked-success');
-      clearGantryTimeouts();
-
-      if (!reactionBestScore || elapsed < reactionBestScore) {
-        setReactionBestScore(elapsed);
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('f1_best_reaction_time', elapsed.toString());
-        }
-      }
-    }
-  };
-
-  const handleReset = () => {
-    clearGantryTimeouts();
-    setIsStartingGantryActive(false);
-    setGantryState(0);
-    resetSimulator();
-  };
-
-  const getReactionRating = (time: number) => {
-    if (time < 180) return { text: "⚡ SUPERHUMAN! That's faster than most F1 drivers!", color: '#00ff66' };
-    if (time < 220) return { text: "🏎️ ELITE! True F1 driver reaction time!", color: '#00ff66' };
-    if (time < 260) return { text: "🟢 FAST! Excellent reflexes!", color: '#a3ff12' };
-    if (time < 320) return { text: "🟡 AVERAGE. Decent start.", color: 'var(--yellow-accent)' };
-    return { text: "🔴 KEEP PRACTICING! Reflexes need tuning.", color: 'var(--f1-red)' };
-  };
 
   useEffect(() => {
     const loadLiveGPName = async () => {
@@ -339,7 +234,7 @@ export default function LiveTimingPage() {
             <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem' }}>
               {!isSimulating ? (
                 <button 
-                  onClick={() => triggerStartSequence(false)}
+                  onClick={() => setIsSimulating(true)}
                   style={{
                     backgroundColor: 'var(--green-accent)',
                     border: 'none',
@@ -378,7 +273,7 @@ export default function LiveTimingPage() {
               )}
 
               <button 
-                onClick={handleReset}
+                onClick={resetSimulator}
                 style={{
                   backgroundColor: 'var(--bg-tertiary)',
                   border: '1px solid var(--border-color)',
@@ -393,24 +288,6 @@ export default function LiveTimingPage() {
                 }}
               >
                 <RotateCcw size={16} /> Reset
-              </button>
-
-              <button 
-                onClick={() => triggerStartSequence(true)}
-                style={{
-                  backgroundColor: 'var(--bg-tertiary)',
-                  border: '1px solid var(--border-color)',
-                  color: 'var(--text-primary)',
-                  padding: '0.6rem 1.25rem',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontWeight: 500,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
-                }}
-              >
-                🚦 Reaction Test
               </button>
             </div>
 
@@ -463,177 +340,6 @@ export default function LiveTimingPage() {
             </div>
             
             <div className="track-svg-canvas" style={{ position: 'relative', backgroundColor: '#070709', minHeight: '390px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
-              {/* Start Gantry Lights Animation Overlay */}
-              {isStartingGantryActive && (
-                <div 
-                  onClick={handleReactionClick}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(7, 7, 9, 0.96)',
-                    zIndex: 10,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '2rem',
-                    transition: 'all 0.3s ease',
-                    fontFamily: 'var(--font-mono)',
-                    cursor: isReactionGameMode && (reactionStatus === 'waiting' || reactionStatus === 'ready') ? 'pointer' : 'default',
-                    userSelect: 'none'
-                  }}
-                >
-                  {/* Reaction Mode Indicator Badge */}
-                  {isReactionGameMode && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '20px',
-                      display: 'flex',
-                      gap: '15px',
-                      fontSize: '0.75rem',
-                      color: 'var(--text-secondary)'
-                    }}>
-                      <span>🎮 REACTION TIME CHALLENGE</span>
-                      {reactionBestScore && (
-                        <span style={{ color: 'var(--yellow-accent)' }}>⚡ PERSONAL BEST: {reactionBestScore}ms</span>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Lights Gantry Box */}
-                  <div style={{
-                    display: 'flex',
-                    background: '#121216',
-                    border: '3px solid #22222a',
-                    borderRadius: '16px',
-                    padding: '24px 36px',
-                    gap: '20px',
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
-                  }}>
-                    {Array.from({ length: 5 }).map((_, colIdx) => {
-                      const isRed = gantryState > colIdx && gantryState <= 5;
-                      const isGreen = gantryState === 6;
-                      
-                      const ledStyle = (active: boolean, color: 'red' | 'green') => ({
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '50%',
-                        backgroundColor: active 
-                          ? (color === 'red' ? '#ff1801' : '#00ff66') 
-                          : '#2a2a35',
-                        boxShadow: active 
-                          ? (color === 'red' 
-                            ? '0 0 25px #ff1801, inset 0 0 8px rgba(255,255,255,0.7)' 
-                            : '0 0 25px #00ff66, inset 0 0 8px rgba(255,255,255,0.7)') 
-                          : 'inset 0 2px 4px rgba(0,0,0,0.6)',
-                        transition: 'all 0.05s ease',
-                        border: '1px solid #1a1a24'
-                      });
-
-                      return (
-                        <div key={colIdx} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                          <div style={ledStyle(isRed || isGreen, isGreen ? 'green' : 'red')} />
-                          <div style={ledStyle(isRed || isGreen, isGreen ? 'green' : 'red')} />
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Status & Results */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                    <div style={{
-                      color: gantryState === 6 ? '#00ff66' : 'var(--text-secondary)',
-                      fontSize: '0.85rem',
-                      letterSpacing: '0.3em',
-                      textTransform: 'uppercase',
-                      textAlign: 'center',
-                      fontWeight: 700,
-                      opacity: gantryState > 0 ? 1 : 0.4,
-                      transition: 'all 0.3s ease',
-                      textShadow: gantryState === 6 ? '0 0 10px rgba(0, 255, 102, 0.4)' : 'none'
-                    }}>
-                      IT'S LIGHTS OUT AND AWAY WE GO
-                    </div>
-
-                    {/* Reaction Game Status Prompts */}
-                    {isReactionGameMode && (
-                      <div style={{ textAlign: 'center', minHeight: '60px' }}>
-                        {reactionStatus === 'waiting' && (
-                          <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                            Wait for green lights...
-                          </span>
-                        )}
-                        {reactionStatus === 'ready' && (
-                          <span style={{ fontSize: '1.2rem', color: '#00ff66', fontWeight: 800, animation: 'svgPulseAnim 0.5s infinite alternate' }}>
-                            TAP NOW!
-                          </span>
-                        )}
-                        {reactionStatus === 'clicked-early' && (
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
-                            <span style={{ fontSize: '1.1rem', color: 'var(--f1-red)', fontWeight: 800 }}>
-                              🚫 JUMP START!
-                            </span>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                              You clicked before the lights went green.
-                            </span>
-                            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                              <button 
-                                onClick={(e) => { e.stopPropagation(); triggerStartSequence(true); }}
-                                style={{ background: 'var(--f1-red)', border: 'none', color: '#fff', borderRadius: '4px', padding: '4px 12px', fontSize: '0.72rem', cursor: 'pointer', fontWeight: 700 }}
-                              >
-                                Try Again
-                              </button>
-                              <button 
-                                onClick={(e) => { e.stopPropagation(); setIsStartingGantryActive(false); }}
-                                style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', borderRadius: '4px', padding: '4px 12px', fontSize: '0.72rem', cursor: 'pointer' }}
-                              >
-                                Exit
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                        {reactionStatus === 'clicked-success' && reactionTimeResult && (
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', alignItems: 'center' }}>
-                            <span style={{ fontSize: '1.4rem', color: '#00ff66', fontWeight: 800 }}>
-                              {reactionTimeResult} ms
-                            </span>
-                            <span style={{ fontSize: '0.78rem', color: getReactionRating(reactionTimeResult).color, fontWeight: 700 }}>
-                              {getReactionRating(reactionTimeResult).text}
-                            </span>
-                            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                              <button 
-                                onClick={(e) => { e.stopPropagation(); triggerStartSequence(true); }}
-                                style={{ background: 'var(--green-accent)', border: 'none', color: '#fff', borderRadius: '4px', padding: '4px 12px', fontSize: '0.72rem', cursor: 'pointer', fontWeight: 700 }}
-                              >
-                                Play Again
-                              </button>
-                              <button 
-                                onClick={(e) => { e.stopPropagation(); setIsStartingGantryActive(false); }}
-                                style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', borderRadius: '4px', padding: '4px 12px', fontSize: '0.72rem', cursor: 'pointer' }}
-                              >
-                                Exit
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Red and White Warning stripe tape */}
-                  <div style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '16px',
-                    background: 'repeating-linear-gradient(-45deg, #ff1801, #ff1801 10px, #ffffff 10px, #ffffff 20px)'
-                  }} />
-                </div>
-              )}
               <svg viewBox="0 0 1375 790" width="100%" height="100%" style={{ padding: '15px', zIndex: 1, position: 'relative' }}>
                 <style>{`
                   @keyframes svgPulse {
