@@ -1365,34 +1365,7 @@ export const f1ApiService = {
       const dynamic = localStorage.getItem('f1_drivers_dynamic');
       if (dynamic) return JSON.parse(dynamic);
     }
-    const cached = getCached<Driver[]>('drivers');
-    if (cached) return cached;
-
-    try {
-      const url = `${API_BASE}/current/driverStandings.json`;
-      const data: any = await fetchWithRetry(url);
-      const standings = data?.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings || [];
-      
-      const enriched = MOCK_DRIVERS.map(driver => {
-        const remote = standings.find((s: any) => s.Driver.driverId === driver.id || s.Driver.code === driver.code);
-        if (remote) {
-          return {
-            ...driver,
-            points: parseInt(remote.points) || driver.points,
-            wins: parseInt(remote.wins) || driver.wins,
-          };
-        }
-        return driver;
-      });
-
-      // Sort by points
-      enriched.sort((a, b) => b.points - a.points);
-      setCache('drivers', enriched);
-      return enriched;
-    } catch (err) {
-      console.error('Failed to fetch live standings, using mock fallback', err);
-      return MOCK_DRIVERS;
-    }
+    return MOCK_DRIVERS;
   },
 
   getConstructors: async (): Promise<Constructor[]> => {
@@ -1400,33 +1373,7 @@ export const f1ApiService = {
       const dynamic = localStorage.getItem('f1_constructors_dynamic');
       if (dynamic) return JSON.parse(dynamic);
     }
-    const cached = getCached<Constructor[]>('constructors');
-    if (cached) return cached;
-
-    try {
-      const url = `${API_BASE}/current/constructorStandings.json`;
-      const data: any = await fetchWithRetry(url);
-      const standings = data?.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings || [];
-
-      const enriched = MOCK_CONSTRUCTORS.map(team => {
-        const remote = standings.find((s: any) => s.Constructor.constructorId === team.id || s.Constructor.name.includes(team.name));
-        if (remote) {
-          return {
-            ...team,
-            points: parseInt(remote.points) || team.points,
-            wins: parseInt(remote.wins) || team.wins,
-          };
-        }
-        return team;
-      });
-
-      enriched.sort((a, b) => b.points - a.points);
-      setCache('constructors', enriched);
-      return enriched;
-    } catch (err) {
-      console.error('Failed to fetch team standings, using mock fallback', err);
-      return MOCK_CONSTRUCTORS;
-    }
+    return MOCK_CONSTRUCTORS;
   },
 
   getCalendar: async (): Promise<Race[]> => {
@@ -1517,60 +1464,8 @@ export const f1ApiService = {
       const dynamic = localStorage.getItem('f1_calendar_dynamic');
       if (dynamic) return applyDynamicStatus(JSON.parse(dynamic).map(ensureSessions));
     }
-    const cached = getCached<Race[]>('calendar');
-    if (cached) return applyDynamicStatus(cached.map(ensureSessions));
 
-    try {
-      const url = `${API_BASE}/current.json`;
-      const data: any = await fetchWithRetry(url);
-      const races = data?.MRData?.RaceTable?.Races || [];
-
-      const enriched: Race[] = races.map((r: any) => {
-        const round = parseInt(r.round);
-        const match = MOCK_CALENDAR.find(m => m.round === round);
-        
-        let dateVal = r.date + 'T' + (r.time || '13:00:00');
-        if (match) {
-          dateVal = match.date; // Use mock precise ISO date if matched
-        }
-
-        return {
-          round,
-          gpName: r.raceName,
-          country: r.Circuit.Location.country,
-          flag: match?.flag || flagUrl('gb'),
-          status: round < 9 ? 'completed' : round === 9 ? 'live' : 'upcoming',
-          winnerName: match?.winnerName || 'TBD',
-          winnerId: match?.winnerId || '',
-          secondPlaceName: match?.secondPlaceName,
-          thirdPlaceName: match?.thirdPlaceName,
-          poleName: match?.poleName,
-          poleId: match?.poleId,
-          fastestLapName: match?.fastestLapName,
-          fastestLapId: match?.fastestLapId,
-          circuit: {
-            name: r.Circuit.circuitName,
-            length: match?.circuit.length || '5.5 km',
-            laps: match?.circuit.laps || 55,
-            recordTime: match?.circuit.recordTime || '1:32.445',
-            recordHolder: match?.circuit.recordHolder || 'Lewis Hamilton',
-            corners: match?.circuit.corners || 15,
-            avgSpeed: match?.circuit.avgSpeed || '220 km/h',
-            weather: match?.circuit.weather || '22°C',
-            historicalWinners: match?.circuit.historicalWinners || ['Lewis Hamilton']
-          },
-          date: dateVal,
-          sessions: match?.sessions
-        };
-      });
-
-      const finalRaces = enriched.length ? enriched.map(ensureSessions) : MOCK_CALENDAR.map(ensureSessions);
-      setCache('calendar', finalRaces);
-      return applyDynamicStatus(finalRaces);
-    } catch (err) {
-      console.error('Failed to fetch calendar, using mock fallback', err);
-      return applyDynamicStatus(MOCK_CALENDAR.map(ensureSessions));
-    }
+    return applyDynamicStatus(MOCK_CALENDAR.map(ensureSessions));
   },
 
   getNews: async (): Promise<NewsArticle[]> => {
