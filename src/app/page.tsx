@@ -896,17 +896,18 @@ export default function HomePage() {
             })}
           </div>
 
-          {/* Monospace Spaced Text */}
+          {/* Monospace Spaced Text - only visible at green light state */}
           <div style={{
-            color: gantryState === 6 ? '#00ff66' : 'var(--text-secondary)',
+            color: '#00ff66',
             fontSize: '0.9rem',
             letterSpacing: '0.4em',
             textTransform: 'uppercase',
             textAlign: 'center',
             fontWeight: 700,
-            opacity: gantryState > 0 ? 1 : 0.3,
-            transition: 'all 0.3s ease',
-            textShadow: gantryState === 6 ? '0 0 12px rgba(0, 255, 102, 0.4)' : 'none'
+            opacity: gantryState === 6 ? 1 : 0,
+            transform: gantryState === 6 ? 'scale(1)' : 'scale(0.95)',
+            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+            textShadow: '0 0 12px rgba(0, 255, 102, 0.5)'
           }}>
             IT'S LIGHTS OUT AND AWAY WE GO
           </div>
