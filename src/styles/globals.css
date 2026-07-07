@@ -759,3 +759,22 @@ nextjs-portal,
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   HOMEPAGE STARTING LIGHTS INTRO OVERLAY LAYOUT OVERRIDES
+   ========================================================================== */
+html.f1-intro-active .sidebar,
+html.f1-intro-active .top-navbar {
+  display: none !important;
+}
+
+html.f1-intro-active .main-content {
+  padding-left: 0 !important;
+}
+
+html.f1-intro-active .content-wrapper {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  animation: none !important;
+}

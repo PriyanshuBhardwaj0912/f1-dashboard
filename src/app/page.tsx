@@ -114,6 +114,7 @@ export default function HomePage() {
             timeouts.push(
               setTimeout(() => {
                 setIsIntroActive(false);
+                document.documentElement.classList.remove('f1-intro-active');
                 if (typeof window !== 'undefined') {
                   sessionStorage.setItem('f1_homepage_intro_seen', 'true');
                 }
@@ -126,6 +127,7 @@ export default function HomePage() {
 
     return () => {
       timeouts.forEach(t => clearTimeout(t));
+      document.documentElement.classList.remove('f1-intro-active');
     };
   }, []);
 
@@ -279,11 +281,8 @@ export default function HomePage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <script dangerouslySetInnerHTML={{
         __html: `
-          if (typeof window !== 'undefined' && sessionStorage.getItem('f1_homepage_intro_seen') === 'true') {
-            var style = document.createElement('style');
-            style.id = 'gantry-intro-style';
-            style.innerHTML = '#gantry-intro-overlay { display: none !important; }';
-            document.head.appendChild(style);
+          if (typeof window !== 'undefined' && sessionStorage.getItem('f1_homepage_intro_seen') !== 'true') {
+            document.documentElement.classList.add('f1-intro-active');
           }
         `
       }} />
@@ -842,6 +841,7 @@ export default function HomePage() {
               setIntroOpacity(0);
               setTimeout(() => {
                 setIsIntroActive(false);
+                document.documentElement.classList.remove('f1-intro-active');
                 if (typeof window !== 'undefined') {
                   sessionStorage.setItem('f1_homepage_intro_seen', 'true');
                 }
