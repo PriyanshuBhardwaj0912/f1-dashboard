@@ -106,7 +106,7 @@ export const MOCK_DRIVERS: Driver[] = [
     fastestLaps: 1,
     dnfs: 0,
     bio: 'Lando Norris is a British racing driver competing in Formula One for McLaren.',
-    championships: 0,
+    championships: 1,
     polePositions: 8,
     careerWins: 5,
     careerPodiums: 26,
