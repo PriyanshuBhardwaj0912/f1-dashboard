@@ -1034,8 +1034,8 @@ export const MOCK_CALENDAR: Race[] = [
     thirdPlaceName: 'Max Verstappen', 
     poleName: 'Andrea Kimi Antonelli', 
     poleId: 'antonelli', 
-    fastestLapName: 'George Russell', 
-    fastestLapId: 'russell', 
+    fastestLapName: 'Lando Norris', 
+    fastestLapId: 'norris', 
     circuit: { 
       name: 'Circuit de Spa-Francorchamps', 
       length: '7.004 km', 
@@ -1466,9 +1466,9 @@ export const f1ApiService = {
               poleName = 'Andrea Kimi Antonelli';
               poleId = 'antonelli';
             }
-            if (!fastestLapName) {
-              fastestLapName = 'George Russell';
-              fastestLapId = 'russell';
+            if (!fastestLapName || fastestLapName === 'George Russell') {
+              fastestLapName = 'Lando Norris';
+              fastestLapId = 'norris';
             }
           }
         } else if (now >= raceStartTime && now <= raceEndTime) {
