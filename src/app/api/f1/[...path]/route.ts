@@ -1,29 +1,23 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ path: string[] }> }
+) {
   try {
-    const { searchParams } = new URL(request.url);
-    let path = searchParams.get('path');
-    if (!path) {
-      return NextResponse.json({ error: 'Missing path parameter' }, { status: 400 });
-    }
-
-    // Strip leading slash if present
-    if (path.startsWith('/')) {
-      path = path.slice(1);
-    }
+    const { path } = await params;
+    const pathStr = path.join('/');
 
     // Security whitelist check: only allow 2026 or current season paths
-    if (!path.startsWith('2026') && !path.startsWith('current')) {
+    if (!pathStr.startsWith('2026') && !pathStr.startsWith('current')) {
       return NextResponse.json({ error: 'Unauthorized path query' }, { status: 400 });
     }
 
     // Reconstruct the full Jolpica F1 API URL with query parameters (e.g. limit=1000)
-    const targetUrl = new URL(`https://api.jolpi.ca/ergast/f1/${path}`);
+    const { searchParams } = new URL(request.url);
+    const targetUrl = new URL(`https://api.jolpi.ca/ergast/f1/${pathStr}`);
     searchParams.forEach((value, key) => {
-      if (key !== 'path') {
-        targetUrl.searchParams.set(key, value);
-      }
+      targetUrl.searchParams.set(key, value);
     });
 
     const res = await fetch(targetUrl.toString(), {

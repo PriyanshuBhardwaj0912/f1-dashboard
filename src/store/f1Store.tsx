@@ -119,14 +119,14 @@ export const F1Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
 
       // Versioned cache eviction to clear out-of-date standings points and calendar cache
-      if (!localStorage.getItem('f1_cache_eviction_v15')) {
+      if (!localStorage.getItem('f1_cache_eviction_v16')) {
         localStorage.removeItem('f1_drivers_dynamic');
         localStorage.removeItem('f1_constructors_dynamic');
         localStorage.removeItem('f1_calendar_dynamic');
         localStorage.removeItem('f1_cache_drivers');
         localStorage.removeItem('f1_cache_constructors');
         localStorage.removeItem('f1_cache_calendar');
-        localStorage.setItem('f1_cache_eviction_v15', 'true');
+        localStorage.setItem('f1_cache_eviction_v16', 'true');
       }
 
       // Evict old calendar cache containing the incorrect Monday date, incorrect Belgian GP times, or incorrect British GP winner (Kimi Antonelli instead of Charles Leclerc)
