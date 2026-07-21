@@ -1367,6 +1367,86 @@ async function fetchWithRetry<T>(url: string, retries = 2): Promise<T> {
 
 const JOLPICA_BASE = '/api/f1';
 
+async function fetchAllResults(): Promise<any[]> {
+  const limit = 100;
+  let offset = 0;
+  let allRaces: any[] = [];
+  
+  try {
+    const res = await fetch(`${JOLPICA_BASE}/2026/results.json?limit=${limit}&offset=${offset}`);
+    if (!res.ok) throw new Error('Failed to fetch results page');
+    const data = await res.json();
+    const races = data?.MRData?.RaceTable?.Races || [];
+    allRaces = allRaces.concat(races);
+    
+    const total = parseInt(data?.MRData?.total) || 0;
+    const remainingPromises = [];
+    
+    offset += limit;
+    while (offset < total) {
+      const currentOffset = offset;
+      remainingPromises.push(
+        fetch(`${JOLPICA_BASE}/2026/results.json?limit=${limit}&offset=${currentOffset}`)
+          .then(r => r.ok ? r.json() : null)
+          .then(d => d?.MRData?.RaceTable?.Races || [])
+          .catch(() => [])
+      );
+      offset += limit;
+    }
+    
+    if (remainingPromises.length > 0) {
+      const remainingPages = await Promise.all(remainingPromises);
+      remainingPages.forEach(racesList => {
+        allRaces = allRaces.concat(racesList);
+      });
+    }
+  } catch (err) {
+    console.error('Error fetching paginated results', err);
+  }
+  
+  return allRaces;
+}
+
+async function fetchAllQualifying(): Promise<any[]> {
+  const limit = 100;
+  let offset = 0;
+  let allRaces: any[] = [];
+  
+  try {
+    const res = await fetch(`${JOLPICA_BASE}/2026/qualifying.json?limit=${limit}&offset=${offset}`);
+    if (!res.ok) throw new Error('Failed to fetch qualifying page');
+    const data = await res.json();
+    const races = data?.MRData?.RaceTable?.Races || [];
+    allRaces = allRaces.concat(races);
+    
+    const total = parseInt(data?.MRData?.total) || 0;
+    const remainingPromises = [];
+    
+    offset += limit;
+    while (offset < total) {
+      const currentOffset = offset;
+      remainingPromises.push(
+        fetch(`${JOLPICA_BASE}/2026/qualifying.json?limit=${limit}&offset=${currentOffset}`)
+          .then(r => r.ok ? r.json() : null)
+          .then(d => d?.MRData?.RaceTable?.Races || [])
+          .catch(() => [])
+      );
+      offset += limit;
+    }
+    
+    if (remainingPromises.length > 0) {
+      const remainingPages = await Promise.all(remainingPromises);
+      remainingPages.forEach(racesList => {
+        allRaces = allRaces.concat(racesList);
+      });
+    }
+  } catch (err) {
+    console.error('Error fetching paginated qualifying', err);
+  }
+  
+  return allRaces;
+}
+
 export const f1ApiService = {
   getDrivers: async (): Promise<Driver[]> => {
     // If we have simulation updates stored, prioritize them so the simulator works!
@@ -1424,10 +1504,8 @@ export const f1ApiService = {
         });
 
         try {
-          const resultsRes = await fetch(`${JOLPICA_BASE}/2026/results.json?limit=1000`);
-          if (resultsRes.ok) {
-            const resultsData = await resultsRes.json();
-            const races = resultsData?.MRData?.RaceTable?.Races || [];
+          const races = await fetchAllResults();
+          if (races.length > 0) {
             
             mergedDrivers.forEach((driver: Driver) => {
               const progression: { race: string; points: number }[] = [];
@@ -1530,10 +1608,8 @@ export const f1ApiService = {
         });
 
         try {
-          const resultsRes = await fetch(`${JOLPICA_BASE}/2026/results.json?limit=1000`);
-          if (resultsRes.ok) {
-            const resultsData = await resultsRes.json();
-            const races = resultsData?.MRData?.RaceTable?.Races || [];
+          const races = await fetchAllResults();
+          if (races.length > 0) {
 
             mergedConstructors.forEach((team: Constructor) => {
               const progression: { race: string; points: number }[] = [];
@@ -1657,22 +1733,14 @@ export const f1ApiService = {
       if (apiRaces.length > 0) {
         let resultsRaces: any[] = [];
         try {
-          const resultsRes = await fetch(`${JOLPICA_BASE}/2026/results.json?limit=1000`);
-          if (resultsRes.ok) {
-            const resultsData = await resultsRes.json();
-            resultsRaces = resultsData?.MRData?.RaceTable?.Races || [];
-          }
+          resultsRaces = await fetchAllResults();
         } catch (err) {
           console.warn('Failed to fetch results for calendar', err);
         }
 
         let qualifyingRaces: any[] = [];
         try {
-          const qualRes = await fetch(`${JOLPICA_BASE}/2026/qualifying.json?limit=1000`);
-          if (qualRes.ok) {
-            const qualData = await qualRes.json();
-            qualifyingRaces = qualData?.MRData?.RaceTable?.Races || [];
-          }
+          qualifyingRaces = await fetchAllQualifying();
         } catch (err) {
           console.warn('Failed to fetch qualifying results for calendar', err);
         }

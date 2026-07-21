@@ -527,13 +527,13 @@ export default function HomePage() {
                         <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                           🥈 <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>2nd</span>
                         </span>
-                        <strong style={{ color: 'var(--text-primary)' }}>{race.secondPlaceName || 'George Russell'}</strong>
+                        <strong style={{ color: 'var(--text-primary)' }}>{race.secondPlaceName || 'TBD'}</strong>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                           🥉 <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>3rd</span>
                         </span>
-                        <strong style={{ color: 'var(--text-primary)' }}>{race.thirdPlaceName || 'Lewis Hamilton'}</strong>
+                        <strong style={{ color: 'var(--text-primary)' }}>{race.thirdPlaceName || 'TBD'}</strong>
                       </div>
                     </div>
                   </div>
@@ -544,14 +544,14 @@ export default function HomePage() {
                       <Compass size={14} style={{ color: 'var(--f1-red)' }} />
                       <div>
                         <span style={{ display: 'block', fontSize: '0.62rem', color: 'var(--text-muted)' }}>Pole Position</span>
-                        <strong style={{ color: 'var(--text-secondary)' }}>{race.poleName || 'Kimi Antonelli'}</strong>
+                        <strong style={{ color: 'var(--text-secondary)' }}>{race.poleName || 'TBD'}</strong>
                       </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <Zap size={14} style={{ color: 'var(--purple-accent)' }} />
                       <div>
                         <span style={{ display: 'block', fontSize: '0.62rem', color: 'var(--text-muted)' }}>Fastest Lap</span>
-                        <strong style={{ color: 'var(--text-secondary)' }}>{race.fastestLapName || 'George Russell'}</strong>
+                        <strong style={{ color: 'var(--text-secondary)' }}>{race.fastestLapName || 'TBD'}</strong>
                       </div>
                     </div>
                   </div>
