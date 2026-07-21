@@ -1069,11 +1069,11 @@ export const MOCK_CALENDAR: Race[] = [
       length: '4.381 km', 
       laps: 70, 
       recordTime: '1:16.627', 
-      recordHolder: 'Lewis Hamilton',
+      recordHolder: 'Lando Norris',
       corners: 14,
       avgSpeed: '190 km/h',
       weather: '29°C, Sunny',
-      historicalWinners: ['Max Verstappen (2023)', 'Oscar Piastri (2024)']
+      historicalWinners: ['Lando Norris (2025)', 'Oscar Piastri (2024)']
     },
     date: '2026-07-26T13:00:00Z' 
   },
