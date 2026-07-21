@@ -1365,8 +1365,11 @@ async function fetchWithRetry<T>(url: string, retries = 2): Promise<T> {
   }
 }
 
+const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
+
 export const f1ApiService = {
   getDrivers: async (): Promise<Driver[]> => {
+    // If we have simulation updates stored, prioritize them so the simulator works!
     if (typeof window !== 'undefined') {
       const dynamic = localStorage.getItem('f1_drivers_dynamic');
       if (dynamic) {
@@ -1375,7 +1378,103 @@ export const f1ApiService = {
           return parsed.sort((a, b) => b.points - a.points);
         } catch (e) {}
       }
+      
+      const cached = localStorage.getItem('f1_drivers_cached_api');
+      const cacheTime = localStorage.getItem('f1_drivers_cached_api_time');
+      if (cached && cacheTime && Date.now() - parseInt(cacheTime) < 15 * 60 * 1000) {
+        try {
+          return JSON.parse(cached) as Driver[];
+        } catch (e) {}
+      }
     }
+
+    try {
+      const res = await fetch(`${JOLPICA_BASE}/2026/driverStandings.json`);
+      if (!res.ok) throw new Error('API request failed');
+      const data = await res.json();
+      const standingsLists = data?.MRData?.StandingsTable?.StandingsLists?.[0];
+      const driverStandings = standingsLists?.DriverStandings || [];
+
+      if (driverStandings.length > 0) {
+        const mergedDrivers = driverStandings.map((ds: any) => {
+          const apiDriver = ds.Driver;
+          let mockDriver = MOCK_DRIVERS.find(d => 
+            d.id === apiDriver.driverId || 
+            (apiDriver.driverId === 'arvid_lindblad' && d.id === 'lindblad') ||
+            d.code === apiDriver.code
+          );
+          
+          if (!mockDriver) {
+            mockDriver = MOCK_DRIVERS.find(d => d.id === 'antonelli') || MOCK_DRIVERS[0];
+          }
+
+          const points = parseInt(ds.points) || 0;
+          const wins = parseInt(ds.wins) || 0;
+
+          return {
+            ...mockDriver,
+            id: apiDriver.driverId,
+            firstName: apiDriver.givenName,
+            lastName: apiDriver.familyName,
+            code: apiDriver.code || mockDriver.code,
+            nationality: apiDriver.nationality || mockDriver.nationality,
+            points,
+            wins
+          } as Driver;
+        });
+
+        try {
+          const resultsRes = await fetch(`${JOLPICA_BASE}/2026/results.json?limit=1000`);
+          if (resultsRes.ok) {
+            const resultsData = await resultsRes.json();
+            const races = resultsData?.MRData?.RaceTable?.Races || [];
+            
+            mergedDrivers.forEach((driver: Driver) => {
+              const progression: { race: string; points: number }[] = [];
+              let runningPoints = 0;
+              
+              races.forEach((race: any) => {
+                const gpShortName = race.raceName.replace(' Grand Prix', '');
+                const driverResult = race.Results?.find((r: any) => r.Driver?.driverId === driver.id);
+                if (driverResult) {
+                  runningPoints += parseInt(driverResult.points) || 0;
+                  progression.push({ race: gpShortName, points: runningPoints });
+                }
+              });
+              
+              if (progression.length > 0) {
+                driver.seasonProgression = progression;
+                let winsCount = 0;
+                let podiumsCount = 0;
+                
+                races.forEach((race: any) => {
+                  const driverResult = race.Results?.find((r: any) => r.Driver?.driverId === driver.id);
+                  if (driverResult) {
+                    const pos = parseInt(driverResult.position) || 99;
+                    if (pos === 1) winsCount++;
+                    if (pos >= 1 && pos <= 3) podiumsCount++;
+                  }
+                });
+                driver.wins = winsCount;
+                driver.podiums = podiumsCount;
+              }
+            });
+          }
+        } catch (err) {
+          console.warn('Failed to fetch dynamic progression/wins/podiums', err);
+        }
+
+        const sorted = mergedDrivers.sort((a: Driver, b: Driver) => b.points - a.points);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('f1_drivers_cached_api', JSON.stringify(sorted));
+          localStorage.setItem('f1_drivers_cached_api_time', Date.now().toString());
+        }
+        return sorted;
+      }
+    } catch (err) {
+      console.error('Failed to fetch drivers from live API, falling back to mock data', err);
+    }
+
     return [...MOCK_DRIVERS].sort((a, b) => b.points - a.points);
   },
 
@@ -1388,7 +1487,100 @@ export const f1ApiService = {
           return parsed.sort((a, b) => b.points - a.points);
         } catch (e) {}
       }
+
+      const cached = localStorage.getItem('f1_constructors_cached_api');
+      const cacheTime = localStorage.getItem('f1_constructors_cached_api_time');
+      if (cached && cacheTime && Date.now() - parseInt(cacheTime) < 15 * 60 * 1000) {
+        try {
+          return JSON.parse(cached) as Constructor[];
+        } catch (e) {}
+      }
     }
+
+    try {
+      const res = await fetch(`${JOLPICA_BASE}/2026/constructorStandings.json`);
+      if (!res.ok) throw new Error('API request failed');
+      const data = await res.json();
+      const standingsLists = data?.MRData?.StandingsTable?.StandingsLists?.[0];
+      const constructorStandings = standingsLists?.ConstructorStandings || [];
+
+      if (constructorStandings.length > 0) {
+        const mergedConstructors = constructorStandings.map((cs: any) => {
+          const apiConstructor = cs.Constructor;
+          let mockConstructor = MOCK_CONSTRUCTORS.find(c => 
+            c.id === apiConstructor.constructorId || 
+            (apiConstructor.constructorId === 'rb' && c.id === 'racing_bulls') ||
+            c.name.toLowerCase() === apiConstructor.name.toLowerCase()
+          );
+
+          if (!mockConstructor) {
+            mockConstructor = MOCK_CONSTRUCTORS.find(c => c.id === 'mercedes') || MOCK_CONSTRUCTORS[0];
+          }
+
+          const points = parseInt(cs.points) || 0;
+          const wins = parseInt(cs.wins) || 0;
+
+          return {
+            ...mockConstructor,
+            id: apiConstructor.constructorId,
+            name: apiConstructor.name,
+            points,
+            wins
+          } as Constructor;
+        });
+
+        try {
+          const resultsRes = await fetch(`${JOLPICA_BASE}/2026/results.json?limit=1000`);
+          if (resultsRes.ok) {
+            const resultsData = await resultsRes.json();
+            const races = resultsData?.MRData?.RaceTable?.Races || [];
+
+            mergedConstructors.forEach((team: Constructor) => {
+              const progression: { race: string; points: number }[] = [];
+              let runningPoints = 0;
+
+              races.forEach((race: any) => {
+                const gpShortName = race.raceName.replace(' Grand Prix', '');
+                let racePoints = 0;
+                
+                race.Results?.forEach((r: any) => {
+                  if (r.Constructor?.constructorId === team.id || (team.id === 'racing_bulls' && r.Constructor?.constructorId === 'rb')) {
+                    racePoints += parseInt(r.points) || 0;
+                  }
+                });
+
+                runningPoints += racePoints;
+                progression.push({ race: gpShortName, points: runningPoints });
+              });
+
+              if (progression.length > 0) {
+                team.seasonProgression = progression;
+                let winsCount = 0;
+                races.forEach((race: any) => {
+                  const winner = race.Results?.find((r: any) => parseInt(r.position) === 1);
+                  if (winner && (winner.Constructor?.constructorId === team.id || (team.id === 'racing_bulls' && winner.Constructor?.constructorId === 'rb'))) {
+                    winsCount++;
+                  }
+                });
+                team.wins = winsCount;
+              }
+            });
+          }
+        } catch (err) {
+          console.warn('Failed to fetch constructors results progression', err);
+        }
+
+        const sorted = mergedConstructors.sort((a: Constructor, b: Constructor) => b.points - a.points);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('f1_constructors_cached_api', JSON.stringify(sorted));
+          localStorage.setItem('f1_constructors_cached_api_time', Date.now().toString());
+        }
+        return sorted;
+      }
+    } catch (err) {
+      console.error('Failed to fetch constructors from live API, falling back to mock data', err);
+    }
+
     return [...MOCK_CONSTRUCTORS].sort((a, b) => b.points - a.points);
   },
 
@@ -1428,49 +1620,8 @@ export const f1ApiService = {
         const raceEndTime = raceStartTime + 2 * 60 * 60 * 1000;
         
         let status = r.status;
-        let winnerName = r.winnerName;
-        let winnerId = r.winnerId;
-        let secondPlaceName = r.secondPlaceName;
-        let thirdPlaceName = r.thirdPlaceName;
-        let poleName = r.poleName;
-        let poleId = r.poleId;
-        let fastestLapName = r.fastestLapName;
-        let fastestLapId = r.fastestLapId;
-
-        if (r.round < 9 || now > raceEndTime) {
+        if (now > raceEndTime) {
           status = 'completed';
-          if (r.round === 9) {
-            if (!winnerName || winnerName === 'Session Live' || winnerName === 'TBD') {
-              winnerName = 'Charles Leclerc';
-              winnerId = 'leclerc';
-            }
-            if (!secondPlaceName) secondPlaceName = 'George Russell';
-            if (!thirdPlaceName) thirdPlaceName = 'Lewis Hamilton';
-            if (poleName === 'Pending' || !poleName) {
-              poleName = 'Andrea Kimi Antonelli';
-              poleId = 'antonelli';
-            }
-            if (!fastestLapName) {
-              fastestLapName = 'Andrea Kimi Antonelli';
-              fastestLapId = 'antonelli';
-            }
-          }
-          if (r.round === 10) {
-            if (!winnerName || winnerName === 'Session Live' || winnerName === 'TBD') {
-              winnerName = 'Andrea Kimi Antonelli';
-              winnerId = 'antonelli';
-            }
-            if (!secondPlaceName) secondPlaceName = 'Charles Leclerc';
-            if (!thirdPlaceName) thirdPlaceName = 'Max Verstappen';
-            if (poleName === 'Pending' || !poleName || poleName === 'TBD') {
-              poleName = 'Andrea Kimi Antonelli';
-              poleId = 'antonelli';
-            }
-            if (!fastestLapName || fastestLapName === 'George Russell') {
-              fastestLapName = 'Lando Norris';
-              fastestLapId = 'norris';
-            }
-          }
         } else if (now >= raceStartTime && now <= raceEndTime) {
           status = 'live';
         } else {
@@ -1479,15 +1630,7 @@ export const f1ApiService = {
 
         return {
           ...r,
-          status,
-          winnerName,
-          winnerId,
-          secondPlaceName,
-          thirdPlaceName,
-          poleName,
-          poleId,
-          fastestLapName,
-          fastestLapId
+          status
         };
       });
     };
@@ -1495,9 +1638,145 @@ export const f1ApiService = {
     if (typeof window !== 'undefined') {
       const dynamic = localStorage.getItem('f1_calendar_dynamic');
       if (dynamic) return applyDynamicStatus(JSON.parse(dynamic).map(ensureSessions));
+
+      const cached = localStorage.getItem('f1_calendar_cached_api');
+      const cacheTime = localStorage.getItem('f1_calendar_cached_api_time');
+      if (cached && cacheTime && Date.now() - parseInt(cacheTime) < 15 * 60 * 1000) {
+        try {
+          return applyDynamicStatus(JSON.parse(cached) as Race[]).map(ensureSessions);
+        } catch (e) {}
+      }
     }
 
-    return applyDynamicStatus(MOCK_CALENDAR.map(ensureSessions));
+    try {
+      const res = await fetch(`${JOLPICA_BASE}/2026.json`);
+      if (!res.ok) throw new Error('API request failed');
+      const data = await res.json();
+      const apiRaces = data?.MRData?.RaceTable?.Races || [];
+
+      if (apiRaces.length > 0) {
+        let resultsRaces: any[] = [];
+        try {
+          const resultsRes = await fetch(`${JOLPICA_BASE}/2026/results.json?limit=1000`);
+          if (resultsRes.ok) {
+            const resultsData = await resultsRes.json();
+            resultsRaces = resultsData?.MRData?.RaceTable?.Races || [];
+          }
+        } catch (err) {
+          console.warn('Failed to fetch results for calendar', err);
+        }
+
+        let qualifyingRaces: any[] = [];
+        try {
+          const qualRes = await fetch(`${JOLPICA_BASE}/2026/qualifying.json?limit=1000`);
+          if (qualRes.ok) {
+            const qualData = await qualRes.json();
+            qualifyingRaces = qualData?.MRData?.RaceTable?.Races || [];
+          }
+        } catch (err) {
+          console.warn('Failed to fetch qualifying results for calendar', err);
+        }
+
+        const mergedRaces = apiRaces.map((apiRace: any) => {
+          const round = parseInt(apiRace.round) || 1;
+          const mockRace = MOCK_CALENDAR.find(r => r.round === round);
+          
+          const gpName = apiRace.raceName;
+          const country = apiRace.Circuit?.Location?.country || (mockRace?.country || '');
+          
+          const resultRace = resultsRaces.find((r: any) => parseInt(r.round) === round);
+          const results = resultRace?.Results || [];
+          
+          let winnerName = 'TBD';
+          let winnerId = '';
+          let secondPlaceName = '';
+          let thirdPlaceName = '';
+          let fastestLapName = '';
+          let fastestLapId = '';
+
+          if (results.length > 0) {
+            const p1 = results.find((r: any) => parseInt(r.position) === 1);
+            const p2 = results.find((r: any) => parseInt(r.position) === 2);
+            const p3 = results.find((r: any) => parseInt(r.position) === 3);
+
+            if (p1) {
+              winnerName = `${p1.Driver?.givenName} ${p1.Driver?.familyName}`;
+              winnerId = p1.Driver?.driverId;
+            }
+            if (p2) {
+              secondPlaceName = `${p2.Driver?.givenName} ${p2.Driver?.familyName}`;
+            }
+            if (p3) {
+              thirdPlaceName = `${p3.Driver?.givenName} ${p3.Driver?.familyName}`;
+            }
+
+            const fastest = results.find((r: any) => r.FastestLap?.rank === "1");
+            if (fastest) {
+              fastestLapName = `${fastest.Driver?.givenName} ${fastest.Driver?.familyName}`;
+              fastestLapId = fastest.Driver?.driverId;
+            }
+          }
+
+          const qualRace = qualifyingRaces.find((r: any) => parseInt(r.round) === round);
+          let poleName = 'TBD';
+          let poleId = '';
+          
+          if (qualRace && qualRace.QualifyingResults?.length > 0) {
+            const p1Qual = qualRace.QualifyingResults.find((qr: any) => parseInt(qr.position) === 1);
+            if (p1Qual) {
+              poleName = `${p1Qual.Driver?.givenName} ${p1Qual.Driver?.familyName}`;
+              poleId = p1Qual.Driver?.driverId;
+            }
+          } else if (results.length > 0) {
+            const p1Grid = results.find((r: any) => parseInt(r.grid) === 1);
+            if (p1Grid) {
+              poleName = `${p1Grid.Driver?.givenName} ${p1Grid.Driver?.familyName}`;
+              poleId = p1Grid.Driver?.driverId;
+            }
+          }
+
+          return {
+            round,
+            gpName,
+            country,
+            flag: mockRace?.flag || flagUrl('eu'),
+            status: mockRace?.status || 'upcoming',
+            winnerName,
+            winnerId,
+            secondPlaceName,
+            thirdPlaceName,
+            poleName,
+            poleId,
+            fastestLapName,
+            fastestLapId,
+            circuit: {
+              name: apiRace.Circuit?.circuitName || (mockRace?.circuit.name || ''),
+              length: mockRace?.circuit.length || '5.0 km',
+              laps: mockRace?.circuit.laps || 50,
+              recordTime: mockRace?.circuit.recordTime || '1:30.000',
+              recordHolder: mockRace?.circuit.recordHolder || 'Lando Norris',
+              corners: mockRace?.circuit.corners || 15,
+              avgSpeed: mockRace?.circuit.avgSpeed || '200 km/h',
+              weather: mockRace?.circuit.weather || 'Sunny',
+              historicalWinners: mockRace?.circuit.historicalWinners || []
+            },
+            date: apiRace.time ? `${apiRace.date}T${apiRace.time}` : `${apiRace.date}T13:00:00Z`,
+            sessions: []
+          } as Race;
+        });
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('f1_calendar_cached_api', JSON.stringify(mergedRaces));
+          localStorage.setItem('f1_calendar_cached_api_time', Date.now().toString());
+        }
+
+        return applyDynamicStatus(mergedRaces).map(ensureSessions);
+      }
+    } catch (err) {
+      console.error('Failed to fetch calendar from live API, falling back to mock data', err);
+    }
+
+    return applyDynamicStatus(MOCK_CALENDAR).map(ensureSessions);
   },
 
   getNews: async (): Promise<NewsArticle[]> => {
