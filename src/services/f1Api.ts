@@ -1506,12 +1506,22 @@ export const f1ApiService = {
         try {
           const races = await fetchAllResults();
           if (races.length > 0) {
+            const groupedRaces: any[] = [];
+            races.forEach((race: any) => {
+              const roundNum = parseInt(race.round) || 1;
+              let existing = groupedRaces.find(r => parseInt(r.round) === roundNum);
+              if (existing) {
+                existing.Results = (existing.Results || []).concat(race.Results || []);
+              } else {
+                groupedRaces.push({ ...race, Results: [...(race.Results || [])] });
+              }
+            });
             
             mergedDrivers.forEach((driver: Driver) => {
               const progression: { race: string; points: number }[] = [];
               let runningPoints = 0;
               
-              races.forEach((race: any) => {
+              groupedRaces.forEach((race: any) => {
                 const gpShortName = race.raceName.replace(' Grand Prix', '');
                 const driverResult = race.Results?.find((r: any) => r.Driver?.driverId === driver.id);
                 if (driverResult) {
@@ -1525,7 +1535,7 @@ export const f1ApiService = {
                 let winsCount = 0;
                 let podiumsCount = 0;
                 
-                races.forEach((race: any) => {
+                groupedRaces.forEach((race: any) => {
                   const driverResult = race.Results?.find((r: any) => r.Driver?.driverId === driver.id);
                   if (driverResult) {
                     const pos = parseInt(driverResult.position) || 99;
@@ -1610,12 +1620,22 @@ export const f1ApiService = {
         try {
           const races = await fetchAllResults();
           if (races.length > 0) {
+            const groupedRaces: any[] = [];
+            races.forEach((race: any) => {
+              const roundNum = parseInt(race.round) || 1;
+              let existing = groupedRaces.find(r => parseInt(r.round) === roundNum);
+              if (existing) {
+                existing.Results = (existing.Results || []).concat(race.Results || []);
+              } else {
+                groupedRaces.push({ ...race, Results: [...(race.Results || [])] });
+              }
+            });
 
             mergedConstructors.forEach((team: Constructor) => {
               const progression: { race: string; points: number }[] = [];
               let runningPoints = 0;
 
-              races.forEach((race: any) => {
+              groupedRaces.forEach((race: any) => {
                 const gpShortName = race.raceName.replace(' Grand Prix', '');
                 let racePoints = 0;
                 
@@ -1632,7 +1652,7 @@ export const f1ApiService = {
               if (progression.length > 0) {
                 team.seasonProgression = progression;
                 let winsCount = 0;
-                races.forEach((race: any) => {
+                groupedRaces.forEach((race: any) => {
                   const winner = race.Results?.find((r: any) => parseInt(r.position) === 1);
                   if (winner && (winner.Constructor?.constructorId === team.id || (team.id === 'racing_bulls' && winner.Constructor?.constructorId === 'rb'))) {
                     winsCount++;
@@ -1733,14 +1753,32 @@ export const f1ApiService = {
       if (apiRaces.length > 0) {
         let resultsRaces: any[] = [];
         try {
-          resultsRaces = await fetchAllResults();
+          const rawRaces = await fetchAllResults();
+          rawRaces.forEach((race: any) => {
+            const roundNum = parseInt(race.round) || 1;
+            let existing = resultsRaces.find(r => parseInt(r.round) === roundNum);
+            if (existing) {
+              existing.Results = (existing.Results || []).concat(race.Results || []);
+            } else {
+              resultsRaces.push({ ...race, Results: [...(race.Results || [])] });
+            }
+          });
         } catch (err) {
           console.warn('Failed to fetch results for calendar', err);
         }
 
         let qualifyingRaces: any[] = [];
         try {
-          qualifyingRaces = await fetchAllQualifying();
+          const rawQual = await fetchAllQualifying();
+          rawQual.forEach((race: any) => {
+            const roundNum = parseInt(race.round) || 1;
+            let existing = qualifyingRaces.find(r => parseInt(r.round) === roundNum);
+            if (existing) {
+              existing.QualifyingResults = (existing.QualifyingResults || []).concat(race.QualifyingResults || []);
+            } else {
+              qualifyingRaces.push({ ...race, QualifyingResults: [...(race.QualifyingResults || [])] });
+            }
+          });
         } catch (err) {
           console.warn('Failed to fetch qualifying results for calendar', err);
         }
