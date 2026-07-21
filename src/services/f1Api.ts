@@ -19,18 +19,18 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'mercedes',
     teamName: 'Mercedes',
     color: '#00D2FF',
-    points: 185,
-    wins: 5,
-    podiums: 6,
+    points: 204,
+    wins: 6,
+    podiums: 7,
     fastestLaps: 2,
     dnfs: 0,
     bio: 'Andrea Kimi Antonelli is the Italian prodigy promoted straight from F2 to Mercedes for the 2026 season. His rapid rise in junior categories has marked him out as one of the most promising young drivers of his generation, replacing Lewis Hamilton at the Silver Arrows.',
     championships: 0,
-    polePositions: 4,
-    careerWins: 5,
-    careerPodiums: 6,
+    polePositions: 5,
+    careerWins: 6,
+    careerPodiums: 7,
     teamHistory: [{ year: '2026-Present', team: 'Mercedes-AMG' }],
-    seasonProgression: [{ race: 'Australia', points: 12 }, { race: 'China', points: 37 }, { race: 'Japan', points: 62 }, { race: 'Miami', points: 87 }, { race: 'Canada', points: 112 }, { race: 'Monaco', points: 137 }, { race: 'Spain', points: 155 }, { race: 'Austria', points: 179 }, { race: 'Great Britain', points: 179 }, { race: 'Belgium', points: 185 }],
+    seasonProgression: [{ race: 'Australia', points: 12 }, { race: 'China', points: 37 }, { race: 'Japan', points: 62 }, { race: 'Miami', points: 87 }, { race: 'Canada', points: 112 }, { race: 'Monaco', points: 137 }, { race: 'Spain', points: 155 }, { race: 'Austria', points: 179 }, { race: 'Great Britain', points: 179 }, { race: 'Belgium', points: 204 }],
     speedTrace: '50,110 Q 140,240 240,118 T 390,225 T 550,85',
     throttleTrace: '50,250 L 140,280 L 210,250 L 290,280 L 410,250 L 550,250'
   },
@@ -46,18 +46,18 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'mercedes',
     teamName: 'Mercedes',
     color: '#00D2FF',
-    points: 169,
+    points: 154,
     wins: 1,
-    podiums: 3,
+    podiums: 2,
     fastestLaps: 1,
     dnfs: 1,
     bio: 'George Russell is a British racing driver leading the charge at Mercedes-AMG. Possessing dynamic wheel-to-wheel racecraft and supreme analytical focus, Russell has established himself as a frontline GP victor.',
     championships: 0,
     polePositions: 2,
     careerWins: 3,
-    careerPodiums: 15,
+    careerPodiums: 14,
     teamHistory: [{ year: '2019-2021', team: 'Williams' }, { year: '2022-Present', team: 'Mercedes' }],
-    seasonProgression: [{ race: 'Australia', points: 25 }, { race: 'China', points: 43 }, { race: 'Japan', points: 61 }, { race: 'Miami', points: 73 }, { race: 'Canada', points: 73 }, { race: 'Monaco', points: 91 }, { race: 'Spain', points: 111 }, { race: 'Austria', points: 136 }, { race: 'Great Britain', points: 154 }, { race: 'Belgium', points: 169 }],
+    seasonProgression: [{ race: 'Australia', points: 25 }, { race: 'China', points: 43 }, { race: 'Japan', points: 61 }, { race: 'Miami', points: 73 }, { race: 'Canada', points: 73 }, { race: 'Monaco', points: 91 }, { race: 'Spain', points: 111 }, { race: 'Austria', points: 136 }, { race: 'Great Britain', points: 154 }, { race: 'Belgium', points: 154 }],
     speedTrace: '50,95 Q 145,235 245,125 T 395,220 T 550,80',
     throttleTrace: '50,250 L 145,280 L 215,250 L 295,280 L 415,250 L 550,250'
   },
@@ -73,18 +73,18 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'ferrari',
     teamName: 'Ferrari',
     color: '#E10600',
-    points: 173,
-    wins: 2,
-    podiums: 5,
+    points: 159,
+    wins: 1,
+    podiums: 4,
     fastestLaps: 2,
     dnfs: 0,
     bio: 'Lewis Hamilton is a seven-time Formula 1 World Champion. Holding records for the most wins, poles, and podiums in F1 history, Hamilton transferred to Scuderia Ferrari for the 2025/2026 seasons.',
     championships: 7,
     polePositions: 105,
-    careerWins: 106,
-    careerPodiums: 203,
+    careerWins: 105,
+    careerPodiums: 202,
     teamHistory: [{ year: '2007-2012', team: 'McLaren' }, { year: '2013-2024', team: 'Mercedes' }, { year: '2025-Present', team: 'Ferrari' }],
-    seasonProgression: [{ race: 'Australia', points: 15 }, { race: 'China', points: 30 }, { race: 'Japan', points: 45 }, { race: 'Miami', points: 63 }, { race: 'Canada', points: 81 }, { race: 'Monaco', points: 99 }, { race: 'Spain', points: 124 }, { race: 'Austria', points: 132 }, { race: 'Great Britain', points: 147 }, { race: 'Belgium', points: 173 }],
+    seasonProgression: [{ race: 'Australia', points: 15 }, { race: 'China', points: 30 }, { race: 'Japan', points: 45 }, { race: 'Miami', points: 63 }, { race: 'Canada', points: 81 }, { race: 'Monaco', points: 99 }, { race: 'Spain', points: 124 }, { race: 'Austria', points: 132 }, { race: 'Great Britain', points: 147 }, { race: 'Belgium', points: 159 }],
     speedTrace: '50,85 Q 160,220 260,115 T 410,200 T 550,70',
     throttleTrace: '50,250 L 160,280 L 230,250 L 310,280 L 430,250 L 550,250'
   },
@@ -100,7 +100,7 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'mclaren',
     teamName: 'McLaren',
     color: '#FF8700',
-    points: 107,
+    points: 103,
     wins: 0,
     podiums: 3,
     fastestLaps: 1,
@@ -111,7 +111,7 @@ export const MOCK_DRIVERS: Driver[] = [
     careerWins: 5,
     careerPodiums: 26,
     teamHistory: [{ year: '2019-Present', team: 'McLaren' }],
-    seasonProgression: [{ race: 'Australia', points: 10 }, { race: 'China', points: 22 }, { race: 'Japan', points: 34 }, { race: 'Miami', points: 52 }, { race: 'Canada', points: 62 }, { race: 'Monaco', points: 70 }, { race: 'Spain', points: 77 }, { race: 'Austria', points: 85 }, { race: 'Great Britain', points: 97 }, { race: 'Belgium', points: 107 }],
+    seasonProgression: [{ race: 'Australia', points: 10 }, { race: 'China', points: 22 }, { race: 'Japan', points: 34 }, { race: 'Miami', points: 52 }, { race: 'Canada', points: 62 }, { race: 'Monaco', points: 70 }, { race: 'Spain', points: 77 }, { race: 'Austria', points: 85 }, { race: 'Great Britain', points: 97 }, { race: 'Belgium', points: 103 }],
     speedTrace: '50,90 Q 140,240 240,120 T 390,215 T 550,75',
     throttleTrace: '50,250 L 140,280 L 210,250 L 290,280 L 410,250 L 550,250'
   },
@@ -154,7 +154,7 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'mclaren',
     teamName: 'McLaren',
     color: '#FF8700',
-    points: 90,
+    points: 92,
     wins: 0,
     podiums: 2,
     fastestLaps: 1,
@@ -165,7 +165,7 @@ export const MOCK_DRIVERS: Driver[] = [
     careerWins: 2,
     careerPodiums: 10,
     teamHistory: [{ year: '2023-Present', team: 'McLaren' }],
-    seasonProgression: [{ race: 'Australia', points: 8 }, { race: 'China', points: 18 }, { race: 'Japan', points: 28 }, { race: 'Miami', points: 43 }, { race: 'Canada', points: 53 }, { race: 'Monaco', points: 61 }, { race: 'Spain', points: 70 }, { race: 'Austria', points: 82 }, { race: 'Great Britain', points: 82 }, { race: 'Belgium', points: 90 }],
+    seasonProgression: [{ race: 'Australia', points: 8 }, { race: 'China', points: 18 }, { race: 'Japan', points: 28 }, { race: 'Miami', points: 43 }, { race: 'Canada', points: 53 }, { race: 'Monaco', points: 61 }, { race: 'Spain', points: 70 }, { race: 'Austria', points: 82 }, { race: 'Great Britain', points: 82 }, { race: 'Belgium', points: 92 }],
     speedTrace: '50,92 Q 148,238 248,122 T 398,218 T 550,78',
     throttleTrace: '50,250 L 148,280 L 218,250 L 298,280 L 418,250 L 550,250'
   },
@@ -181,18 +181,18 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'red_bull',
     teamName: 'Red Bull Racing',
     color: '#002F6C',
-    points: 88,
+    points: 91,
     wins: 0,
-    podiums: 1,
+    podiums: 2,
     fastestLaps: 1,
     dnfs: 1,
     bio: 'Max Verstappen is a four-time Formula 1 World Champion driving for Oracle Red Bull Racing.',
     championships: 4,
     polePositions: 48,
     careerWins: 71,
-    careerPodiums: 129,
+    careerPodiums: 130,
     teamHistory: [{ year: '2016-Present', team: 'Red Bull Racing' }],
-    seasonProgression: [{ race: 'Australia', points: 6 }, { race: 'China', points: 16 }, { race: 'Japan', points: 26 }, { race: 'Miami', points: 36 }, { race: 'Canada', points: 46 }, { race: 'Monaco', points: 56 }, { race: 'Spain', points: 66 }, { race: 'Austria', points: 76 }, { race: 'Great Britain', points: 76 }, { race: 'Belgium', points: 88 }],
+    seasonProgression: [{ race: 'Australia', points: 6 }, { race: 'China', points: 16 }, { race: 'Japan', points: 26 }, { race: 'Miami', points: 36 }, { race: 'Canada', points: 46 }, { race: 'Monaco', points: 56 }, { race: 'Spain', points: 66 }, { race: 'Austria', points: 76 }, { race: 'Great Britain', points: 76 }, { race: 'Belgium', points: 91 }],
     speedTrace: '50,80 Q 150,230 250,110 T 400,210 T 550,60',
     throttleTrace: '50,250 L 150,280 L 220,250 L 300,280 L 420,250 L 550,250'
   },
@@ -208,7 +208,7 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'red_bull',
     teamName: 'Red Bull Racing',
     color: '#002F6C',
-    points: 52,
+    points: 60,
     wins: 0,
     podiums: 0,
     fastestLaps: 0,
@@ -219,7 +219,7 @@ export const MOCK_DRIVERS: Driver[] = [
     careerWins: 0,
     careerPodiums: 0,
     teamHistory: [{ year: '2026-Present', team: 'Red Bull Racing' }],
-    seasonProgression: [{ race: 'Australia', points: 2 }, { race: 'China', points: 10 }, { race: 'Japan', points: 18 }, { race: 'Miami', points: 24 }, { race: 'Canada', points: 30 }, { race: 'Monaco', points: 36 }, { race: 'Spain', points: 40 }, { race: 'Austria', points: 42 }, { race: 'Great Britain', points: 52 }, { race: 'Belgium', points: 52 }],
+    seasonProgression: [{ race: 'Australia', points: 2 }, { race: 'China', points: 10 }, { race: 'Japan', points: 18 }, { race: 'Miami', points: 24 }, { race: 'Canada', points: 30 }, { race: 'Monaco', points: 36 }, { race: 'Spain', points: 40 }, { race: 'Austria', points: 42 }, { race: 'Great Britain', points: 52 }, { race: 'Belgium', points: 60 }],
     speedTrace: '50,100 Q 140,240 240,130 T 390,220 T 550,90',
     throttleTrace: '50,250 L 140,280 L 210,250 L 290,280 L 410,250 L 550,250'
   },
@@ -235,7 +235,7 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'alpine',
     teamName: 'Alpine',
     color: '#0090FF',
-    points: 44,
+    points: 42,
     wins: 0,
     podiums: 0,
     fastestLaps: 0,
@@ -246,7 +246,7 @@ export const MOCK_DRIVERS: Driver[] = [
     careerWins: 1,
     careerPodiums: 4,
     teamHistory: [{ year: '2023-Present', team: 'Alpine' }],
-    seasonProgression: [{ race: 'Australia', points: 4 }, { race: 'China', points: 12 }, { race: 'Japan', points: 18 }, { race: 'Miami', points: 22 }, { race: 'Canada', points: 28 }, { race: 'Monaco', points: 32 }, { race: 'Spain', points: 38 }, { race: 'Austria', points: 41 }, { race: 'Great Britain', points: 42 }, { race: 'Belgium', points: 44 }],
+    seasonProgression: [{ race: 'Australia', points: 4 }, { race: 'China', points: 12 }, { race: 'Japan', points: 18 }, { race: 'Miami', points: 22 }, { race: 'Canada', points: 28 }, { race: 'Monaco', points: 32 }, { race: 'Spain', points: 38 }, { race: 'Austria', points: 41 }, { race: 'Great Britain', points: 42 }, { race: 'Belgium', points: 42 }],
     speedTrace: '50,105 Q 138,245 238,135 T 388,230 T 550,92',
     throttleTrace: '50,250 L 138,280 L 208,250 L 288,280 L 408,250 L 550,250'
   },
@@ -262,7 +262,7 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'racing_bulls',
     teamName: 'Racing Bulls',
     color: '#03183F',
-    points: 43,
+    points: 39,
     wins: 0,
     podiums: 0,
     fastestLaps: 0,
@@ -273,7 +273,7 @@ export const MOCK_DRIVERS: Driver[] = [
     careerWins: 0,
     careerPodiums: 0,
     teamHistory: [{ year: '2024-Present', team: 'RB' }],
-    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 4 }, { race: 'Japan', points: 10 }, { race: 'Miami', points: 16 }, { race: 'Canada', points: 22 }, { race: 'Monaco', points: 26 }, { race: 'Spain', points: 28 }, { race: 'Austria', points: 31 }, { race: 'Great Britain', points: 39 }, { race: 'Belgium', points: 43 }],
+    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 4 }, { race: 'Japan', points: 10 }, { race: 'Miami', points: 16 }, { race: 'Canada', points: 22 }, { race: 'Monaco', points: 26 }, { race: 'Spain', points: 28 }, { race: 'Austria', points: 31 }, { race: 'Great Britain', points: 39 }, { race: 'Belgium', points: 39 }],
     speedTrace: '50,108 Q 139,247 239,138 T 389,232 T 550,94',
     throttleTrace: '50,250 L 139,280 L 209,250 L 289,280 L 409,250 L 550,250'
   },
@@ -316,7 +316,7 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'alpine',
     teamName: 'Alpine',
     color: '#0090FF',
-    points: 18,
+    points: 19,
     wins: 0,
     podiums: 0,
     fastestLaps: 0,
@@ -327,7 +327,7 @@ export const MOCK_DRIVERS: Driver[] = [
     careerWins: 0,
     careerPodiums: 0,
     teamHistory: [{ year: '2026-Present', team: 'Alpine' }],
-    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 2 }, { race: 'Japan', points: 4 }, { race: 'Miami', points: 6 }, { race: 'Canada', points: 10 }, { race: 'Monaco', points: 12 }, { race: 'Spain', points: 14 }, { race: 'Austria', points: 16 }, { race: 'Great Britain', points: 18 }, { race: 'Belgium', points: 18 }],
+    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 2 }, { race: 'Japan', points: 4 }, { race: 'Miami', points: 6 }, { race: 'Canada', points: 10 }, { race: 'Monaco', points: 12 }, { race: 'Spain', points: 14 }, { race: 'Austria', points: 16 }, { race: 'Great Britain', points: 18 }, { race: 'Belgium', points: 19 }],
     speedTrace: '50,105 Q 138,245 238,135 T 388,230 T 550,92',
     throttleTrace: '50,250 L 138,280 L 208,250 L 288,280 L 408,250 L 550,250'
   },
@@ -343,7 +343,7 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'racing_bulls',
     teamName: 'Racing Bulls',
     color: '#03183F',
-    points: 20,
+    points: 22,
     wins: 0,
     podiums: 0,
     fastestLaps: 0,
@@ -354,7 +354,7 @@ export const MOCK_DRIVERS: Driver[] = [
     careerWins: 0,
     careerPodiums: 0,
     teamHistory: [{ year: '2026-Present', team: 'RB' }],
-    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 2 }, { race: 'Japan', points: 4 }, { race: 'Miami', points: 6 }, { race: 'Canada', points: 8 }, { race: 'Monaco', points: 10 }, { race: 'Spain', points: 12 }, { race: 'Austria', points: 14 }, { race: 'Great Britain', points: 20 }, { race: 'Belgium', points: 20 }],
+    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 2 }, { race: 'Japan', points: 4 }, { race: 'Miami', points: 6 }, { race: 'Canada', points: 8 }, { race: 'Monaco', points: 10 }, { race: 'Spain', points: 12 }, { race: 'Austria', points: 14 }, { race: 'Great Britain', points: 20 }, { race: 'Belgium', points: 22 }],
     speedTrace: '50,108 Q 139,247 239,138 T 389,232 T 550,94',
     throttleTrace: '50,250 L 139,280 L 209,250 L 289,280 L 409,250 L 550,250'
   },
@@ -451,7 +451,7 @@ export const MOCK_DRIVERS: Driver[] = [
     teamId: 'audi',
     teamName: 'Audi',
     color: '#F30B52',
-    points: 7,
+    points: 10,
     wins: 0,
     podiums: 0,
     fastestLaps: 0,
@@ -462,7 +462,7 @@ export const MOCK_DRIVERS: Driver[] = [
     careerWins: 0,
     careerPodiums: 0,
     teamHistory: [{ year: '2026-Present', team: 'Audi' }],
-    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 0 }, { race: 'Japan', points: 0 }, { race: 'Miami', points: 1 }, { race: 'Canada', points: 1 }, { race: 'Monaco', points: 2 }, { race: 'Spain', points: 2 }, { race: 'Austria', points: 2 }, { race: 'Great Britain', points: 6 }, { race: 'Belgium', points: 7 }],
+    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 0 }, { race: 'Japan', points: 0 }, { race: 'Miami', points: 1 }, { race: 'Canada', points: 1 }, { race: 'Monaco', points: 2 }, { race: 'Spain', points: 2 }, { race: 'Austria', points: 2 }, { race: 'Great Britain', points: 6 }, { race: 'Belgium', points: 10 }],
     speedTrace: '50,102 Q 141,241 241,132 T 391,229 T 550,91',
     throttleTrace: '50,250 L 141,280 L 211,250 L 291,280 L 411,250 L 550,250'
   },
@@ -611,12 +611,12 @@ export const MOCK_CONSTRUCTORS: Constructor[] = [
     principal: 'Toto Wolff', 
     drivers: ['Andrea Kimi Antonelli', 'George Russell'], 
     engine: 'Mercedes', 
-    points: 354, 
-    wins: 6, 
+    points: 358, 
+    wins: 7, 
     championships: 8, 
     color: '#00D2FF',
     historyText: 'Mercedes-AMG Petronas F1 Team, based in Brackley, UK.',
-    seasonProgression: [{ race: 'Australia', points: 37 }, { race: 'China', points: 80 }, { race: 'Japan', points: 123 }, { race: 'Miami', points: 160 }, { race: 'Canada', points: 185 }, { race: 'Monaco', points: 228 }, { race: 'Spain', points: 266 }, { race: 'Austria', points: 315 }, { race: 'Great Britain', points: 333 }, { race: 'Belgium', points: 354 }],
+    seasonProgression: [{ race: 'Australia', points: 37 }, { race: 'China', points: 80 }, { race: 'Japan', points: 123 }, { race: 'Miami', points: 160 }, { race: 'Canada', points: 185 }, { race: 'Monaco', points: 228 }, { race: 'Spain', points: 266 }, { race: 'Austria', points: 315 }, { race: 'Great Britain', points: 333 }, { race: 'Belgium', points: 358 }],
     livery: 'https://media.formula1.com/image/upload/c_lfill,w_512/q_auto/d_common:f1:2026:fallback:car:2026fallbackcarright.webp/v1740000001/common/f1/2026/mercedes/2026mercedescarright.webp'
   },
   { 
@@ -626,12 +626,12 @@ export const MOCK_CONSTRUCTORS: Constructor[] = [
     principal: 'Frédéric Vasseur', 
     drivers: ['Charles Leclerc', 'Lewis Hamilton'], 
     engine: 'Ferrari', 
-    points: 299, 
-    wins: 3, 
+    points: 285, 
+    wins: 2, 
     championships: 16, 
     color: '#E10600',
     historyText: 'Scuderia Ferrari HP, based in Maranello, Italy.',
-    seasonProgression: [{ race: 'Australia', points: 33 }, { race: 'China', points: 58 }, { race: 'Japan', points: 83 }, { race: 'Miami', points: 111 }, { race: 'Canada', points: 139 }, { race: 'Monaco', points: 167 }, { race: 'Spain', points: 199 }, { race: 'Austria', points: 215 }, { race: 'Great Britain', points: 255 }, { race: 'Belgium', points: 299 }],
+    seasonProgression: [{ race: 'Australia', points: 33 }, { race: 'China', points: 58 }, { race: 'Japan', points: 83 }, { race: 'Miami', points: 111 }, { race: 'Canada', points: 139 }, { race: 'Monaco', points: 167 }, { race: 'Spain', points: 199 }, { race: 'Austria', points: 215 }, { race: 'Great Britain', points: 255 }, { race: 'Belgium', points: 285 }],
     livery: 'https://media.formula1.com/image/upload/c_lfill,w_512/q_auto/d_common:f1:2026:fallback:car:2026fallbackcarright.webp/v1740000001/common/f1/2026/ferrari/2026ferraricarright.webp'
   },
   { 
@@ -641,12 +641,12 @@ export const MOCK_CONSTRUCTORS: Constructor[] = [
     principal: 'Andrea Stella', 
     drivers: ['Lando Norris', 'Oscar Piastri'], 
     engine: 'Mercedes', 
-    points: 197, 
+    points: 195, 
     wins: 0, 
     championships: 8, 
     color: '#FF8700',
     historyText: 'McLaren Formula 1 Team, based in Woking, UK.',
-    seasonProgression: [{ race: 'Australia', points: 18 }, { race: 'China', points: 40 }, { race: 'Japan', points: 62 }, { race: 'Miami', points: 95 }, { race: 'Canada', points: 115 }, { race: 'Monaco', points: 131 }, { race: 'Spain', points: 147 }, { race: 'Austria', points: 167 }, { race: 'Great Britain', points: 179 }, { race: 'Belgium', points: 197 }],
+    seasonProgression: [{ race: 'Australia', points: 18 }, { race: 'China', points: 40 }, { race: 'Japan', points: 62 }, { race: 'Miami', points: 95 }, { race: 'Canada', points: 115 }, { race: 'Monaco', points: 131 }, { race: 'Spain', points: 147 }, { race: 'Austria', points: 167 }, { race: 'Great Britain', points: 179 }, { race: 'Belgium', points: 195 }],
     livery: 'https://media.formula1.com/image/upload/c_lfill,w_512/q_auto/d_common:f1:2026:fallback:car:2026fallbackcarright.webp/v1740000001/common/f1/2026/mclaren/2026mclarencarright.webp'
   },
   { 
@@ -656,12 +656,12 @@ export const MOCK_CONSTRUCTORS: Constructor[] = [
     principal: 'Christian Horner', 
     drivers: ['Max Verstappen', 'Isack Hadjar'], 
     engine: 'Honda RBPT', 
-    points: 140, 
+    points: 151, 
     wins: 0, 
     championships: 6, 
     color: '#002F6C',
     historyText: 'Oracle Red Bull Racing, based in Milton Keynes, UK.',
-    seasonProgression: [{ race: 'Australia', points: 8 }, { race: 'China', points: 26 }, { race: 'Japan', points: 44 }, { race: 'Miami', points: 60 }, { race: 'Canada', points: 76 }, { race: 'Monaco', points: 92 }, { race: 'Spain', points: 106 }, { race: 'Austria', points: 118 }, { race: 'Great Britain', points: 128 }, { race: 'Belgium', points: 140 }],
+    seasonProgression: [{ race: 'Australia', points: 8 }, { race: 'China', points: 26 }, { race: 'Japan', points: 44 }, { race: 'Miami', points: 60 }, { race: 'Canada', points: 76 }, { race: 'Monaco', points: 92 }, { race: 'Spain', points: 106 }, { race: 'Austria', points: 118 }, { race: 'Great Britain', points: 128 }, { race: 'Belgium', points: 151 }],
     livery: 'https://media.formula1.com/image/upload/c_lfill,w_512/q_auto/d_common:f1:2026:fallback:car:2026fallbackcarright.webp/v1740000001/common/f1/2026/redbullracing/2026redbullracingcarright.webp'
   },
   { 
@@ -671,12 +671,12 @@ export const MOCK_CONSTRUCTORS: Constructor[] = [
     principal: 'Oliver Oakes', 
     drivers: ['Pierre Gasly', 'Franco Colapinto'], 
     engine: 'Mercedes', 
-    points: 62, 
+    points: 61, 
     wins: 0, 
     championships: 0, 
     color: '#0090FF',
     historyText: 'BWT Alpine F1 Team, based in Enstone, UK.',
-    seasonProgression: [{ race: 'Australia', points: 4 }, { race: 'China', points: 14 }, { race: 'Japan', points: 22 }, { race: 'Miami', points: 28 }, { race: 'Canada', points: 38 }, { race: 'Monaco', points: 44 }, { race: 'Spain', points: 52 }, { race: 'Austria', points: 57 }, { race: 'Great Britain', points: 60 }, { race: 'Belgium', points: 62 }],
+    seasonProgression: [{ race: 'Australia', points: 4 }, { race: 'China', points: 14 }, { race: 'Japan', points: 22 }, { race: 'Miami', points: 28 }, { race: 'Canada', points: 38 }, { race: 'Monaco', points: 44 }, { race: 'Spain', points: 52 }, { race: 'Austria', points: 57 }, { race: 'Great Britain', points: 60 }, { race: 'Belgium', points: 61 }],
     livery: 'https://media.formula1.com/image/upload/c_lfill,w_512/q_auto/d_common:f1:2026:fallback:car:2026fallbackcarright.webp/v1740000001/common/f1/2026/alpine/2026alpinecarright.webp'
   },
   { 
@@ -686,12 +686,12 @@ export const MOCK_CONSTRUCTORS: Constructor[] = [
     principal: 'Laurent Mekies', 
     drivers: ['Liam Lawson', 'Arvid Lindblad'], 
     engine: 'Honda RBPT', 
-    points: 63, 
+    points: 61, 
     wins: 0, 
     championships: 0, 
     color: '#03183F',
     historyText: 'Visa Cash App RB F1 Team, based in Faenza, Italy.',
-    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 6 }, { race: 'Japan', points: 14 }, { race: 'Miami', points: 22 }, { race: 'Canada', points: 30 }, { race: 'Monaco', points: 36 }, { race: 'Spain', points: 40 }, { race: 'Austria', points: 45 }, { race: 'Great Britain', points: 59 }, { race: 'Belgium', points: 63 }],
+    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 6 }, { race: 'Japan', points: 14 }, { race: 'Miami', points: 22 }, { race: 'Canada', points: 30 }, { race: 'Monaco', points: 36 }, { race: 'Spain', points: 40 }, { race: 'Austria', points: 45 }, { race: 'Great Britain', points: 59 }, { race: 'Belgium', points: 61 }],
     livery: 'https://media.formula1.com/image/upload/c_lfill,w_512/q_auto/d_common:f1:2026:fallback:car:2026fallbackcarright.webp/v1740000001/common/f1/2026/racingbulls/2026racingbullscarright.webp'
   },
   { 
@@ -731,12 +731,12 @@ export const MOCK_CONSTRUCTORS: Constructor[] = [
     principal: 'Mattia Binotto', 
     drivers: ['Gabriel Bortoleto', 'Nico Hulkenberg'], 
     engine: 'Audi', 
-    points: 7, 
+    points: 10, 
     wins: 0, 
     championships: 0, 
     color: '#F30B52',
     historyText: 'Audi F1 Team, based in Neuburg, Germany.',
-    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 0 }, { race: 'Japan', points: 0 }, { race: 'Miami', points: 1 }, { race: 'Canada', points: 1 }, { race: 'Monaco', points: 2 }, { race: 'Spain', points: 2 }, { race: 'Austria', points: 2 }, { race: 'Great Britain', points: 6 }, { race: 'Belgium', points: 7 }],
+    seasonProgression: [{ race: 'Australia', points: 0 }, { race: 'China', points: 0 }, { race: 'Japan', points: 0 }, { race: 'Miami', points: 1 }, { race: 'Canada', points: 1 }, { race: 'Monaco', points: 2 }, { race: 'Spain', points: 2 }, { race: 'Austria', points: 2 }, { race: 'Great Britain', points: 6 }, { race: 'Belgium', points: 10 }],
     livery: 'https://media.formula1.com/image/upload/c_lfill,w_512/q_auto/d_common:f1:2026:fallback:car:2026fallbackcarright.webp/v1740000001/common/f1/2026/audi/2026audicarright.webp'
   },
   { 
@@ -1028,14 +1028,14 @@ export const MOCK_CALENDAR: Race[] = [
     country: 'Belgium', 
     flag: flagUrl('be'), 
     status: 'completed', 
-    winnerName: 'Lewis Hamilton', 
-    winnerId: 'hamilton', 
+    winnerName: 'Andrea Kimi Antonelli', 
+    winnerId: 'antonelli', 
     secondPlaceName: 'Charles Leclerc', 
-    thirdPlaceName: 'George Russell', 
-    poleName: 'Lewis Hamilton', 
-    poleId: 'hamilton', 
-    fastestLapName: 'Lewis Hamilton', 
-    fastestLapId: 'hamilton', 
+    thirdPlaceName: 'Max Verstappen', 
+    poleName: 'Andrea Kimi Antonelli', 
+    poleId: 'antonelli', 
+    fastestLapName: 'George Russell', 
+    fastestLapId: 'russell', 
     circuit: { 
       name: 'Circuit de Spa-Francorchamps', 
       length: '7.004 km', 
@@ -1457,18 +1457,18 @@ export const f1ApiService = {
           }
           if (r.round === 10) {
             if (!winnerName || winnerName === 'Session Live' || winnerName === 'TBD') {
-              winnerName = 'Lewis Hamilton';
-              winnerId = 'hamilton';
+              winnerName = 'Andrea Kimi Antonelli';
+              winnerId = 'antonelli';
             }
             if (!secondPlaceName) secondPlaceName = 'Charles Leclerc';
-            if (!thirdPlaceName) thirdPlaceName = 'George Russell';
+            if (!thirdPlaceName) thirdPlaceName = 'Max Verstappen';
             if (poleName === 'Pending' || !poleName || poleName === 'TBD') {
-              poleName = 'Lewis Hamilton';
-              poleId = 'hamilton';
+              poleName = 'Andrea Kimi Antonelli';
+              poleId = 'antonelli';
             }
             if (!fastestLapName) {
-              fastestLapName = 'Lewis Hamilton';
-              fastestLapId = 'hamilton';
+              fastestLapName = 'George Russell';
+              fastestLapId = 'russell';
             }
           }
         } else if (now >= raceStartTime && now <= raceEndTime) {
