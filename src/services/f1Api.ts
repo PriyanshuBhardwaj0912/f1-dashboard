@@ -1365,7 +1365,7 @@ async function fetchWithRetry<T>(url: string, retries = 2): Promise<T> {
   }
 }
 
-const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
+const JOLPICA_BASE = '/api/f1?path=';
 
 export const f1ApiService = {
   getDrivers: async (): Promise<Driver[]> => {
